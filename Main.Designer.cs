@@ -42,17 +42,18 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.possuiCabecalho = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.depuracao = new System.Windows.Forms.Label();
             this.panelmid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // excel
             // 
-            this.excel.Location = new System.Drawing.Point(129, 257);
+            this.excel.Location = new System.Drawing.Point(107, 237);
             this.excel.Name = "excel";
-            this.excel.Size = new System.Drawing.Size(107, 28);
+            this.excel.Size = new System.Drawing.Size(85, 23);
             this.excel.TabIndex = 1;
-            this.excel.Text = "EXPORTAR";
+            this.excel.Text = "Exportar";
             this.excel.UseVisualStyleBackColor = true;
             this.excel.Click += new System.EventHandler(this.Exportar_click);
             // 
@@ -61,7 +62,7 @@
             this.labellog.AutoSize = true;
             this.labellog.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labellog.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.labellog.Location = new System.Drawing.Point(9, 303);
+            this.labellog.Location = new System.Drawing.Point(13, 271);
             this.labellog.Name = "labellog";
             this.labellog.Size = new System.Drawing.Size(70, 16);
             this.labellog.TabIndex = 5;
@@ -69,26 +70,31 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(15, 257);
+            this.button1.Location = new System.Drawing.Point(16, 237);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(108, 28);
+            this.button1.Size = new System.Drawing.Size(85, 23);
             this.button1.TabIndex = 6;
-            this.button1.Text = "VALIDAR";
+            this.button1.Text = "Validar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Validar_click);
             // 
             // log
             // 
+            this.log.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.log.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.log.FormattingEnabled = true;
             this.log.ItemHeight = 16;
-            this.log.Location = new System.Drawing.Point(14, 322);
+            this.log.Location = new System.Drawing.Point(14, 290);
             this.log.Name = "log";
-            this.log.Size = new System.Drawing.Size(426, 292);
+            this.log.Size = new System.Drawing.Size(426, 324);
             this.log.TabIndex = 0;
             // 
             // listBox1
             // 
+            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Items.AddRange(new object[] {
             "Máquinas",
@@ -112,22 +118,24 @@
             // 
             // btnSelectFile
             // 
-            this.btnSelectFile.Location = new System.Drawing.Point(15, 185);
+            this.btnSelectFile.Location = new System.Drawing.Point(15, 157);
             this.btnSelectFile.Name = "btnSelectFile";
-            this.btnSelectFile.Size = new System.Drawing.Size(107, 27);
+            this.btnSelectFile.Size = new System.Drawing.Size(84, 23);
             this.btnSelectFile.TabIndex = 1;
-            this.btnSelectFile.Text = "ESCOLHER";
+            this.btnSelectFile.Text = "Escolher";
             this.btnSelectFile.UseVisualStyleBackColor = true;
             this.btnSelectFile.Click += new System.EventHandler(this.Escolher_click);
             // 
             // txtFilePath
             // 
+            this.txtFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFilePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFilePath.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.txtFilePath.Location = new System.Drawing.Point(15, 157);
+            this.txtFilePath.Location = new System.Drawing.Point(102, 157);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.ReadOnly = true;
-            this.txtFilePath.Size = new System.Drawing.Size(425, 22);
+            this.txtFilePath.Size = new System.Drawing.Size(338, 22);
             this.txtFilePath.TabIndex = 2;
             // 
             // label2
@@ -146,7 +154,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(9, 138);
+            this.label1.Location = new System.Drawing.Point(13, 138);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(150, 16);
             this.label1.TabIndex = 0;
@@ -154,6 +162,7 @@
             // 
             // panelmid
             // 
+            this.panelmid.Controls.Add(this.depuracao);
             this.panelmid.Controls.Add(this.pictureBox1);
             this.panelmid.Controls.Add(this.possuiCabecalho);
             this.panelmid.Controls.Add(this.progressBar);
@@ -174,6 +183,8 @@
             // 
             // progressBar
             // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(15, 623);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(425, 30);
@@ -184,7 +195,7 @@
             // 
             this.possuiCabecalho.AutoSize = true;
             this.possuiCabecalho.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.possuiCabecalho.Location = new System.Drawing.Point(15, 218);
+            this.possuiCabecalho.Location = new System.Drawing.Point(16, 186);
             this.possuiCabecalho.Name = "possuiCabecalho";
             this.possuiCabecalho.Size = new System.Drawing.Size(131, 20);
             this.possuiCabecalho.TabIndex = 8;
@@ -199,6 +210,16 @@
             this.pictureBox1.Size = new System.Drawing.Size(202, 56);
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
+            // 
+            // depuracao
+            // 
+            this.depuracao.AutoSize = true;
+            this.depuracao.Location = new System.Drawing.Point(279, 30);
+            this.depuracao.Name = "depuracao";
+            this.depuracao.Size = new System.Drawing.Size(94, 20);
+            this.depuracao.TabIndex = 10;
+            this.depuracao.Text = "Depuração";
+            this.depuracao.Visible = false;
             // 
             // Main
             // 
@@ -230,6 +251,7 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.CheckBox possuiCabecalho;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label depuracao;
     }
 }
 
