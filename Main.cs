@@ -328,7 +328,7 @@ namespace The_Top_Two_Brazil_Validador_De_CSV
             if (!dominio.Contains(campo.Trim()))
             {
                 opcoes = String.Join(", ", dominio);
-                Adicionar_registro(tabela, linha, coluna, campo, "Deve estar dentre as opções: " + opcoes);
+                Adicionar_registro(tabela, linha, coluna, campo, "Deve estar entre as opções: " + opcoes);
             }
         }
 
