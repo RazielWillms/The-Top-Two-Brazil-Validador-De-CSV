@@ -88,7 +88,7 @@
             this.log.ItemHeight = 16;
             this.log.Location = new System.Drawing.Point(14, 290);
             this.log.Name = "log";
-            this.log.Size = new System.Drawing.Size(426, 324);
+            this.log.Size = new System.Drawing.Size(464, 324);
             this.log.TabIndex = 0;
             // 
             // listBox1
@@ -113,7 +113,7 @@
             "Legado Movimentacao"});
             this.listBox1.Location = new System.Drawing.Point(15, 101);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(426, 24);
+            this.listBox1.Size = new System.Drawing.Size(464, 24);
             this.listBox1.TabIndex = 5;
             // 
             // btnSelectFile
@@ -135,7 +135,7 @@
             this.txtFilePath.Location = new System.Drawing.Point(102, 157);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.ReadOnly = true;
-            this.txtFilePath.Size = new System.Drawing.Size(338, 22);
+            this.txtFilePath.Size = new System.Drawing.Size(376, 22);
             this.txtFilePath.TabIndex = 2;
             // 
             // label2
@@ -178,7 +178,7 @@
             this.panelmid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelmid.Location = new System.Drawing.Point(0, 0);
             this.panelmid.Name = "panelmid";
-            this.panelmid.Size = new System.Drawing.Size(452, 664);
+            this.panelmid.Size = new System.Drawing.Size(490, 664);
             this.panelmid.TabIndex = 6;
             // 
             // progressBar
@@ -187,7 +187,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(15, 623);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(425, 30);
+            this.progressBar.Size = new System.Drawing.Size(463, 30);
             this.progressBar.TabIndex = 7;
             this.progressBar.Visible = false;
             // 
@@ -226,8 +226,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.ClientSize = new System.Drawing.Size(452, 664);
+            this.ClientSize = new System.Drawing.Size(490, 664);
             this.Controls.Add(this.panelmid);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main";
             this.Text = "The Top Two Brazil Csv Validator";
             this.panelmid.ResumeLayout(false);

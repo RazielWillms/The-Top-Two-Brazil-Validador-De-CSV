@@ -1,27 +1,13 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using MathNet.Numerics;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static iText.Kernel.Pdf.Colorspace.PdfSpecialCs;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using OfficeOpenXml;
-using Ganss.Excel;
-using ClosedXML.Excel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.ComponentModel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Reflection.Emit;
-using DocumentFormat.OpenXml.Spreadsheet;
-using NPOI.SS.Formula.Functions;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Drawing.Spreadsheet;
-using static NPOI.SS.Formula.Functions.Countif;
-using MathNet.Numerics;
 
 namespace The_Top_Two_Brazil_Validador_De_CSV
 {
@@ -294,11 +280,28 @@ namespace The_Top_Two_Brazil_Validador_De_CSV
                 return true;
             }
 
-            if (tipo == "integer" || tipo == "numeric")
+            if (tipo == "integer")
             {
-                if (Int32.TryParse(campo, out int valor))
+                if (Int32.TryParse(campo, out int valorInteiro))
                 {
-                    if (valor <= 0)
+                    if (valorInteiro <= 0)
+                    {
+                        Adicionar_registro(tabela, linha, coluna, campo, "Deve ser maior que zero");
+                        return true;
+                    }
+                }
+                else
+                {
+                    Adicionar_registro(tabela, linha, coluna, campo, "Formato inválido");
+                    return true;
+                }
+            }
+
+            if (tipo == "numeric")
+            {
+                if (decimal.TryParse(campo, out decimal valorDecimal))
+                {
+                    if (valorDecimal <= 0)
                     {
                         Adicionar_registro(tabela, linha, coluna, campo, "Deve ser maior que zero");
                         return true;
@@ -712,28 +715,34 @@ namespace The_Top_Two_Brazil_Validador_De_CSV
                             Valida_campo("Conta legado", row[column].ToString(), rows, columns, "char", 20, true);
                             break;
 
-                        case 3: //C - Valor do adiantamento*
+                        case 3: //C - Campo Inutilizado
+                            List<String> dom_inutilizado = new List<String> { "", "null", "NULL" };
+                            Valida_dominio("Campo Inutilizado", row[column].ToString(), rows, columns, dom_inutilizado, false);
+                            break;
+
+                        case 4: //D - Valor do adiantamento*
                             Valida_campo("Valor do adiantamento", row[column].ToString(), rows, columns, "numeric", 16.2, true);
                             break;
 
-                        case 4: //D - Tipo do adiantamento*
-                            Valida_campo("Tipo do adiantamento", row[column].ToString(), rows, columns, "tipo_adiantamento", 0, true);
+                        case 5: //E - Tipo do adiantamento*
+                            List<String> dom_tipo_adiantamento = new List<String> { "C", "F", "", "null", "NULL" };
+                            Valida_dominio("Tipo do adiantamento", row[column].ToString(), rows, columns, dom_tipo_adiantamento, true);
                             break;
 
-                        case 5: //E - Centro de Custo
+                        case 6: //F - Centro de Custo
                             Valida_campo("Centro de Custo", row[column].ToString(), rows, columns, "integer", 9, false);
                             break;
 
-                        case 6: //F - Número
+                        case 7: //G - Número
                             Valida_campo("Número", row[column].ToString(), rows, columns, "integer", 9, false);
                             break;
 
-                        case 7: //G - Observação
+                        case 8: //H - Observação
                             Valida_campo("Conta legado", row[column].ToString(), rows, columns, "char", 1200, false);
                             break;
                     }
 
-                    if (columns > 7)
+                    if (columns > 8)
                     {
                         Adicionar_registro("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
                     }
