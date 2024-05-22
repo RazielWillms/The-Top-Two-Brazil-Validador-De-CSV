@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace The_Top_Two_Brazil_Validador_De_CSV.Properties {
+namespace Validar_CSV.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace The_Top_Two_Brazil_Validador_De_CSV.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("The_Top_Two_Brazil_Validador_De_CSV.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Validar_CSV.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

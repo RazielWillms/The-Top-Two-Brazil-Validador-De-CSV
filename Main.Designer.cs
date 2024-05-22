@@ -1,4 +1,4 @@
-﻿namespace The_Top_Two_Brazil_Validador_De_CSV
+﻿namespace ValidarCSV
 {
     partial class Main
     {
@@ -32,22 +32,21 @@
             this.excel = new System.Windows.Forms.Button();
             this.labellog = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.log = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ComboBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panelmid = new System.Windows.Forms.Panel();
+            this.LC = new System.Windows.Forms.Label();
+            this.grid = new System.Windows.Forms.DataGridView();
             this.depuracao = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.possuiCabecalho = new System.Windows.Forms.CheckBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.grid = new System.Windows.Forms.DataGridView();
-            this.LC = new System.Windows.Forms.Label();
             this.panelmid.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // excel
@@ -82,20 +81,6 @@
             this.button1.Text = "Validar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Validar_click);
-            // 
-            // log
-            // 
-            this.log.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.log.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.log.FormattingEnabled = true;
-            this.log.ItemHeight = 16;
-            this.log.Location = new System.Drawing.Point(355, 110);
-            this.log.Name = "log";
-            this.log.Size = new System.Drawing.Size(766, 356);
-            this.log.TabIndex = 0;
-            this.log.Visible = false;
             // 
             // listBox1
             // 
@@ -173,7 +158,6 @@
             this.panelmid.Controls.Add(this.possuiCabecalho);
             this.panelmid.Controls.Add(this.progressBar);
             this.panelmid.Controls.Add(this.excel);
-            this.panelmid.Controls.Add(this.log);
             this.panelmid.Controls.Add(this.label1);
             this.panelmid.Controls.Add(this.button1);
             this.panelmid.Controls.Add(this.listBox1);
@@ -186,14 +170,40 @@
             this.panelmid.Size = new System.Drawing.Size(1133, 513);
             this.panelmid.TabIndex = 6;
             // 
+            // LC
+            // 
+            this.LC.AutoSize = true;
+            this.LC.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.LC.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LC.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LC.Location = new System.Drawing.Point(181, 204);
+            this.LC.Name = "LC";
+            this.LC.Size = new System.Drawing.Size(35, 20);
+            this.LC.TabIndex = 12;
+            this.LC.Text = "csv";
+            this.LC.Visible = false;
+            // 
+            // grid
+            // 
+            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grid.Location = new System.Drawing.Point(355, 37);
+            this.grid.Name = "grid";
+            this.grid.RowHeadersWidth = 51;
+            this.grid.RowTemplate.Height = 24;
+            this.grid.Size = new System.Drawing.Size(766, 428);
+            this.grid.TabIndex = 11;
+            // 
             // depuracao
             // 
             this.depuracao.AutoSize = true;
             this.depuracao.Location = new System.Drawing.Point(22, 393);
             this.depuracao.Name = "depuracao";
-            this.depuracao.Size = new System.Drawing.Size(75, 16);
+            this.depuracao.Size = new System.Drawing.Size(199, 17);
             this.depuracao.TabIndex = 10;
-            this.depuracao.Text = "Depuração";
+            this.depuracao.Text = "Mensagem Exibir (Depuração)";
             this.depuracao.Visible = false;
             // 
             // pictureBox1
@@ -227,32 +237,6 @@
             this.progressBar.TabIndex = 7;
             this.progressBar.Visible = false;
             // 
-            // grid
-            // 
-            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grid.Location = new System.Drawing.Point(355, 37);
-            this.grid.Name = "grid";
-            this.grid.RowHeadersWidth = 51;
-            this.grid.RowTemplate.Height = 24;
-            this.grid.Size = new System.Drawing.Size(766, 428);
-            this.grid.TabIndex = 11;
-            // 
-            // LC
-            // 
-            this.LC.AutoSize = true;
-            this.LC.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.LC.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LC.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.LC.Location = new System.Drawing.Point(181, 204);
-            this.LC.Name = "LC";
-            this.LC.Size = new System.Drawing.Size(35, 20);
-            this.LC.TabIndex = 12;
-            this.LC.Text = "csv";
-            this.LC.Visible = false;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -265,8 +249,8 @@
             this.Text = "Validar CSV";
             this.panelmid.ResumeLayout(false);
             this.panelmid.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -275,7 +259,6 @@
         private System.Windows.Forms.Button excel;
         private System.Windows.Forms.Label labellog;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListBox log;
         private System.Windows.Forms.ComboBox listBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSelectFile;

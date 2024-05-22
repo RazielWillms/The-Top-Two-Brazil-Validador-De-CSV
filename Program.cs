@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace The_Top_Two_Brazil_Validador_De_CSV
+namespace ValidarCSV
 {
     internal static class Program
     {
