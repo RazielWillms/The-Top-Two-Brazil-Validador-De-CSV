@@ -71,11 +71,22 @@ namespace ValidarCSV
                 }
             }
 
-            string opcoes;
+            string opcoes = String.Join(", ", dominio);
+
+            dominio.Add("");
+            dominio.Add("null");
+            dominio.Add("NULL");
+            
             if (!dominio.Contains(campo.Trim()))
             {
-                opcoes = String.Join(", ", dominio);
-                Registro_adicionar(tabela, linha, coluna, campo, "Deve estar entre as opções: " + opcoes);
+                if (obrigatorio)
+                {
+                    Registro_adicionar(tabela, linha, coluna, campo, "Deve estar entre as opções: " + opcoes);
+                }
+                else 
+                {
+                    Registro_adicionar(tabela, linha, coluna, campo, "Deve estar entre as opções: " + opcoes + " ou vazio.");
+                }
             }
         }
 
@@ -106,10 +117,14 @@ namespace ValidarCSV
                         double parteDecimal = tamanho - parteInteira;
                         parteDecimal = parteDecimal.Round(1);
                         int parteFracionaria = (int)(parteDecimal * 10);
+                        string mensagem = string.Empty;
+                        bool valido = true;
 
-                        if (!Numeric_validar(campo.Trim(), parteInteira, parteFracionaria))
+                        Numeric_validar(campo.Trim(), parteInteira, parteFracionaria, ref mensagem, ref valido);
+                        if (!valido)
                         {
-                            Registro_adicionar(tabela, linha, coluna, campo, "Deve estar no formato numérico: '" + tamanho.ToString().Replace('.', ',') + "'");
+                            Registro_adicionar(tabela, linha, coluna, campo, mensagem);
+                            //Registro_adicionar(tabela, linha, coluna, campo, "Deve estar no formato numérico: '" + tamanho.ToString().Replace('.', ',') + "'");
                         }
                     }
                     break;
@@ -147,7 +162,48 @@ namespace ValidarCSV
             }
         }
 
-        private bool Numeric_validar(string valor, int precisao, int escala)
+        private void Numeric_validar(string valor, int precisao, int escala, ref string mensagem_erro, ref bool valido)
+        {
+            mensagem_erro = string.Empty;
+
+            if (string.IsNullOrEmpty(valor) || valor.Equals("null", StringComparison.OrdinalIgnoreCase))
+            {
+                return; 
+            }
+
+            string[] partes = valor.Split(',');
+
+            if (partes[0].Length > precisao && partes.Length > 1 && partes[1].Length > escala)
+            {
+                mensagem_erro = $"Erro de precisão e escala: a parte inteira tem mais de {precisao} dígitos e a parte decimal tem mais de {escala} dígitos. ";
+                valido = false;
+                return;
+            }
+
+            if (partes[0].Length > precisao)
+            {
+                mensagem_erro = $"Erro de precisão: a parte inteira tem mais de {precisao} dígitos.";
+                valido = false;
+                return;
+            }
+
+            if (partes.Length > 1 && partes[1].Length > escala)
+            {
+                mensagem_erro = $"Erro de escala: a parte decimal tem mais de {escala} dígitos.";
+                valido = false;
+                return;
+            }
+
+            string pattern = @"^\d{1," + precisao.ToString().Trim() + @"}(,\d{1," + escala.ToString().Trim() + "})?$";
+            if (!Regex.IsMatch(valor, pattern))
+            {
+                mensagem_erro = "Erro de formato: o valor não corresponde ao formato esperado. " + precisao.ToString() + "," + escala.ToString();
+                valido = false;
+                return;
+            }
+        }
+
+        /*private bool Numeric_validar(string valor, int precisao, int escala, string mensagem_erro)
         {
             if (valor == null || valor == "" || valor == "null" || valor == "NULL")
             {
@@ -157,6 +213,7 @@ namespace ValidarCSV
             string pattern = @"^\d{1," + precisao.ToString().Trim() + @"}(,\d{1," + escala.ToString().Trim() + "})?$";
             return Regex.IsMatch(valor, pattern);
         }
+         */
 
         static bool Date_validar(string data) //Válido qualquer formato, já que pode ser escolhido no -converte
         {

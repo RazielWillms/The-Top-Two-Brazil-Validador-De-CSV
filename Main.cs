@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Drawing; 
 
 namespace ValidarCSV
 {
@@ -300,6 +301,8 @@ namespace ValidarCSV
 
             Progresso_gerenciar(false);
             Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+
+            excel.Visible = false;
         }
 
         public void Progresso_gerenciar(bool Iniciar)
@@ -336,33 +339,92 @@ namespace ValidarCSV
             grid.Rows.Clear();
             grid.Columns.Clear();
 
-            labellog.Text = "Falhas encontradas: " + registros.Count;
-
-            DataTable TableGrid = new DataTable();
-
-            TableGrid.Rows.Clear();
-
-            grid.AllowUserToOrderColumns = true;
-
-            TableGrid.Columns.Add("Campo", typeof(string));
-            TableGrid.Columns.Add("Linha", typeof(string));
-            TableGrid.Columns.Add("Coluna", typeof(string));
-            TableGrid.Columns.Add("Valor", typeof(string));
-            TableGrid.Columns.Add("Observacao", typeof(string));
-
-            foreach (var registro in registros)
+            if (registros.Count == 0)
             {
-                DataRow row = TableGrid.NewRow();
-                row["Campo"] = registro.Campo;
-                row["Linha"] = registro.Linha;
-                row["Coluna"] = registro.Coluna;
-                row["Valor"] = registro.Valor;
-                row["Observacao"] = registro.Obs;
-                TableGrid.Rows.Add(row);
+                labellog.Text = "Nenhuma falha encontrada";
+                MessageBox.Show("Nenhuma falha encontrada", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            else
+            {
+                excel.Visible = true;
 
-            grid.DataSource = TableGrid;
+                labellog.Text = "Falhas encontradas: " + registros.Count;
 
+                DataTable TableGrid = new DataTable();
+
+                TableGrid.Rows.Clear();
+
+                grid.AllowUserToOrderColumns = true;
+                grid.ReadOnly = true;
+
+                TableGrid.Columns.Add("Campo", typeof(string));
+                TableGrid.Columns.Add("Linha", typeof(string));
+                TableGrid.Columns.Add("Coluna", typeof(string));
+                TableGrid.Columns.Add("Valor", typeof(string));
+                TableGrid.Columns.Add("Observacao", typeof(string));
+
+                foreach (var registro in registros)
+                {
+                    DataRow row = TableGrid.NewRow();
+                    row["Campo"] = registro.Campo;
+                    row["Linha"] = registro.Linha;
+                    row["Coluna"] = registro.Coluna;
+                    row["Valor"] = registro.Valor;
+                    row["Observacao"] = registro.Obs;
+                    TableGrid.Rows.Add(row);
+                }
+
+                grid.DataSource = TableGrid;
+
+                Zoom_grid_criar();
+            }            
+        }
+
+        private void Zoom_grid_criar()
+        {
+            btnZoomIn.Visible = true;
+            btnZoomOut.Visible = true;
+            zoom.Visible = true;
+
+            zoom.Text = "100%";
+        }
+
+        private void ZoomIn_click(object sender, EventArgs e)
+        {
+            Zoom_grid(grid, 2.0f);
+        }
+
+        private void ZoomOut_click(object sender, EventArgs e)
+        {
+            Zoom_grid(grid, -2.0f);
+        }
+
+        private void Zoom_grid(DataGridView dgv, float delta)
+        {
+            float currentFontSize = dgv.DefaultCellStyle.Font.Size;
+            float newFontSize = currentFontSize + delta;
+
+            if (newFontSize >= 6 && newFontSize <= 20)
+            {
+                dgv.DefaultCellStyle.Font = new Font(dgv.DefaultCellStyle.Font.FontFamily, newFontSize);
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font(dgv.ColumnHeadersDefaultCellStyle.Font.FontFamily, newFontSize);
+
+                if (newFontSize > currentFontSize)
+                {
+                    Zoom_label_atualizar(20);
+                }
+                else
+                {
+                    Zoom_label_atualizar(-20);
+                }
+            }
+        }
+
+        private void Zoom_label_atualizar(int increment)
+        {
+            int currentZoom = int.Parse(zoom.Text.Replace('%', ' ').Trim());
+            currentZoom += increment;
+            zoom.Text = currentZoom.ToString() + '%';
         }
     }
 }

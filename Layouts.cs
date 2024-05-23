@@ -47,7 +47,7 @@ namespace ValidarCSV
                             break;
 
                         case 7: //G - Controla estoque
-                            List<String> controla_estoque = new List<String> { "S", "N", "", "null", "NULL", "NULL" };
+                            List<String> controla_estoque = new List<String> { "S", "N" };
                             Dominio_validar("Controla estoque", row[column].ToString(), rows, columns, controla_estoque, false);
                             break;
 
@@ -76,7 +76,7 @@ namespace ValidarCSV
                             break;
 
                         case 14: //N - Produto Importado ou Nacional
-                            List<String> dom_importado_nacional = new List<String> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "", "null", "NULL", "NULL" };
+                            List<String> dom_importado_nacional = new List<String> { "0", "1", "2", "3", "4", "5", "6", "7", "8" };
                             Dominio_validar("Importado ou Nacional", row[column].ToString(), rows, columns, dom_importado_nacional, false);
                             break;
 
@@ -93,12 +93,12 @@ namespace ValidarCSV
                             break;
 
                         case 18: //R - Situação
-                            List<String> dom_situacao = new List<String> { "A", "I", "", "null", "NULL", "NULL" };
+                            List<String> dom_situacao = new List<String> { "A", "I" };
                             Dominio_validar("situacao", row[column].ToString(), rows, columns, dom_situacao, false);
                             break;
 
                         case 19: //S - Produto usado*
-                            List<String> dom_usado = new List<String> { "1", "0", "", "null", "NULL", "NULL" };
+                            List<String> dom_usado = new List<String> { "1", "0" };
                             Dominio_validar("Produto usado", row[column].ToString(), rows, columns, dom_usado, true);
                             break;
 
@@ -111,7 +111,7 @@ namespace ValidarCSV
                             break;
 
                         case 22: //V - Classe produto*
-                            List<String> dom_classe = new List<String> { "N", "B", "", "null", "NULL", "NULL" };
+                            List<String> dom_classe = new List<String> { "N", "B" };
                             Dominio_validar("Classe", row[column].ToString(), rows, columns, dom_classe, true);
                             break;
 
@@ -136,7 +136,7 @@ namespace ValidarCSV
                             break;
 
                         case 28: //AC - Controle de estoque*
-                            List<String> dom_controle = new List<String> { "I", "", "null", "NULL", "NULL" };
+                            List<String> dom_controle = new List<String> { "I" };
                             Dominio_validar("Controle de estoque", row[column].ToString(), rows, columns, dom_controle, true);
                             break;
 
@@ -149,7 +149,7 @@ namespace ValidarCSV
                             break;
 
                         case 31: //AF - Código bandeira*
-                            Campos_validar_gerenciar("Código bandeira", row[column].ToString(), rows, columns, "integer", 9, false);
+                            Campos_validar_gerenciar("Código bandeira", row[column].ToString(), rows, columns, "integer", 9, true);
                             break;
                     }
 
@@ -271,34 +271,29 @@ namespace ValidarCSV
                             Campos_validar_gerenciar("Conta legado", row[column].ToString(), rows, columns, "char", 20, true);
                             break;
 
-                        case 3: //C - Campo Inutilizado
-                            List<String> dom_inutilizado = new List<String> { "", "null", "NULL", "NULL" };
-                            Dominio_validar("Campo Inutilizado", row[column].ToString(), rows, columns, dom_inutilizado, false);
-                            break;
-
-                        case 4: //D - Valor do adiantamento*
+                        case 3: //C - Valor do adiantamento*
                             Campos_validar_gerenciar("Valor do adiantamento", row[column].ToString(), rows, columns, "numeric", 16.2, true);
                             break;
 
-                        case 5: //E - Tipo do adiantamento*
-                            List<String> dom_tipo_adiantamento = new List<String> { "C", "F", "", "null", "NULL", "NULL" };
+                        case 4: //D - Tipo do adiantamento*
+                            List<String> dom_tipo_adiantamento = new List<String> { "C", "F" };
                             Dominio_validar("Tipo do adiantamento", row[column].ToString(), rows, columns, dom_tipo_adiantamento, true);
                             break;
 
-                        case 6: //F - Centro de Custo
+                        case 5: //E - Centro de Custo
                             Campos_validar_gerenciar("Centro de Custo", row[column].ToString(), rows, columns, "integer", 9, false);
                             break;
 
-                        case 7: //G - Número
+                        case 6: //F - Número
                             Campos_validar_gerenciar("Número", row[column].ToString(), rows, columns, "integer", 9, false);
                             break;
 
-                        case 8: //H - Observação
+                        case 7: //G - Observação
                             Campos_validar_gerenciar("Conta legado", row[column].ToString(), rows, columns, "char", 1200, false);
                             break;
                     }
 
-                    if (columns > 8)
+                    if (columns > 7)
                     {
                         Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
                     }
@@ -350,7 +345,7 @@ namespace ValidarCSV
                             break;
 
                         case 6: //F - Tipo Operação
-                            List<String> dom_tipo_operacao = new List<String> { "V", "S", "E", "C", "D", "", "null", "NULL", "NULL" };
+                            List<String> dom_tipo_operacao = new List<String> { "V", "S", "E", "C", "D" };
                             Dominio_validar("Tipo Operação", row[column].ToString(), rows, columns, dom_tipo_operacao, false);
                             break;
 
@@ -375,12 +370,12 @@ namespace ValidarCSV
                             break;
 
                         case 12: //L - Situação*
-                            List<String> dom_orc_situacao = new List<String> { "A", "F", "", "null", "NULL", "NULL" };
+                            List<String> dom_orc_situacao = new List<String> { "A", "F" };
                             Dominio_validar("Situação", row[column].ToString(), rows, columns, dom_orc_situacao, true);
                             break;
 
                         case 13: //M - Status*
-                            List<String> dom_status = new List<String> { "A", "P", "C", "F", "B", "S", "X", "Y", "", "null", "NULL", "NULL" };
+                            List<String> dom_status = new List<String> { "A", "P", "C", "F", "B", "S", "X", "Y" };
                             Dominio_validar("Status", row[column].ToString(), rows, columns, dom_status, true);
                             break;
 
@@ -477,7 +472,7 @@ namespace ValidarCSV
                             break;
 
                         case 10: //J - ID do local de venda
-                            Campos_validar_gerenciar("local de venda", row[column].ToString(), rows, columns, "integer", 6, true);
+                            Campos_validar_gerenciar("local de venda", row[column].ToString(), rows, columns, "integer", 6, false);
                             break;
 
                         case 11: //K - ID da política de preço
@@ -610,7 +605,7 @@ namespace ValidarCSV
                             break;
 
                         case 7: // G - Novo Usado*
-                            List<String> dom_novo_usado = new List<String> { "N", "U", "", "null", "NULL", "NULL" };
+                            List<String> dom_novo_usado = new List<String> { "N", "U" };
                             Dominio_validar("Novo Usado", row[column].ToString(), rows, columns, dom_novo_usado, true);
                             break;
 
@@ -707,7 +702,7 @@ namespace ValidarCSV
                             break;
 
                         case 31: // AE - Tipo equipamento*
-                            List<String> dom_tipo_equipamento = new List<String> { "#", "J", "8", "4", "A", "5", "N", "C", "R", "D", "2", "L", "K", "P", "H", "V", "I", "3", "S", "6", "M", "O", "9", "Z", "B", "U", "F", "7", "Y", "T", "G", "Q", "1", "E", "X", "", "null", "NULL", "NULL" };
+                            List<String> dom_tipo_equipamento = new List<String> { "#", "J", "8", "4", "A", "5", "N", "C", "R", "D", "2", "L", "K", "P", "H", "V", "I", "3", "S", "6", "M", "O", "9", "Z", "B", "U", "F", "7", "Y", "T", "G", "Q", "1", "E", "X" };
                             Dominio_validar("Tipo equipamento", row[column].ToString(), rows, columns, dom_tipo_equipamento, true);
                             break;
 
@@ -764,12 +759,12 @@ namespace ValidarCSV
                             break;
 
                         case 45: // AS - Tipo de Veículo Renavam/Denatran
-                            List<String> dom_tipo_renavam_denatram = new List<String> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "", "null", "NULL", "NULL" };
+                            List<String> dom_tipo_renavam_denatram = new List<String> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" };
                             Dominio_validar("Tipo de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, dom_tipo_renavam_denatram, false);
                             break;
 
                         case 46: // AT - Espécie de Veículo Renavam/Denatran
-                            List<String> dom_especie_veiculo_renavam_denatram = new List<String> { "0", "1", "2", "3", "4", "5", "6", "", "null", "NULL", "NULL" };
+                            List<String> dom_especie_veiculo_renavam_denatram = new List<String> { "0", "1", "2", "3", "4", "5", "6" };
                             Dominio_validar("Espécie de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, dom_especie_veiculo_renavam_denatram, false);
                             break;
 
@@ -871,22 +866,22 @@ namespace ValidarCSV
                             break;
 
                         case 11: // K - Débito ou Crédito*
-                            List<String> dom_debito_credito = new List<String> { "D", "C", "", "null", "NULL", "NULL" };
+                            List<String> dom_debito_credito = new List<String> { "D", "C" };
                             Dominio_validar("Débito ou Crédito", row[column].ToString(), rows, columns, dom_debito_credito, true);
                             break;
 
                         case 12: // L - Chave*
-                            List<String> dom_chave = new List<String> { "G", "C", "", "null", "NULL", "NULL" };
+                            List<String> dom_chave = new List<String> { "G", "C" };
                             Dominio_validar("Chave", row[column].ToString(), rows, columns, dom_chave, true);
                             break;
 
                         case 13: // M - Tipo lançamento
-                            List<String> dom_tipo_lanacamento = new List<String> { "A", "T", "I", "", "null", "NULL", "NULL" };
+                            List<String> dom_tipo_lanacamento = new List<String> { "A", "T", "I" };
                             Dominio_validar("Tipo lançamento", row[column].ToString(), rows, columns, dom_tipo_lanacamento, false);
                             break;
 
                         case 14: // N - Tipo Baixa
-                            List<String> dom_tipo_baixa = new List<String> { "B", "T", "", "null", "NULL", "NULL" };
+                            List<String> dom_tipo_baixa = new List<String> { "B", "T" };
                             Dominio_validar("Tipo Baixa", row[column].ToString(), rows, columns, dom_tipo_baixa, false);
                             break;
 
@@ -1081,12 +1076,12 @@ namespace ValidarCSV
                             break;
 
                         case 7: // G - Tipo de documento*
-                            List<String> dom_tipo_documento = new List<String> { "#", "C", "T", "A", "", "null", "NULL", "NULL" };
+                            List<String> dom_tipo_documento = new List<String> { "#", "C", "T", "A" };
                             Dominio_validar("Tipo de documento", row[column].ToString(), rows, columns, dom_tipo_documento, true);
                             break;
 
                         case 8: // H - Pagamento ou recebimento*
-                            List<String> dom_pagar_receber = new List<String> { "P", "R", "", "null", "NULL", "NULL" };
+                            List<String> dom_pagar_receber = new List<String> { "P", "R" };
                             Dominio_validar("Pagamento ou recebimento", row[column].ToString(), rows, columns, dom_pagar_receber, true);
                             break;
 
@@ -1208,7 +1203,7 @@ namespace ValidarCSV
                             break;
 
                         case 4: // D - Código documento Solution
-                            List<String> dom_codigo_documento = new List<String> { "", "null", "NULL", "NULL" };
+                            List<String> dom_codigo_documento = new List<String> { "", "null", "NULL" };
                             Dominio_validar("Código documento Solution", row[column].ToString(), rows, columns, dom_codigo_documento, false);
                             break;
 
@@ -1298,12 +1293,12 @@ namespace ValidarCSV
                             break;
 
                         case 6: // F - Módulo*
-                            List<String> dom_modulo = new List<String> { "5", "17", "", "null", "NULL" };
+                            List<String> dom_modulo = new List<String> { "5", "17" };
                             Dominio_validar("Módulo", row[column].ToString(), rows, columns, dom_modulo, true);
                             break;
 
                         case 7: // G - Tipo*
-                            List<String> dom_tipo = new List<String> { "O", "P", "", "null", "NULL" };
+                            List<String> dom_tipo = new List<String> { "O", "P" };
                             Dominio_validar("Tipo", row[column].ToString(), rows, columns, dom_tipo, true);
                             break;
 
@@ -1376,12 +1371,12 @@ namespace ValidarCSV
                             break;
 
                         case 25: // Y - Tipo pagamento*
-                            List<String> dom_pagamento = new List<String> { "V", "P", "", "null", "NULL" };
+                            List<String> dom_pagamento = new List<String> { "V", "P" };
                             Dominio_validar("Tipo pagamento", row[column].ToString(), rows, columns, dom_pagamento, true);
                             break;
 
                         case 26: // Z - Forma pagamento*
-                            List<String> dom_forma_pagamento = new List<String> { "A", "2", "4", "5", "0", "1", "6", "3", "F", "9", "8", "", "null", "NULL" };
+                            List<String> dom_forma_pagamento = new List<String> { "A", "2", "4", "5", "0", "1", "6", "3", "F", "9", "8" };
                             Dominio_validar("Forma pagamento", row[column].ToString(), rows, columns, dom_forma_pagamento, true);
                             break;
 
@@ -1547,7 +1542,7 @@ namespace ValidarCSV
                             break;
 
                         case 6: // F - Tipo item*
-                            List<String> dom_tipo_item = new List<String> { "SP", "P", "ST", "", "null", "NULL" };
+                            List<String> dom_tipo_item = new List<String> { "SP", "P", "ST" };
                             Dominio_validar("Tipo item", row[column].ToString(), rows, columns, dom_tipo_item, true);
                             break;
 
@@ -1688,12 +1683,12 @@ namespace ValidarCSV
                             break;
 
                         case 8: // H - Tipo movimentação*
-                            List<String> dom_tipo_movimentacao = new List<String> { "S", "E", "", "null", "NULL" };
+                            List<String> dom_tipo_movimentacao = new List<String> { "S", "E" };
                             Dominio_validar("Tipo movimentação", row[column].ToString(), rows, columns, dom_tipo_movimentacao, true);
                             break;
 
                         case 9: // I - Movimenta estoque*
-                            List<String> dom_movimenta_estoque = new List<String> { "S", "N", "", "null", "NULL" };
+                            List<String> dom_movimenta_estoque = new List<String> { "S", "N" };
                             Dominio_validar("Movimenta estoque", row[column].ToString(), rows, columns, dom_movimenta_estoque, true);
                             break;
 
