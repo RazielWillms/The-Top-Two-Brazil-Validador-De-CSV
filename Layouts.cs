@@ -155,7 +155,7 @@ namespace ValidarCSV
 
                     if (columns > 31)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -234,7 +234,7 @@ namespace ValidarCSV
 
                     if (columns > 12)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -295,7 +295,7 @@ namespace ValidarCSV
 
                     if (columns > 7)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -406,7 +406,7 @@ namespace ValidarCSV
 
                     if (columns > 19)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -498,7 +498,7 @@ namespace ValidarCSV
 
                     if (columns > 15)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -550,7 +550,7 @@ namespace ValidarCSV
 
                     if (columns > 5)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -795,7 +795,7 @@ namespace ValidarCSV
 
                     if (columns > 52)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -952,7 +952,7 @@ namespace ValidarCSV
 
                     if (columns > 30)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                       Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -1021,7 +1021,7 @@ namespace ValidarCSV
 
                     if (columns > 9)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -1160,7 +1160,7 @@ namespace ValidarCSV
 
                     if (columns > 26)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -1242,7 +1242,7 @@ namespace ValidarCSV
 
                     if (columns > 12)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -1491,7 +1491,7 @@ namespace ValidarCSV
 
                     if (columns > 53)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -1625,7 +1625,7 @@ namespace ValidarCSV
 
                     if (columns > 25)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -1719,7 +1719,7 @@ namespace ValidarCSV
 
                     if (columns > 15)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -1814,7 +1814,7 @@ namespace ValidarCSV
 
                     if (columns > 15)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -1909,7 +1909,7 @@ namespace ValidarCSV
 
                     if (columns > 15)
                     {
-                        Registro_adicionar("Erro genérico", rows, columns, row[column].ToString(), "Excedeu o número de colunas");
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;

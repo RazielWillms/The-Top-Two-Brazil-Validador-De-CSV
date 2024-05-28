@@ -6,7 +6,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Drawing; 
+using System.Drawing;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace ValidarCSV
 {
@@ -19,7 +20,9 @@ namespace ValidarCSV
         {
             InitializeComponent();
             registros = new List<Registro>();
+            versao.Text = "v0.4";
         }
+
         public class Registro
         {
             public string Campo { get; set; }
@@ -37,6 +40,7 @@ namespace ValidarCSV
                 Obs = obs;
             }
         }
+
         public void Registro_adicionar(string campo, int linha, int coluna, string valor, string obs)
         {
             registros.Add(new Registro(campo, (linha + 1).ToString(), coluna.ToString(), valor, obs));
@@ -60,6 +64,8 @@ namespace ValidarCSV
 
         private void Validar_click(object sender, EventArgs e)
         {
+            Grid_limpar();
+
             if (listBox1.SelectedIndex >= 0)
             {
 
@@ -70,7 +76,7 @@ namespace ValidarCSV
                     try
                     {
                         DataTable dataTable = Importar_csv(filePath);
-                        Validar_gerenciar(dataTable, listBox1.Text);
+                        Validar_layouts_gerenciar(dataTable, listBox1.Text);
                     }
                     catch (Exception ex)
                     {
@@ -102,13 +108,13 @@ namespace ValidarCSV
                 {
                     headers = primeiraLinha.Split(';');
                     //int colunas = headers.Length;
-                    //Depura(colunas.ToString());
+                    //Mensagem_exibir(colunas.ToString());
                 }
                 else
                 {
                     headers = primeiraLinha.Split(';');
                     int colunas = headers.Length;
-                    //Depura(colunas.ToString());
+                    //Mensagem_exibir(colunas.ToString());
                     headers = Enumerable.Range(1, colunas).Select(i => "Coluna " + i).ToArray();
                 }
 
@@ -116,7 +122,7 @@ namespace ValidarCSV
                 {
                     dataTable.Columns.Add(header);
                 }
-
+                
                 if (!possuiCabecalho)
                 {
                     DataRow primeiraLinhaDataRow = dataTable.NewRow();
@@ -127,7 +133,7 @@ namespace ValidarCSV
                     }
                     dataTable.Rows.Add(primeiraLinhaDataRow);
                 }
-
+                
                 while (!sr.EndOfStream)
                 {
                     string[] rows = sr.ReadLine().Split(';');
@@ -146,7 +152,7 @@ namespace ValidarCSV
             return dataTable;
         }
 
-        private void Validar_gerenciar(DataTable dataTable, String Tabela)
+        private void Validar_layouts_gerenciar(DataTable dataTable, String Tabela)
         {
 
             int rows = 0;
@@ -222,6 +228,22 @@ namespace ValidarCSV
             }
         }
 
+        private void Grid_datasource_alterado(object sender, EventArgs e) 
+        {
+            //desabilita as ferramentas em torno da grid, exportar e zoom in e out
+            if (grid.DataSource == null)
+            {
+                excel.Visible = false;
+                Zoom_grid_limpar();
+
+            }
+            else
+            {
+                excel.Visible = true;
+                Zoom_grid_criar();
+            }
+        }
+
         private void Exportar_click(object sender, EventArgs e)
         {
             Progresso_gerenciar(true);
@@ -232,44 +254,35 @@ namespace ValidarCSV
             {
                 var worksheet = workbook.Worksheets.Add("Erros");
 
-                //insere o cabeçalho
+                // insere o cabeçalho
                 List<string[]> items = new List<string[]>
-                {
-                    new string[] { "Campo", "Linha", "Coluna", "Valor", "Obs" }
-                };
+        {
+            new string[] { "Campo", "Linha", "Coluna", "Valor", "Obs" }
+        };
 
-                //obtém os erros da grid
-                /*foreach (DataGridViewRow row in grid.Rows)
-                {
-                    if (!row.IsNewRow)
-                    {
-                        string[] values = new string[grid.Columns.Count];
-                        for (int i = 0; i < grid.Columns.Count; i++)
-                        {
-                            values[i] = row.Cells[i].Value?.ToString();
-                        }
-                        items.Add(values);
-                    }
-                }*/
-
-                //puxa da classe
+                // puxa da classe
                 foreach (var registro in registros)
                 {
-                    items.Add(new string[] { registro.Campo, registro.Linha, registro.Coluna, registro.Valor, registro.Obs});
+                    items.Add(new string[] { registro.Campo, registro.Linha, registro.Coluna, registro.Valor, registro.Obs });
                 }
 
-                items = items.OrderBy(item => item[0])
-                                .ThenBy(item => item[1])
-                                .ThenBy(item => item[2])
-                                .ToList();
+                // ordena os itens sem o cabeçalho
+                var sortedItems = items.Skip(1)
+                                       .OrderBy(item => item[0])
+                                       .ThenBy(item => item[1])
+                                       .ThenBy(item => item[2])
+                                       .ToList();
 
-                for (int i = 0; i < items.Count; i++)
+                // adiciona o cabeçalho novamente no início
+                sortedItems.Insert(0, items[0]);
+
+                for (int i = 0; i < sortedItems.Count; i++)
                 {
-                    int total = items.Count;
+                    int total = sortedItems.Count;
 
-                    for (int j = 0; j < items[i].Length; j++)
+                    for (int j = 0; j < sortedItems[i].Length; j++)
                     {
-                        worksheet.Cell(i + 1, j + 1).Value = items[i][j];
+                        worksheet.Cell(i + 1, j + 1).Value = sortedItems[i][j];
 
                         if (i % 250 == 0)
                         {
@@ -301,8 +314,6 @@ namespace ValidarCSV
 
             Progresso_gerenciar(false);
             Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
-
-            excel.Visible = false;
         }
 
         public void Progresso_gerenciar(bool Iniciar)
@@ -330,25 +341,31 @@ namespace ValidarCSV
         public void Mensagem_exibir(string mensagem)
         {
             depuracao.Visible = true;
-            depuracao.Text = mensagem;
+            string mensagem_completa = depuracao.Text;
+            depuracao.Text = mensagem_completa + " | " + mensagem;
         }
 
-        public void Grid_criar() 
+        public void Grid_limpar()
         {
             grid.DataSource = null;
             grid.Rows.Clear();
             grid.Columns.Clear();
 
+            labellog.Text = "Registro:";
+        }
+
+        public void Grid_criar() 
+        {
+            Grid_limpar();
+
             if (registros.Count == 0)
             {
-                labellog.Text = "Nenhuma falha encontrada";
-                MessageBox.Show("Nenhuma falha encontrada", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                labellog.Text = "Nenhum erro encontrado";
+                MessageBox.Show("Nenhum erro encontrado", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                excel.Visible = true;
-
-                labellog.Text = "Falhas encontradas: " + registros.Count;
+                labellog.Text = "Erros: " + registros.Count;
 
                 DataTable TableGrid = new DataTable();
 
@@ -380,8 +397,17 @@ namespace ValidarCSV
             }            
         }
 
+        public void Zoom_grid_limpar() 
+        {
+            btnZoomIn.Visible = false;
+            btnZoomOut.Visible = false;
+            zoom.Visible = false;
+        }
+
         private void Zoom_grid_criar()
         {
+            Zoom_grid_limpar();
+
             btnZoomIn.Visible = true;
             btnZoomOut.Visible = true;
             zoom.Visible = true;

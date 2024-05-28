@@ -1,5 +1,7 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using MathNet.Numerics;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -276,6 +278,18 @@ namespace ValidarCSV
             }
 
             return DateTime.TryParseExact(data, formato, null, System.Globalization.DateTimeStyles.None, out _);
+        }
+
+        private void Sobressalente_validar(int rows, int columns, string campo)
+        {
+            if (string.IsNullOrEmpty(campo))
+            {
+                return;
+            }
+            else 
+            {
+                Registro_adicionar("Erro genérico", rows, columns, campo, "Excedeu o número de colunas");
+            }
         }
     }
 }
