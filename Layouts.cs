@@ -1731,9 +1731,9 @@ namespace ValidarCSV
             }
 
             Progresso_gerenciar(false);
-            Grid_criar();
         }
 
+        
         public void Grupos(DataTable dataTable, int rows)
         {
 
@@ -1749,70 +1749,81 @@ namespace ValidarCSV
                 {
                     switch (columns)
                     {
-                        case 1: // A - Código empresa Solution*
-                            Campos_validar_gerenciar("Código empresa Solution", row[column].ToString(), rows, columns, "integer", 4, true);
+                        case 1: // A - Grupo ID*
+                            Campos_validar_gerenciar("Grupo ID", row[column].ToString(), rows, columns, "nivel", 8, true);
                             break;
 
-                        case 2: // B - Código filial Solution*
-                            Campos_validar_gerenciar("Código filial Solution", row[column].ToString(), rows, columns, "integer", 2, true);
+                        case 2: // B - Grupo Solution*
+                            Campos_validar_gerenciar("Grupo Solution", row[column].ToString(), rows, columns, "nivel", 8, true);
                             break;
 
-                        case 3: // C - CNPJ Filial
-                            Campos_validar_gerenciar("CNPJ Filial", row[column].ToString(), rows, columns, "char", 18, false);
+                        case 3: // C - Descrição*
+                            Campos_validar_gerenciar("Descrição", row[column].ToString(), rows, columns, "char", 60, true);
                             break;
 
-                        case 4: // D - Código produto Solution
-                            Campos_validar_gerenciar("Código produto Solution", row[column].ToString(), rows, columns, "char", 20, false);
+                        case 4: // D - Situação*
+                            List<String> dom_situacao = new List<String> { "A" };
+                            Dominio_validar("Situação", row[column].ToString(), rows, columns, dom_situacao, false);
                             break;
 
-                        case 5: // E - Código produto legado*
-                            Campos_validar_gerenciar("Código produto legado", row[column].ToString(), rows, columns, "char", 40, true);
+                        case 5: // E - Área*
+                            List<String> dom_area = new List<String> { "1" };
+                            Dominio_validar("Área", row[column].ToString(), rows, columns, dom_area, false);
                             break;
 
-                        case 6: // F - Grupo/classificação produto
-                            Campos_validar_gerenciar("Grupo/classificação produto", row[column].ToString(), rows, columns, "char", 100, false);
+                        case 6: // F - Coeficiente mínimo
+                            Campos_validar_gerenciar("Coeficiente mínimo", row[column].ToString(), rows, columns, "numeric", 7.4, false);
                             break;
 
-                        case 7: // G - Operação
-                            Campos_validar_gerenciar("Operação", row[column].ToString(), rows, columns, "char", 100, false);
+                        case 7: // G - ID do centro de custo
+                            Campos_validar_gerenciar("ID do centro de custo", row[column].ToString(), rows, columns, "integer", 6, false);
                             break;
 
-                        case 8: // H - Tipo movimentação*
-                            List<String> dom_tipo_movimentacao = new List<String> { "S", "E" };
-                            Dominio_validar("Tipo movimentação", row[column].ToString(), rows, columns, dom_tipo_movimentacao, true);
+                        case 8: // H - Margem de lucro
+                            Campos_validar_gerenciar("Margem de lucro", row[column].ToString(), rows, columns, "numeric", 8.4, false);
                             break;
 
-                        case 9: // I - Movimenta estoque*
-                            List<String> dom_movimenta_estoque = new List<String> { "S", "N" };
-                            Dominio_validar("Movimenta estoque", row[column].ToString(), rows, columns, dom_movimenta_estoque, true);
+                        case 9: // I - Tipo
+                            List<String> dom_tipo = new List<String> { "E" };
+                            Dominio_validar("Tipo", row[column].ToString(), rows, columns, dom_tipo, false);
                             break;
 
-                        case 10: // J - Número documento
-                            Campos_validar_gerenciar("Número documento", row[column].ToString(), rows, columns, "char", 40, false);
+                        case 10: // J - Inutilizado
                             break;
 
-                        case 11: // K - Data movimentação
-                            Campos_validar_gerenciar("Data movimentação", row[column].ToString(), rows, columns, "date", 0, false);
+                        case 11: // K - Tipo de Calculo do Preço de Venda
+                            Campos_validar_gerenciar("Tipo de Calculo do Preço de Venda", row[column].ToString(), rows, columns, "numeric", 6.2, false);
                             break;
 
-                        case 12: // L - hora movimentação
-                            Campos_validar_gerenciar("hora movimentação", row[column].ToString(), rows, columns, "date_format", 7, false);
+                        case 12: // L - Tipo de Cálculo do Preço de Venda Sugerido
+                            Campos_validar_gerenciar("Tipo de Cálculo do Preço de Venda Sugerido", row[column].ToString(), rows, columns, "char", 3, false);
                             break;
 
-                        case 13: // M - Quantidade*
-                            Campos_validar_gerenciar("Quantidade", row[column].ToString(), rows, columns, "numeric", 16.4, true);
+                        case 13: // M - Cód. Tributação Padrão
+                            Campos_validar_gerenciar("Cód. Tributação Padrão", row[column].ToString(), rows, columns, "char", 3, false);
                             break;
 
-                        case 14: // N - Custo médio total
-                            Campos_validar_gerenciar("Custo médio total", row[column].ToString(), rows, columns, "numeric", 16.2, false);
+                        case 14: // N - Coeficiente Preço de venda
+                            Campos_validar_gerenciar("Coeficiente Preço de venda", row[column].ToString(), rows, columns, "numeric", 7.4, false);
                             break;
 
-                        case 15: // O - Valor total*
-                            Campos_validar_gerenciar("Valor total", row[column].ToString(), rows, columns, "numeric", 16.2, true);
+                        case 15: // P - Tipo da base do preço de venda
+                            Campos_validar_gerenciar("Tipo da base do preço de venda", row[column].ToString(), rows, columns, "char", 2, false);
+                            break;
+
+                        case 16: // Q - Inutilizado
+                            break;
+
+                        case 17: // R - Preço Sugerido
+                            Campos_validar_gerenciar("Preço Sugerido", row[column].ToString(), rows, columns, "integer", 4, false);
+                            break;
+
+                        case 18: // S - Coeficiente
+                            Campos_validar_gerenciar("Coeficiente", row[column].ToString(), rows, columns, "numeric", 7.4, false);
                             break;
                     }
 
-                    if (columns > 15)
+                    if (columns > 18)
                     {
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
@@ -1826,7 +1837,6 @@ namespace ValidarCSV
             }
 
             Progresso_gerenciar(false);
-            Grid_criar();
         }
 
         public void Sub_grupos(DataTable dataTable, int rows)
@@ -1844,70 +1854,30 @@ namespace ValidarCSV
                 {
                     switch (columns)
                     {
-                        case 1: // A - Código empresa Solution*
-                            Campos_validar_gerenciar("Código empresa Solution", row[column].ToString(), rows, columns, "integer", 4, true);
+                        case 1: // A - Subgrupo*
+                            Campos_validar_gerenciar("Grupo ID", row[column].ToString(), rows, columns, "nivel", 8, true);
                             break;
 
-                        case 2: // B - Código filial Solution*
-                            Campos_validar_gerenciar("Código filial Solution", row[column].ToString(), rows, columns, "integer", 2, true);
+                        case 2: // B - Subgrupo*
+                            Campos_validar_gerenciar("Grupo Solution", row[column].ToString(), rows, columns, "nivel", 8, true);
                             break;
 
-                        case 3: // C - CNPJ Filial
-                            Campos_validar_gerenciar("CNPJ Filial", row[column].ToString(), rows, columns, "char", 18, false);
+                        case 3: // C - Descrição*
+                            Campos_validar_gerenciar("Descrição", row[column].ToString(), rows, columns, "char", 60, true);
                             break;
 
-                        case 4: // D - Código produto Solution
-                            Campos_validar_gerenciar("Código produto Solution", row[column].ToString(), rows, columns, "char", 20, false);
+                        case 4: // D - Nível*
+                            List<String> dom_nivel = new List<String> { "1", "2", "3", "4" };
+                            Dominio_validar("Situação", row[column].ToString(), rows, columns, dom_nivel, true);
                             break;
 
-                        case 5: // E - Código produto legado*
-                            Campos_validar_gerenciar("Código produto legado", row[column].ToString(), rows, columns, "char", 40, true);
-                            break;
-
-                        case 6: // F - Grupo/classificação produto
-                            Campos_validar_gerenciar("Grupo/classificação produto", row[column].ToString(), rows, columns, "char", 100, false);
-                            break;
-
-                        case 7: // G - Operação
-                            Campos_validar_gerenciar("Operação", row[column].ToString(), rows, columns, "char", 100, false);
-                            break;
-
-                        case 8: // H - Tipo movimentação*
-                            List<String> dom_tipo_movimentacao = new List<String> { "S", "E" };
-                            Dominio_validar("Tipo movimentação", row[column].ToString(), rows, columns, dom_tipo_movimentacao, true);
-                            break;
-
-                        case 9: // I - Movimenta estoque*
-                            List<String> dom_movimenta_estoque = new List<String> { "S", "N" };
-                            Dominio_validar("Movimenta estoque", row[column].ToString(), rows, columns, dom_movimenta_estoque, true);
-                            break;
-
-                        case 10: // J - Número documento
-                            Campos_validar_gerenciar("Número documento", row[column].ToString(), rows, columns, "char", 40, false);
-                            break;
-
-                        case 11: // K - Data movimentação
-                            Campos_validar_gerenciar("Data movimentação", row[column].ToString(), rows, columns, "date", 0, false);
-                            break;
-
-                        case 12: // L - hora movimentação
-                            Campos_validar_gerenciar("hora movimentação", row[column].ToString(), rows, columns, "date_format", 7, false);
-                            break;
-
-                        case 13: // M - Quantidade*
-                            Campos_validar_gerenciar("Quantidade", row[column].ToString(), rows, columns, "numeric", 16.4, true);
-                            break;
-
-                        case 14: // N - Custo médio total
-                            Campos_validar_gerenciar("Custo médio total", row[column].ToString(), rows, columns, "numeric", 16.2, false);
-                            break;
-
-                        case 15: // O - Valor total*
-                            Campos_validar_gerenciar("Valor total", row[column].ToString(), rows, columns, "numeric", 16.2, true);
+                        case 5: // E - Situação*
+                            List<String> dom_situacao = new List<String> { "A" };
+                            Dominio_validar("Situação", row[column].ToString(), rows, columns, dom_situacao, true);
                             break;
                     }
 
-                    if (columns > 15)
+                    if (columns > 5)
                     {
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
@@ -1921,7 +1891,6 @@ namespace ValidarCSV
             }
 
             Progresso_gerenciar(false);
-            Grid_criar();
         }
     }
 }

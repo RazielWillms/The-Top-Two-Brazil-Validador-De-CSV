@@ -8,6 +8,12 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using DocumentFormat.OpenXml.Spreadsheet;
+using com.itextpdf.text.pdf;
+using NPOI.SS.Formula.Functions;
+using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using static NPOI.SS.Formula.Functions.Countif;
 
 namespace ValidarCSV
 {
@@ -20,7 +26,7 @@ namespace ValidarCSV
         {
             InitializeComponent();
             registros = new List<Registro>();
-            versao.Text = "v0.4";
+            versao.Text = "v0.5";
         }
 
         public class Registro
@@ -66,7 +72,7 @@ namespace ValidarCSV
         {
             Grid_limpar();
 
-            if (listBox1.SelectedIndex >= 0)
+            if (layouts.SelectedIndex >= 0)
             {
 
                 string filePath = txtFilePath.Text;
@@ -76,7 +82,7 @@ namespace ValidarCSV
                     try
                     {
                         DataTable dataTable = Importar_csv(filePath);
-                        Validar_layouts_gerenciar(dataTable, listBox1.Text);
+                        Validar_layouts_gerenciar(dataTable, layouts.Text);
                     }
                     catch (Exception ex)
                     {
@@ -220,6 +226,27 @@ namespace ValidarCSV
 
                 case "Legado Movimentacao":
                     Legado_movimentacao(dataTable, rows);
+                    break;
+
+                case "Grupos":
+                    Grupos(dataTable, rows);
+                    break;
+
+                case "SubGrupos":
+                    
+                    if (NiveisCombo.Text == string.Empty)
+                    {
+                        MessageBox.Show("O campo Níveis da Empresa deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    if (NivelCombo.Text == string.Empty)
+                    {
+                        MessageBox.Show("O campo Nível do Arquivo deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    Sub_grupos(dataTable, rows);
                     break;
 
                 default:
@@ -432,8 +459,8 @@ namespace ValidarCSV
 
             if (newFontSize >= 6 && newFontSize <= 20)
             {
-                dgv.DefaultCellStyle.Font = new Font(dgv.DefaultCellStyle.Font.FontFamily, newFontSize);
-                dgv.ColumnHeadersDefaultCellStyle.Font = new Font(dgv.ColumnHeadersDefaultCellStyle.Font.FontFamily, newFontSize);
+                dgv.DefaultCellStyle.Font = new System.Drawing.Font(dgv.DefaultCellStyle.Font.FontFamily, newFontSize);
+                dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font(dgv.ColumnHeadersDefaultCellStyle.Font.FontFamily, newFontSize);
 
                 if (newFontSize > currentFontSize)
                 {
@@ -451,6 +478,65 @@ namespace ValidarCSV
             int currentZoom = int.Parse(zoom.Text.Replace('%', ' ').Trim());
             currentZoom += increment;
             zoom.Text = currentZoom.ToString() + '%';
+        }
+
+        private void Layout_selecionado(object sender, EventArgs e)
+        {
+            switch (layouts.Text)
+            {
+                case "Grupos":
+                    Niveis.Visible = true;
+                    NiveisCombo.Visible = true;
+                    Nivel.Visible = false;
+                    NivelCombo.Visible = false;
+                    break;
+
+                case "SubGrupos":
+                    Niveis.Visible = true;
+                    NiveisCombo.Visible = true;
+
+                    if (NiveisCombo.Text != string.Empty)
+                    {
+                        Nivel.Visible = true;
+                        NivelCombo.Visible = true;
+                    }
+                    break;
+
+                default:
+                    Nivel.Visible = false;
+                    NivelCombo.Visible = false;
+                    Niveis.Visible = false;
+                    NiveisCombo.Visible = false;
+                    break;
+            }
+            
+        }
+
+        private void NiveisCombo_selecionado(object sender, EventArgs e)
+        {
+            NivelCombo.Items.Clear();
+            NivelCombo.Items.Add("SubGrupo");
+            NivelCombo.Items.Add("Segmento");
+            NivelCombo.Items.Add("SubSegmento");
+
+            if (layouts.Text == "SubGrupos")
+            {
+                Nivel.Visible = true;
+                NivelCombo.Visible = true;
+            }
+
+            switch (NiveisCombo.Text)
+            {
+                case "2 (Grupo/SubGrupo)":
+                    NivelCombo.Items.Remove("Segmento");
+                    NivelCombo.Items.Remove("SubSegmento");
+                    break;
+
+                case "3 (Grupo/Subgrupo/Segmento)":
+                    NivelCombo.Items.Remove("SubSegmento");
+                    break;
+            }
+
         }
     }
 }

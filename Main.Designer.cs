@@ -31,13 +31,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.excel = new System.Windows.Forms.Button();
             this.labellog = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ComboBox();
+            this.validar = new System.Windows.Forms.Button();
+            this.layouts = new System.Windows.Forms.ComboBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panelmid = new System.Windows.Forms.Panel();
+            this.NiveisCombo = new System.Windows.Forms.ComboBox();
+            this.Niveis = new System.Windows.Forms.Label();
+            this.NivelCombo = new System.Windows.Forms.ComboBox();
+            this.Nivel = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.versao = new System.Windows.Forms.Label();
             this.zoom = new System.Windows.Forms.Label();
@@ -56,7 +60,7 @@
             // excel
             // 
             this.excel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.excel.Location = new System.Drawing.Point(106, 207);
+            this.excel.Location = new System.Drawing.Point(105, 311);
             this.excel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.excel.Name = "excel";
             this.excel.Size = new System.Drawing.Size(85, 30);
@@ -77,23 +81,23 @@
             this.labellog.TabIndex = 5;
             this.labellog.Text = "Registro:";
             // 
-            // button1
+            // validar
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(13, 207);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(87, 30);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Validar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Validar_click);
+            this.validar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.validar.Location = new System.Drawing.Point(12, 311);
+            this.validar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.validar.Name = "validar";
+            this.validar.Size = new System.Drawing.Size(87, 30);
+            this.validar.TabIndex = 6;
+            this.validar.Text = "Validar";
+            this.validar.UseVisualStyleBackColor = true;
+            this.validar.Click += new System.EventHandler(this.Validar_click);
             // 
-            // listBox1
+            // layouts
             // 
-            this.listBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
+            this.layouts.BackColor = System.Drawing.SystemColors.Control;
+            this.layouts.FormattingEnabled = true;
+            this.layouts.Items.AddRange(new object[] {
             "Máquinas",
             "Saldos Máquinas",
             "Adiantamentos",
@@ -110,11 +114,12 @@
             "Legado Movimentacao",
             "Grupos",
             "SubGrupos"});
-            this.listBox1.Location = new System.Drawing.Point(12, 48);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(321, 24);
-            this.listBox1.TabIndex = 5;
+            this.layouts.Location = new System.Drawing.Point(12, 48);
+            this.layouts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.layouts.Name = "layouts";
+            this.layouts.Size = new System.Drawing.Size(321, 24);
+            this.layouts.TabIndex = 5;
+            this.layouts.TextChanged += new System.EventHandler(this.Layout_selecionado);
             // 
             // btnSelectFile
             // 
@@ -162,6 +167,10 @@
             // 
             // panelmid
             // 
+            this.panelmid.Controls.Add(this.NiveisCombo);
+            this.panelmid.Controls.Add(this.Niveis);
+            this.panelmid.Controls.Add(this.NivelCombo);
+            this.panelmid.Controls.Add(this.Nivel);
             this.panelmid.Controls.Add(this.pictureBox2);
             this.panelmid.Controls.Add(this.versao);
             this.panelmid.Controls.Add(this.zoom);
@@ -175,8 +184,8 @@
             this.panelmid.Controls.Add(this.progressBar);
             this.panelmid.Controls.Add(this.excel);
             this.panelmid.Controls.Add(this.label1);
-            this.panelmid.Controls.Add(this.button1);
-            this.panelmid.Controls.Add(this.listBox1);
+            this.panelmid.Controls.Add(this.validar);
+            this.panelmid.Controls.Add(this.layouts);
             this.panelmid.Controls.Add(this.txtFilePath);
             this.panelmid.Controls.Add(this.label2);
             this.panelmid.Controls.Add(this.btnSelectFile);
@@ -184,14 +193,65 @@
             this.panelmid.Location = new System.Drawing.Point(0, 0);
             this.panelmid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelmid.Name = "panelmid";
-            this.panelmid.Size = new System.Drawing.Size(1133, 513);
+            this.panelmid.Size = new System.Drawing.Size(956, 509);
             this.panelmid.TabIndex = 6;
+            // 
+            // NiveisCombo
+            // 
+            this.NiveisCombo.FormattingEnabled = true;
+            this.NiveisCombo.Items.AddRange(new object[] {
+            "2 (Grupo/SubGrupo)",
+            "3 (Grupo/Subgrupo/Segmento)",
+            "4 (Grupo/Subgrupo/Segmento/SubSegmento)"});
+            this.NiveisCombo.Location = new System.Drawing.Point(12, 198);
+            this.NiveisCombo.Name = "NiveisCombo";
+            this.NiveisCombo.Size = new System.Drawing.Size(321, 24);
+            this.NiveisCombo.TabIndex = 24;
+            this.NiveisCombo.Visible = false;
+            this.NiveisCombo.TextChanged += new System.EventHandler(this.NiveisCombo_selecionado);
+            // 
+            // Niveis
+            // 
+            this.Niveis.AutoSize = true;
+            this.Niveis.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Niveis.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Niveis.Location = new System.Drawing.Point(11, 172);
+            this.Niveis.Name = "Niveis";
+            this.Niveis.Size = new System.Drawing.Size(173, 20);
+            this.Niveis.TabIndex = 23;
+            this.Niveis.Text = "Níveis da Empresa:";
+            this.Niveis.Visible = false;
+            // 
+            // NivelCombo
+            // 
+            this.NivelCombo.FormattingEnabled = true;
+            this.NivelCombo.Items.AddRange(new object[] {
+            "SubGrupo",
+            "Segmento",
+            "SubSegmento"});
+            this.NivelCombo.Location = new System.Drawing.Point(12, 259);
+            this.NivelCombo.Name = "NivelCombo";
+            this.NivelCombo.Size = new System.Drawing.Size(321, 24);
+            this.NivelCombo.TabIndex = 22;
+            this.NivelCombo.Visible = false;
+            // 
+            // Nivel
+            // 
+            this.Nivel.AutoSize = true;
+            this.Nivel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Nivel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Nivel.Location = new System.Drawing.Point(11, 234);
+            this.Nivel.Name = "Nivel";
+            this.Nivel.Size = new System.Drawing.Size(152, 20);
+            this.Nivel.TabIndex = 21;
+            this.Nivel.Text = "Nível do Arquivo:";
+            this.Nivel.Visible = false;
             // 
             // pictureBox2
             // 
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(-13, 429);
+            this.pictureBox2.Location = new System.Drawing.Point(-13, 425);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(260, 59);
@@ -203,7 +263,7 @@
             this.versao.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.versao.AutoSize = true;
             this.versao.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.versao.Location = new System.Drawing.Point(12, 490);
+            this.versao.Location = new System.Drawing.Point(12, 486);
             this.versao.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.versao.Name = "versao";
             this.versao.Size = new System.Drawing.Size(51, 16);
@@ -217,7 +277,7 @@
             this.zoom.AutoSize = true;
             this.zoom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.zoom.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.zoom.Location = new System.Drawing.Point(1012, 22);
+            this.zoom.Location = new System.Drawing.Point(835, 22);
             this.zoom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.zoom.Name = "zoom";
             this.zoom.Size = new System.Drawing.Size(54, 20);
@@ -232,7 +292,7 @@
             this.btnZoomOut.AutoSize = true;
             this.btnZoomOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnZoomOut.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnZoomOut.Location = new System.Drawing.Point(974, 15);
+            this.btnZoomOut.Location = new System.Drawing.Point(797, 15);
             this.btnZoomOut.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.btnZoomOut.Name = "btnZoomOut";
             this.btnZoomOut.Size = new System.Drawing.Size(22, 29);
@@ -248,7 +308,7 @@
             this.btnZoomIn.AutoSize = true;
             this.btnZoomIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnZoomIn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnZoomIn.Location = new System.Drawing.Point(1083, 19);
+            this.btnZoomIn.Location = new System.Drawing.Point(906, 19);
             this.btnZoomIn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.btnZoomIn.Name = "btnZoomIn";
             this.btnZoomIn.Size = new System.Drawing.Size(28, 29);
@@ -282,14 +342,14 @@
             this.grid.Name = "grid";
             this.grid.RowHeadersWidth = 51;
             this.grid.RowTemplate.Height = 24;
-            this.grid.Size = new System.Drawing.Size(765, 417);
+            this.grid.Size = new System.Drawing.Size(588, 413);
             this.grid.TabIndex = 11;
             this.grid.DataSourceChanged += new System.EventHandler(this.Grid_datasource_alterado);
             // 
             // depuracao
             // 
             this.depuracao.AutoSize = true;
-            this.depuracao.Location = new System.Drawing.Point(21, 393);
+            this.depuracao.Location = new System.Drawing.Point(12, 393);
             this.depuracao.Name = "depuracao";
             this.depuracao.Size = new System.Drawing.Size(98, 16);
             this.depuracao.TabIndex = 10;
@@ -313,10 +373,10 @@
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(355, 471);
+            this.progressBar.Location = new System.Drawing.Point(355, 467);
             this.progressBar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(767, 30);
+            this.progressBar.Size = new System.Drawing.Size(590, 30);
             this.progressBar.TabIndex = 7;
             this.progressBar.Visible = false;
             // 
@@ -325,7 +385,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.ClientSize = new System.Drawing.Size(1133, 513);
+            this.ClientSize = new System.Drawing.Size(956, 509);
             this.Controls.Add(this.panelmid);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -342,8 +402,8 @@
         #endregion
         private System.Windows.Forms.Button excel;
         private System.Windows.Forms.Label labellog;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox listBox1;
+        private System.Windows.Forms.Button validar;
+        private System.Windows.Forms.ComboBox layouts;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSelectFile;
         private System.Windows.Forms.TextBox txtFilePath;
@@ -359,6 +419,10 @@
         private System.Windows.Forms.Label zoom;
         private System.Windows.Forms.Label versao;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.ComboBox NivelCombo;
+        private System.Windows.Forms.Label Nivel;
+        private System.Windows.Forms.ComboBox NiveisCombo;
+        private System.Windows.Forms.Label Niveis;
     }
 }
 
