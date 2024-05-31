@@ -163,12 +163,15 @@ namespace ValidarCSV
                     break;
 
                 case "nivel":
+
                     string mensagem_completa = string.Empty;
+                    int tamanho_nivel = (int.Parse(NiveisCombo.Text.Substring(0, 1)) * 2);
+
                     if (campo != "0" && campo.Trim() != "")
                     {
                         if (campo.Length > tamanho || !int.TryParse(campo, out _))
                         {
-                            mensagem_completa = "Deve ser um número inteiro e conter até " + tamanho + " dígitos. ";
+                            mensagem_completa = "Deve ser um número inteiro e conter até " + tamanho_nivel.ToString()+ " dígitos. ";
                         }
                     }
 
