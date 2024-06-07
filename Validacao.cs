@@ -104,6 +104,14 @@ namespace ValidarCSV
                     return;
                 }
             }
+            else
+            {
+                List<String> dom_vazio = new List<String> { "", "#", "0", "null", "NULL" };
+                if (dom_vazio.Contains(campo.Trim()))
+                {
+                    return;
+                }
+            }
 
             string mensagem = string.Empty;
             bool valido = true;
@@ -119,6 +127,7 @@ namespace ValidarCSV
                     break;
 
                 case "numeric":
+                    campo = campo.Replace(".", "");
                     if (campo != "0" && campo.Trim() != "")
                     {
                         int parteInteira = (int)Math.Truncate(tamanho);
@@ -153,6 +162,7 @@ namespace ValidarCSV
                     break;
 
                 case "integer":
+                    campo = campo.Replace(".", "");
                     if (campo != "0" && campo.Trim() != "")
                     {
                         if (campo.Length > tamanho || !int.TryParse(campo, out _))

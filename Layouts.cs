@@ -1732,7 +1732,6 @@ namespace ValidarCSV
 
             Progresso_gerenciar(false);
         }
-
         
         public void Grupos(DataTable dataTable, int rows)
         {
@@ -1841,7 +1840,6 @@ namespace ValidarCSV
 
         public void Sub_grupos(DataTable dataTable, int rows)
         {
-
             Progresso_gerenciar(true);
 
             int total = dataTable.Rows.Count;

@@ -14,6 +14,7 @@ using NPOI.SS.Formula.Functions;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using static NPOI.SS.Formula.Functions.Countif;
+using System.Drawing.Text;
 
 namespace ValidarCSV
 {
@@ -26,7 +27,7 @@ namespace ValidarCSV
         {
             InitializeComponent();
             registros = new List<Registro>();
-            versao.Text = "v0.5";
+            versao.Text = "v0.6";
         }
 
         public class Registro
@@ -229,11 +230,16 @@ namespace ValidarCSV
                     break;
 
                 case "Grupos":
+                    if (NiveisCombo.Text == string.Empty)
+                    {
+                        MessageBox.Show("O campo Níveis da Empresa deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
                     Grupos(dataTable, rows);
                     break;
 
                 case "SubGrupos":
-                    
                     if (NiveisCombo.Text == string.Empty)
                     {
                         MessageBox.Show("O campo Níveis da Empresa deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
