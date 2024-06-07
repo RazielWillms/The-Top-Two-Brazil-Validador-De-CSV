@@ -834,7 +834,7 @@ namespace ValidarCSV
                             break;
 
                         case 3: // C - Código do Item*
-                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 6.2, true);
+                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 16.2, true);
                             break;
 
                         case 4: // D - Código da Conta (Plano de Contas)
@@ -987,7 +987,7 @@ namespace ValidarCSV
                             break;
 
                         case 2: // B - Código do Item*
-                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "integer", 4, true);
+                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 9.2, true); 
                             break;
 
                         case 3: // C - Valor Original*

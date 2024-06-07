@@ -15,6 +15,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using static NPOI.SS.Formula.Functions.Countif;
 using System.Drawing.Text;
+using System.Text.RegularExpressions;
 
 namespace ValidarCSV
 {
@@ -110,6 +111,17 @@ namespace ValidarCSV
                 bool possuiCabecalho = this.possuiCabecalho.Checked;
 
                 string primeiraLinha = sr.ReadLine() ?? throw new InvalidOperationException("O arquivo CSV está vazio.");
+
+                //elimina campos inúteis ao final do arquivo
+                string regex = "; {3,}"; //ponto e vírgula seguido de 3 ou mais espaços
+                if (Regex.IsMatch(primeiraLinha, regex))    
+                {
+                    primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
+                    regex = ";{3,}"; //3 ou mais ponto e vírgula seguidos
+                    primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
+                    regex = " {2,}"; //2 ou mais espaços seguidos
+                    primeiraLinha = Regex.Replace(primeiraLinha, regex, "");
+                }
 
                 if (possuiCabecalho)
                 {
@@ -376,6 +388,9 @@ namespace ValidarCSV
             depuracao.Visible = true;
             string mensagem_completa = depuracao.Text;
             depuracao.Text = mensagem_completa + " | " + mensagem;
+
+            MensagemErro.Visible = true;
+            MensagemErro.Text = mensagem;
         }
 
         public void Grid_limpar()

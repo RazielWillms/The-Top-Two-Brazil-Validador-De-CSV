@@ -52,6 +52,7 @@
             this.depuracao = new System.Windows.Forms.Label();
             this.possuiCabecalho = new System.Windows.Forms.CheckBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.MensagemErro = new System.Windows.Forms.TextBox();
             this.panelmid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
@@ -167,6 +168,7 @@
             // 
             // panelmid
             // 
+            this.panelmid.Controls.Add(this.MensagemErro);
             this.panelmid.Controls.Add(this.NiveisCombo);
             this.panelmid.Controls.Add(this.Niveis);
             this.panelmid.Controls.Add(this.NivelCombo);
@@ -380,6 +382,14 @@
             this.progressBar.TabIndex = 7;
             this.progressBar.Visible = false;
             // 
+            // MensagemErro
+            // 
+            this.MensagemErro.Location = new System.Drawing.Point(15, 368);
+            this.MensagemErro.Name = "MensagemErro";
+            this.MensagemErro.Size = new System.Drawing.Size(318, 22);
+            this.MensagemErro.TabIndex = 25;
+            this.MensagemErro.Visible = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -423,6 +433,7 @@
         private System.Windows.Forms.Label Nivel;
         private System.Windows.Forms.ComboBox NiveisCombo;
         private System.Windows.Forms.Label Niveis;
+        private System.Windows.Forms.TextBox MensagemErro;
     }
 }
 
