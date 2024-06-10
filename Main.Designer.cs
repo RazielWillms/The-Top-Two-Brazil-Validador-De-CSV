@@ -38,6 +38,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panelmid = new System.Windows.Forms.Panel();
+            this.MensagemErro = new System.Windows.Forms.TextBox();
             this.NiveisCombo = new System.Windows.Forms.ComboBox();
             this.Niveis = new System.Windows.Forms.Label();
             this.NivelCombo = new System.Windows.Forms.ComboBox();
@@ -52,7 +53,6 @@
             this.depuracao = new System.Windows.Forms.Label();
             this.possuiCabecalho = new System.Windows.Forms.CheckBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.MensagemErro = new System.Windows.Forms.TextBox();
             this.panelmid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
@@ -197,6 +197,14 @@
             this.panelmid.Name = "panelmid";
             this.panelmid.Size = new System.Drawing.Size(956, 509);
             this.panelmid.TabIndex = 6;
+            // 
+            // MensagemErro
+            // 
+            this.MensagemErro.Location = new System.Drawing.Point(15, 390);
+            this.MensagemErro.Name = "MensagemErro";
+            this.MensagemErro.Size = new System.Drawing.Size(318, 22);
+            this.MensagemErro.TabIndex = 25;
+            this.MensagemErro.Visible = false;
             // 
             // NiveisCombo
             // 
@@ -351,9 +359,11 @@
             // depuracao
             // 
             this.depuracao.AutoSize = true;
-            this.depuracao.Location = new System.Drawing.Point(12, 393);
+            this.depuracao.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.depuracao.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.depuracao.Location = new System.Drawing.Point(12, 367);
             this.depuracao.Name = "depuracao";
-            this.depuracao.Size = new System.Drawing.Size(98, 16);
+            this.depuracao.Size = new System.Drawing.Size(109, 16);
             this.depuracao.TabIndex = 10;
             this.depuracao.Text = "DEPURAÇÃO: ";
             this.depuracao.Visible = false;
@@ -381,14 +391,6 @@
             this.progressBar.Size = new System.Drawing.Size(590, 30);
             this.progressBar.TabIndex = 7;
             this.progressBar.Visible = false;
-            // 
-            // MensagemErro
-            // 
-            this.MensagemErro.Location = new System.Drawing.Point(15, 368);
-            this.MensagemErro.Name = "MensagemErro";
-            this.MensagemErro.Size = new System.Drawing.Size(318, 22);
-            this.MensagemErro.TabIndex = 25;
-            this.MensagemErro.Visible = false;
             // 
             // Main
             // 

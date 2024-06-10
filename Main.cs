@@ -5,17 +5,8 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using System.Drawing;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using DocumentFormat.OpenXml.Spreadsheet;
-using com.itextpdf.text.pdf;
-using NPOI.SS.Formula.Functions;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Drawing.Spreadsheet;
-using static NPOI.SS.Formula.Functions.Countif;
-using System.Drawing.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace ValidarCSV
 {
@@ -28,7 +19,7 @@ namespace ValidarCSV
         {
             InitializeComponent();
             registros = new List<Registro>();
-            versao.Text = "v0.6";
+            versao.Text = "v0.7";
         }
 
         public class Registro
@@ -58,7 +49,14 @@ namespace ValidarCSV
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = @"C:\Users\Public";
+                if (txtFilePath.Text == String.Empty)
+                {
+                    openFileDialog.InitialDirectory = @"C:\Users\Public";
+                }
+                else
+                {
+                    openFileDialog.InitialDirectory = txtFilePath.Text.ToString();
+                }
                 openFileDialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
@@ -114,7 +112,7 @@ namespace ValidarCSV
 
                 //elimina campos inúteis ao final do arquivo
                 string regex = "; {3,}"; //ponto e vírgula seguido de 3 ou mais espaços
-                if (Regex.IsMatch(primeiraLinha, regex))    
+                if (Regex.IsMatch(primeiraLinha, regex))
                 {
                     primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
                     regex = ";{3,}"; //3 ou mais ponto e vírgula seguidos
@@ -126,14 +124,11 @@ namespace ValidarCSV
                 if (possuiCabecalho)
                 {
                     headers = primeiraLinha.Split(';');
-                    //int colunas = headers.Length;
-                    //Mensagem_exibir(colunas.ToString());
                 }
                 else
                 {
                     headers = primeiraLinha.Split(';');
                     int colunas = headers.Length;
-                    //Mensagem_exibir(colunas.ToString());
                     headers = Enumerable.Range(1, colunas).Select(i => "Coluna " + i).ToArray();
                 }
 
@@ -141,7 +136,7 @@ namespace ValidarCSV
                 {
                     dataTable.Columns.Add(header);
                 }
-                
+
                 if (!possuiCabecalho)
                 {
                     DataRow primeiraLinhaDataRow = dataTable.NewRow();
@@ -152,7 +147,7 @@ namespace ValidarCSV
                     }
                     dataTable.Rows.Add(primeiraLinhaDataRow);
                 }
-                
+
                 while (!sr.EndOfStream)
                 {
                     string[] rows = sr.ReadLine().Split(';');
@@ -164,9 +159,6 @@ namespace ValidarCSV
                     dataTable.Rows.Add(dr);
                 }
             }
-
-            //LC.Visible = true;
-            //LC.Text = "C" + dataTable.Columns.Count.ToString() + "L" + dataTable.Rows.Count.ToString();
 
             return dataTable;
         }
@@ -273,7 +265,7 @@ namespace ValidarCSV
             }
         }
 
-        private void Grid_datasource_alterado(object sender, EventArgs e) 
+        private void Grid_datasource_alterado(object sender, EventArgs e)
         {
             //desabilita as ferramentas em torno da grid, exportar e zoom in e out
             if (grid.DataSource == null)
@@ -386,10 +378,8 @@ namespace ValidarCSV
         public void Mensagem_exibir(string mensagem)
         {
             depuracao.Visible = true;
-            string mensagem_completa = depuracao.Text;
-            depuracao.Text = mensagem_completa + " | " + mensagem;
-
             MensagemErro.Visible = true;
+
             MensagemErro.Text = mensagem;
         }
 
@@ -402,7 +392,7 @@ namespace ValidarCSV
             labellog.Text = "Registro:";
         }
 
-        public void Grid_criar() 
+        public void Grid_criar()
         {
             Grid_limpar();
 
@@ -442,10 +432,10 @@ namespace ValidarCSV
                 grid.DataSource = TableGrid;
 
                 Zoom_grid_criar();
-            }            
+            }
         }
 
-        public void Zoom_grid_limpar() 
+        public void Zoom_grid_limpar()
         {
             btnZoomIn.Visible = false;
             btnZoomOut.Visible = false;
@@ -530,7 +520,7 @@ namespace ValidarCSV
                     NiveisCombo.Visible = false;
                     break;
             }
-            
+
         }
 
         private void NiveisCombo_selecionado(object sender, EventArgs e)
