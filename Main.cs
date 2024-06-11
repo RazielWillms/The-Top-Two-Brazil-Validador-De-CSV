@@ -19,7 +19,7 @@ namespace ValidarCSV
         {
             InitializeComponent();
             registros = new List<Registro>();
-            versao.Text = "v0.7";
+            versao.Text = "v0.8";
         }
 
         public class Registro
