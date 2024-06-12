@@ -19,7 +19,7 @@ namespace ValidarCSV
         {
             InitializeComponent();
             registros = new List<Registro>();
-            versao.Text = "v0.9";
+            versao.Text = "v0.10";
         }
 
         public void Registro_adicionar(string campo, int linha, int coluna, string valor, string obs)
@@ -109,13 +109,12 @@ namespace ValidarCSV
                     primeiraLinha = Regex.Replace(primeiraLinha, regex, "");
                 }
 
-                if (possuiCabecalho)
+                headers = primeiraLinha.Split(';');
+
+                if (Repete_coluna(headers) || !possuiCabecalho)
                 {
-                    headers = primeiraLinha.Split(';');
-                }
-                else
-                {
-                    headers = primeiraLinha.Split(';');
+                    this.possuiCabecalho.Checked = false;
+
                     int colunas = headers.Length;
                     headers = Enumerable.Range(1, colunas).Select(i => "Coluna " + i).ToArray();
                 }
@@ -176,6 +175,26 @@ namespace ValidarCSV
             }
 
             return dataTable;
+        }
+
+        static bool Repete_coluna(string[] array)
+        {
+            if (array == null || array.Length == 0)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                for (int j = i + 1; j < array.Length; j++)
+                {
+                    if (array[i] == array[j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private void Grid_datasource_alterado(object sender, EventArgs e)
