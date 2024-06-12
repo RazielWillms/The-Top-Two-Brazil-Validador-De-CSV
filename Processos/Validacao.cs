@@ -10,6 +10,7 @@ namespace ValidarCSV
 {
     public partial class Main : Form
     {
+
         public bool Obrigatorio_validar(string tabela, string campo, int linha, int coluna, string tipo)
         {
             string mensagemErro = string.Empty;
@@ -46,31 +47,7 @@ namespace ValidarCSV
             return false;
         }
 
-        public void Dominio_validar(string tabela, string campo, int linha, int coluna, List<String> dominio, Boolean obrigatorio)
-        {
-            if (obrigatorio && Obrigatorio_validar(tabela, campo, linha, coluna, "NULL"))
-            {
-                return;
-            }
-
-            List<string> dominioExtendido = new List<string>(dominio) { "", "null", "NULL" };
-            
-            if (!dominioExtendido.Contains(campo.Trim()))
-            {
-                string opcoes = String.Join(", ", dominio);
-
-                if (obrigatorio)
-                {
-                    Registro_adicionar(tabela, linha, coluna, campo, $"Deve estar entre as opções: {opcoes}");
-                }
-                else 
-                {
-                    Registro_adicionar(tabela, linha, coluna, campo, $"Deve estar entre as opções: {opcoes} ou vazio.");
-                }
-            }
-        }
-
-        public void Campos_validar_gerenciar(string tabela, string campo, int linha, int coluna, string tipo, double tamanho, Boolean obrigatorio)
+        public void Campos_validar_gerenciar(string tabela, string campo, int linha, int coluna, string tipo, double tamanho_formato, Boolean obrigatorio)
         {
             if (obrigatorio && Obrigatorio_validar(tabela, campo, linha, coluna, tipo))
             {
@@ -90,9 +67,9 @@ namespace ValidarCSV
             {
                 //campos padrão
                 case "char":
-                    if (campo.Length > tamanho)
+                    if (campo.Length > tamanho_formato)
                     {
-                        Registro_adicionar(tabela, linha, coluna, campo, "Excede " + tamanho.ToString() + " caracter");
+                        Registro_adicionar(tabela, linha, coluna, campo, "Excede " + tamanho_formato.ToString() + " caracter");
                     }
                     break;
 
@@ -100,8 +77,8 @@ namespace ValidarCSV
                     campo = campo.Replace(".", "");
                     if (campo != "0" && campo.Trim() != "")
                     {
-                        int parteInteira = (int)Math.Truncate(tamanho);
-                        double parteDecimal = (tamanho - parteInteira).Round(1);
+                        int parteInteira = (int)Math.Truncate(tamanho_formato);
+                        double parteDecimal = (tamanho_formato - parteInteira).Round(1);
                         //parteDecimal = parteDecimal.Round(1);
                         int parteFracionaria = (int)(parteDecimal * 10);
 
@@ -122,7 +99,7 @@ namespace ValidarCSV
 
                 case "date_format":
                     string formato = string.Empty;
-                    Formato_retornar(tamanho, ref formato);
+                    Formato_date_retornar(tamanho_formato, ref formato);
 
                     if (!Date_formato_validar(campo.Trim(), formato))
                     {
@@ -134,9 +111,9 @@ namespace ValidarCSV
                     campo = campo.Replace(".", "");
                     if (campo != "0" && campo.Trim() != "")
                     {
-                        if (campo.Length > tamanho || !int.TryParse(campo, out _))
+                        if (campo.Length > tamanho_formato || !int.TryParse(campo, out _))
                         {
-                            Registro_adicionar(tabela, linha, coluna, campo, "Deve ser um número inteiro e conter até " + tamanho + " dígitos");
+                            Registro_adicionar(tabela, linha, coluna, campo, "Deve ser um número inteiro e conter até " + tamanho_formato + " dígitos");
                         }
                     }
                     break;
@@ -149,7 +126,7 @@ namespace ValidarCSV
 
                     if (campo != "0" && campo.Trim() != "")
                     {
-                        if (campo.Length > tamanho || !int.TryParse(campo, out _))
+                        if (campo.Length > tamanho_formato || !int.TryParse(campo, out _))
                         {
                             mensagem_completa = "Deve ser um número inteiro e conter até " + tamanho_nivel.ToString() + " dígitos. ";
                             valido = false;
@@ -161,6 +138,25 @@ namespace ValidarCSV
                     {
                         Registro_adicionar(tabela, linha, coluna, campo, mensagem_completa);
                     }                    
+                    break;
+
+                case "dominio":
+                    List<string> dominio = Dominio_retornar(tamanho_formato);
+                    List<string> dominioExtendido = new List<string>(dominio) { "", "null", "NULL" };
+
+                    if (!dominioExtendido.Contains(campo.Trim()))
+                    {
+                        string opcoes = String.Join(", ", dominio);
+
+                        if (obrigatorio)
+                        {
+                            Registro_adicionar(tabela, linha, coluna, campo, $"Deve estar entre as opções: {opcoes}");
+                        }
+                        else
+                        {
+                            Registro_adicionar(tabela, linha, coluna, campo, $"Deve estar entre as opções: {opcoes} ou vazio.");
+                        }
+                    }
                     break;
 
                 default:
@@ -221,23 +217,6 @@ namespace ValidarCSV
             return DateTime.TryParseExact(data, formatos, null, System.Globalization.DateTimeStyles.None, out _);
         }
 
-        private void Formato_retornar(double tipo, ref string formato)
-        {
-            var formatos = new Dictionary<double, string>
-            {
-                { 1, "dd-MM-yyyy" },
-                { 2, "yyyy-MM-dd" },
-                { 3, "yyyy/MM/dd" },
-                { 4, "dd/MM/yyyy" },
-                { 5, "yyyy-MM-dd HH:mm:ss" },
-                { 6, "dd-MM-yyyy HH:mm:ss" },
-                { 7, "yyyy/MM/dd HH:mm:ss" },
-                { 8, "dd/MM/yyyy HH:mm:ss" }
-            };
-
-            formato = formatos.ContainsKey(tipo) ? formatos[tipo] : "NULL";
-        }
-
         private bool Date_formato_validar(string data, string formato) //Valida formato específico, quando necessário ficar como indicado no layout
         {
             if (string.IsNullOrWhiteSpace(data) || data.Equals("null", StringComparison.OrdinalIgnoreCase))
@@ -250,164 +229,12 @@ namespace ValidarCSV
 
         private void Sobressalente_validar(int rows, int columns, string campo)
         {
-            if (!string.IsNullOrEmpty(campo))
+            string[] invalidos = { "#", "0", "", "null", "NULL" };
+            if (!string.IsNullOrEmpty(campo) || !invalidos.Contains(campo.Trim()))
             {
                 Registro_adicionar("Erro genérico", rows, columns, campo, "Excedeu o número de colunas");
             }
         }
-
-        /*private void Nivel_validar(string campo, ref string mensagem, ref bool valido)
-        {
-            mensagem = string.Empty;
-            valido = false;
-
-            if (campo.Contains('.'))
-            {
-                mensagem = "Não deve conter pontuação";
-                valido = false;
-                return;
-            }
-            
-            int tamanho_nivel = (int.Parse(NiveisCombo.Text.Substring(0,1)) * 2);
-            
-            if (tamanho_nivel != campo.Length) 
-            {
-                mensagem = "campo possui " + campo.Length.ToString() + " dígitos, o nível espera " + tamanho_nivel.ToString();
-                valido = false;
-                return;
-            }
-
-            if (layouts.Text == "Grupos")
-            {
-                if (tamanho_nivel == 8)
-                {
-                    if (campo.Substring(2, 6) == "000000" && campo.Substring(0, 2) != "00")
-                    {
-                        valido = true;
-                    }
-                    else
-                    {
-                        mensagem = "Deve ser informado um Grupo (ex:99000000)";
-                    }
-                }
-                else if (tamanho_nivel == 6)
-                {
-                    if (campo.Substring(2, 4) == "0000" && campo.Substring(0, 2) != "00")
-                    {
-                        valido = true;
-                    }
-                    else
-                    {
-                        mensagem = "Deve ser informado um Grupo (ex:990000)";
-                    }
-                }
-                else if (tamanho_nivel == 4)
-                {
-                    if (campo.Substring(2, 2) == "00" && campo.Substring(0, 2) != "00")
-                    {
-                        valido = true;
-                    }
-                    else
-                    {
-                        mensagem = "Deve ser informado um Grupo (ex:9900)";
-                    }
-                }
-            }
-            else
-            {
-                switch (NivelCombo.Text)
-                {
-                    case "SubGrupo":
-                        if (tamanho_nivel == 8)
-                        {
-                            if (campo.Substring(4, 4) == "0000" && campo.Substring(0, 2) != "00" && campo.Substring(2, 2) != "00")
-                            {
-                                valido = true;
-                            }
-                            else
-                            {
-                                mensagem = "Deve ser informado um SubGrupo (ex:99990000)";
-                            }
-                        }
-                        else if (tamanho_nivel == 6)
-                        {
-                            if (campo.Substring(4, 2) == "00" && campo.Substring(0, 2) != "00" && campo.Substring(2, 2) != "00")
-                            {
-                                valido = true;
-                            }
-                            else
-                            {
-                                mensagem = "Deve ser informado um SubGrupo (ex:999900)";
-                            }
-                        }
-                        else if (tamanho_nivel == 4)
-                        {
-                            if (campo.Substring(4, 2) == "00" && campo.Substring(0, 2) != "00" && campo.Substring(2, 2) != "00")
-                            {
-                                mensagem = "Deve ser informado um SubGrupo (ex:9999)";
-                            }
-                            else
-                            {
-                                valido = true;
-                            }
-                        }
-                        break;
-
-                    case "Segmento":
-                        if (tamanho_nivel == 8)
-                        {
-                            if (campo.Substring(6, 2) == "00" && campo.Substring(0, 2) != "00" && campo.Substring(2, 2) != "00" && campo.Substring(4, 2) != "00")
-                            {
-                                valido = true;
-                            }
-                            else
-                            {
-                                mensagem = "Deve ser informado um Segmento (ex:99999900)";
-                            }
-                        }
-                        else if (tamanho_nivel == 6)
-                        {
-                            if (campo.Substring(4, 2) == "00" && campo.Substring(0, 2) != "00" && campo.Substring(2, 2) != "00" && campo.Substring(4, 2) != "00")
-                            {
-                                mensagem = "Deve ser informado um Segmento (ex:999999)";
-                            }
-                            else
-                            {
-                                valido = true;
-                            }
-                        }
-                        else
-                        {
-                            mensagem = "Segmento não é válido para Subgrupo de " + NivelCombo.Text + "níveis.";
-                        }
-                        break;
-
-                    case "SubSegmento":
-
-                        if (tamanho_nivel == 8)
-                        {
-                            if (campo.Substring(6, 2) == "00" && campo.Substring(0, 2) != "00" && campo.Substring(2, 2) != "00" && campo.Substring(4, 2) != "00")
-                            {
-                                mensagem = "Deve ser informado um SubSegmento (ex:99999999)";
-                            }
-                            else
-                            {
-                                valido = true;
-                            }
-                        }
-                        else
-                        {
-                            mensagem = "SubSegmento não é válido para Subgrupo de " + NivelCombo.Text + "níveis.";
-                        }
-                        break;
-
-                    default:
-                        mensagem = "Nível desconhecido";
-                        break;
-                }
-            }
-        }*/
-
         
         private void Nivel_validar(string campo, ref string mensagem, ref bool valido)
         {
@@ -436,141 +263,12 @@ namespace ValidarCSV
 
             if (layouts.Text == "Grupos")
             {
-                valido = ValidarGrupo(campo, tamanho_nivel, ref mensagem);
+                valido = Validar_Grupo(campo, tamanho_nivel, ref mensagem);
             }
             else
             {
-                valido = ValidarSubNivel(campo, tamanho_nivel, ref mensagem, NivelCombo.Text);
+                valido = Validar_SubNivel(campo, tamanho_nivel, ref mensagem, NivelCombo.Text);
             }
-        }
-
-        private bool ValidarGrupo(string campo, int tamanho_nivel, ref string mensagem)
-        {
-            switch (tamanho_nivel)
-            {
-                case 8:
-                    if (campo.Substring(2, 6) != "000000" || campo.Substring(0, 2) == "00")
-                    {
-                        mensagem = "Deve ser informado um Grupo (ex: 09000000)";
-                        return false;
-                    }
-                    return true;
-
-                case 6:
-                    if (campo.Substring(2, 4) != "0000" || campo.Substring(0, 2) == "00")
-                    {
-                        mensagem = "Deve ser informado um Grupo (ex: 090000)";
-                        return false;
-                    }
-                    return true;
-
-                case 4:
-                    if (campo.Substring(2, 2) != "00" || campo.Substring(0, 2) == "00")
-                    {
-                        mensagem = "Deve ser informado um Grupo (ex: 0900)";
-                        return false;
-                    }
-                    return true;
-
-                default:
-                    mensagem = "Tamanho de nível inválido para Grupos";
-                    return false;
-            }
-        }
-
-        private bool ValidarSubNivel(string campo, int tamanho_nivel, ref string mensagem, string nivel)
-        {
-            switch (nivel)
-            {
-                case "SubGrupo":
-                    return ValidarSubGrupo(campo, tamanho_nivel, ref mensagem);
-
-                case "Segmento":
-                    return ValidarSegmento(campo, tamanho_nivel, ref mensagem);
-
-                case "SubSegmento":
-                    return ValidarSubSegmento(campo, tamanho_nivel, ref mensagem);
-
-                default:
-                    mensagem = "Nível desconhecido";
-                    return false;
-            }
-        }
-
-        private bool ValidarSubGrupo(string campo, int tamanho_nivel, ref string mensagem)
-        {
-            switch (tamanho_nivel)
-            {
-                case 8:
-                    if (campo.Substring(4, 4) != "0000" || campo.Substring(0, 2) == "00" || campo.Substring(2, 2) == "00")
-                    {
-                        mensagem = "Deve ser informado um SubGrupo (ex: 09090000)";
-                        return false;
-                    }
-                    return true;
-
-                case 6:
-                    if (campo.Substring(4, 2) != "00" || campo.Substring(0, 2) == "00" || campo.Substring(2, 2) == "00")
-                    {
-                        mensagem = "Deve ser informado um SubGrupo (ex: 090900)";
-                        return false;
-                    }
-                    return true;
-
-                case 4:
-                    if (campo.Substring(2, 2) == "00" || campo.Substring(0, 2) == "00")
-                    {
-                        mensagem = "Deve ser informado um SubGrupo (ex: 0909)";
-                        return false;
-                    }
-                    return true;
-
-                default:
-                    mensagem = "Tamanho de nível inválido para SubGrupo";
-                    return false;
-            }
-        }
-
-        private bool ValidarSegmento(string campo, int tamanho_nivel, ref string mensagem)
-        {
-            if (tamanho_nivel == 8)
-            {
-                if (campo.Substring(6, 2) != "00" || campo.Substring(0, 2) == "00" || campo.Substring(2, 2) == "00" || campo.Substring(4, 2) == "00")
-                {
-                    mensagem = "Deve ser informado um Segmento (ex: 09090900)";
-                    return false;
-                }
-                return true;
-            }
-
-            if (tamanho_nivel == 6)
-            {
-                if (campo.Substring(4, 2) == "00" || campo.Substring(0, 2) == "00" || campo.Substring(2, 2) == "00")
-                {
-                    mensagem = "Deve ser informado um Segmento (ex: 090909)";
-                    return false;
-                }
-                return true;
-            }
-
-            mensagem = $"Segmento não é válido para Subgrupo de {NivelCombo.Text} níveis.";
-            return false;
-        }
-
-        private bool ValidarSubSegmento(string campo, int tamanho_nivel, ref string mensagem)
-        {
-            if (tamanho_nivel == 8)
-            {
-                if (campo.Substring(6, 2) == "00" || campo.Substring(0, 2) == "00" || campo.Substring(2, 2) == "00" || campo.Substring(4, 2) == "00")
-                {
-                    mensagem = "Deve ser informado um SubSegmento (ex: 09090909)";
-                    return false;
-                }
-                return true;
-            }
-
-            mensagem = $"SubSegmento não é válido para Subgrupo de {NivelCombo.Text} níveis.";
-            return false;
         }
     }
 }

@@ -390,6 +390,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Processos\GridGerenciar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Processos\GruSubValidacao.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Processos\TiposRetornar.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Processos\Validacao.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 
@@ -7,11 +6,108 @@ namespace ValidarCSV
 {
     public partial class Main : Form
     {
-        public void Maquinas(DataTable dataTable, int rows)
+        private void Validar_layouts_gerenciar(DataTable dataTable, String Tabela)
         {
 
-            Progresso_gerenciar(true);
+            int rows = 0;
 
+            if (possuiCabecalho.Checked)
+            {
+                rows = 1;
+            }
+
+            switch (Tabela)
+            {
+                case "Máquinas":
+                    Maquinas(dataTable, rows);
+                    break;
+
+                case "Saldos Máquinas":
+                    Saldos_maquinas(dataTable, rows);
+                    break;
+
+                case "Adiantamentos":
+                    Adiantamentos(dataTable, rows);
+                    break;
+
+                case "Orçamento Balcão":
+                    Orcamento_balcao(dataTable, rows);
+                    break;
+
+                case "Orçamento Oficina":
+                    Orcamento_oficina(dataTable, rows);
+                    break;
+
+                case "Estatísticas":
+                    Estatisticas(dataTable, rows);
+                    break;
+
+                case "Veículos Clientes":
+                    Veiculos_clientes(dataTable, rows);
+                    break;
+
+                case "Imobilizado Itens":
+                    Imobilizado_itens(dataTable, rows);
+                    break;
+
+                case "Imobilizado Saldos":
+                    Imobilizado_saldos(dataTable, rows);
+                    break;
+
+                case "Legado Financeiro":
+                    Legado_financeiro(dataTable, rows);
+                    break;
+
+                case "Legado Pagamentos":
+                    Legado_pagamentos(dataTable, rows);
+                    break;
+
+                case "Legado Pedidos":
+                    Legado_pedidos(dataTable, rows);
+                    break;
+
+                case "Legado Pedidos Itens":
+                    Legado_pedidos_itens(dataTable, rows);
+                    break;
+
+                case "Legado Movimentacao":
+                    Legado_movimentacao(dataTable, rows);
+                    break;
+
+                case "Grupos":
+                    if (NiveisCombo.Text == string.Empty)
+                    {
+                        MessageBox.Show("O campo Níveis da Empresa deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    Grupos(dataTable, rows);
+                    break;
+
+                case "SubGrupos":
+                    if (NiveisCombo.Text == string.Empty)
+                    {
+                        MessageBox.Show("O campo Níveis da Empresa deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    if (NivelCombo.Text == string.Empty)
+                    {
+                        MessageBox.Show("O campo Nível do Arquivo deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    Sub_grupos(dataTable, rows);
+                    break;
+
+                default:
+                    MessageBox.Show("A validação deste layout ainda não foi implementada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+        }
+
+        public void Maquinas(DataTable dataTable, int rows)
+        {
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -47,12 +143,11 @@ namespace ValidarCSV
                             break;
 
                         case 7: //G - Controla estoque
-                            List<String> controla_estoque = new List<String> { "S", "N" };
-                            Dominio_validar("Controla estoque", row[column].ToString(), rows, columns, controla_estoque, false);
+                            Campos_validar_gerenciar("Controla estoque", row[column].ToString(), rows, columns, "dominio", 3, false);
                             break;
 
                         case 8: //H - Código do grupo*
-                            Campos_validar_gerenciar("Departamento", row[column].ToString(), rows, columns, "integer", 10, true);
+                            Campos_validar_gerenciar("Código do grupo", row[column].ToString(), rows, columns, "integer", 10, true);
                             break;
 
                         case 9: //I - Peso liquido
@@ -76,8 +171,7 @@ namespace ValidarCSV
                             break;
 
                         case 14: //N - Produto Importado ou Nacional
-                            List<String> dom_importado_nacional = new List<String> { "0", "1", "2", "3", "4", "5", "6", "7", "8" };
-                            Dominio_validar("Importado ou Nacional", row[column].ToString(), rows, columns, dom_importado_nacional, false);
+                            Campos_validar_gerenciar("Importado ou Nacional", row[column].ToString(), rows, columns, "dominio", 4, false);
                             break;
 
                         case 15: //O - Preço de venda
@@ -93,13 +187,11 @@ namespace ValidarCSV
                             break;
 
                         case 18: //R - Situação
-                            List<String> dom_situacao = new List<String> { "A", "I" };
-                            Dominio_validar("situacao", row[column].ToString(), rows, columns, dom_situacao, false);
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", 5, false);
                             break;
 
                         case 19: //S - Produto usado*
-                            List<String> dom_usado = new List<String> { "1", "0" };
-                            Dominio_validar("Produto usado", row[column].ToString(), rows, columns, dom_usado, true);
+                            Campos_validar_gerenciar("Produto usado", row[column].ToString(), rows, columns, "dominio", 6, true);
                             break;
 
                         case 20: //T - NCM*
@@ -111,8 +203,7 @@ namespace ValidarCSV
                             break;
 
                         case 22: //V - Classe produto*
-                            List<String> dom_classe = new List<String> { "N", "B" };
-                            Dominio_validar("Classe", row[column].ToString(), rows, columns, dom_classe, true);
+                            Campos_validar_gerenciar("Classe produto", row[column].ToString(), rows, columns, "dominio", 7, true);
                             break;
 
                         case 23: //W - Código base*
@@ -136,8 +227,7 @@ namespace ValidarCSV
                             break;
 
                         case 28: //AC - Controle de estoque*
-                            List<String> dom_controle = new List<String> { "I" };
-                            Dominio_validar("Controle de estoque", row[column].ToString(), rows, columns, dom_controle, true);
+                            Campos_validar_gerenciar("Controle de estoque", row[column].ToString(), rows, columns, "domino", 8, true);
                             break;
 
                         case 29: //AD - Campo Livre
@@ -165,14 +255,11 @@ namespace ValidarCSV
                 rows++;
             }
 
-            Progresso_gerenciar(false);
+
         }
 
         public void Saldos_maquinas(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -244,15 +331,10 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-            Progresso_gerenciar(false);
         }
 
         public void Adiantamentos(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -276,8 +358,7 @@ namespace ValidarCSV
                             break;
 
                         case 4: //D - Tipo do adiantamento*
-                            List<String> dom_tipo_adiantamento = new List<String> { "C", "F" };
-                            Dominio_validar("Tipo do adiantamento", row[column].ToString(), rows, columns, dom_tipo_adiantamento, true);
+                            Campos_validar_gerenciar("Tipo do adiantamento", row[column].ToString(), rows, columns, "dominio", 9, true);
                             break;
 
                         case 5: //E - Centro de Custo
@@ -306,14 +387,11 @@ namespace ValidarCSV
                 rows++;
             }
 
-            Progresso_gerenciar(false);
+
         }
 
         public void Orcamento_balcao(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -345,8 +423,7 @@ namespace ValidarCSV
                             break;
 
                         case 6: //F - Tipo Operação
-                            List<String> dom_tipo_operacao = new List<String> { "V", "S", "E", "C", "D" };
-                            Dominio_validar("Tipo Operação", row[column].ToString(), rows, columns, dom_tipo_operacao, false);
+                            Campos_validar_gerenciar("Tipo Operação", row[column].ToString(), rows, columns, "dominio", 10, false);
                             break;
 
                         case 7: //G - Vendedor
@@ -370,13 +447,11 @@ namespace ValidarCSV
                             break;
 
                         case 12: //L - Situação*
-                            List<String> dom_orc_situacao = new List<String> { "A", "F" };
-                            Dominio_validar("Situação", row[column].ToString(), rows, columns, dom_orc_situacao, true);
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", 11, false);
                             break;
 
                         case 13: //M - Status*
-                            List<String> dom_status = new List<String> { "A", "P", "C", "F", "B", "S", "X", "Y" };
-                            Dominio_validar("Status", row[column].ToString(), rows, columns, dom_status, true);
+                            Campos_validar_gerenciar("Status", row[column].ToString(), rows, columns, "dominio", 12, true);
                             break;
 
                         case 14: //N - Produto*
@@ -417,14 +492,11 @@ namespace ValidarCSV
                 rows++;
             }
 
-            Progresso_gerenciar(false);
+
         }
 
         public void Orcamento_oficina(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -509,13 +581,11 @@ namespace ValidarCSV
                 rows++;
             }
 
-            Progresso_gerenciar(false);
+
         }
 
         public void Estatisticas(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
 
             int total = dataTable.Rows.Count;
 
@@ -560,15 +630,10 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-            Progresso_gerenciar(false);
         }
 
         public void Veiculos_clientes(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -605,8 +670,7 @@ namespace ValidarCSV
                             break;
 
                         case 7: // G - Novo Usado*
-                            List<String> dom_novo_usado = new List<String> { "N", "U" };
-                            Dominio_validar("Novo Usado", row[column].ToString(), rows, columns, dom_novo_usado, true);
+                            Campos_validar_gerenciar("Novo Usado", row[column].ToString(), rows, columns, "dominio", 13, true);
                             break;
 
                         case 8: // H - Versão
@@ -702,8 +766,7 @@ namespace ValidarCSV
                             break;
 
                         case 31: // AE - Tipo equipamento*
-                            List<String> dom_tipo_equipamento = new List<String> { "#", "J", "8", "4", "A", "5", "N", "C", "R", "D", "2", "L", "K", "P", "H", "V", "I", "3", "S", "6", "M", "O", "9", "Z", "B", "U", "F", "7", "Y", "T", "G", "Q", "1", "E", "X" };
-                            Dominio_validar("Tipo equipamento", row[column].ToString(), rows, columns, dom_tipo_equipamento, true);
+                            Campos_validar_gerenciar("Tipo equipamento", row[column].ToString(), rows, columns, "dominio", 14, false);
                             break;
 
                         case 32: // AF - Código do pedido da gestão de compra
@@ -759,13 +822,11 @@ namespace ValidarCSV
                             break;
 
                         case 45: // AS - Tipo de Veículo Renavam/Denatran
-                            List<String> dom_tipo_renavam_denatram = new List<String> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" };
-                            Dominio_validar("Tipo de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, dom_tipo_renavam_denatram, false);
+                            Campos_validar_gerenciar("Tipo de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, "dominio", 15, false);
                             break;
 
                         case 46: // AT - Espécie de Veículo Renavam/Denatran
-                            List<String> dom_especie_veiculo_renavam_denatram = new List<String> { "0", "1", "2", "3", "4", "5", "6" };
-                            Dominio_validar("Espécie de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, dom_especie_veiculo_renavam_denatram, false);
+                            Campos_validar_gerenciar("Espécie de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, "dominio", 16, false);
                             break;
 
                         case 47: // AU - Marca Modelo Renavam/Denatran
@@ -806,14 +867,11 @@ namespace ValidarCSV
                 rows++;
             }
 
-            Progresso_gerenciar(false);
+
         }
 
         public void Imobilizado_itens(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -866,23 +924,19 @@ namespace ValidarCSV
                             break;
 
                         case 11: // K - Débito ou Crédito*
-                            List<String> dom_debito_credito = new List<String> { "D", "C" };
-                            Dominio_validar("Débito ou Crédito", row[column].ToString(), rows, columns, dom_debito_credito, true);
+                            Campos_validar_gerenciar("Débito ou Crédito", row[column].ToString(), rows, columns, "dominio", 17, true);
                             break;
 
                         case 12: // L - Chave*
-                            List<String> dom_chave = new List<String> { "G", "C" };
-                            Dominio_validar("Chave", row[column].ToString(), rows, columns, dom_chave, true);
+                            Campos_validar_gerenciar("Chave", row[column].ToString(), rows, columns, "dominio", 18, true);
                             break;
 
                         case 13: // M - Tipo lançamento
-                            List<String> dom_tipo_lanacamento = new List<String> { "A", "T", "I" };
-                            Dominio_validar("Tipo lançamento", row[column].ToString(), rows, columns, dom_tipo_lanacamento, false);
+                            Campos_validar_gerenciar("Tipo lançamento", row[column].ToString(), rows, columns, "dominio", 19, false);
                             break;
 
                         case 14: // N - Tipo Baixa
-                            List<String> dom_tipo_baixa = new List<String> { "B", "T" };
-                            Dominio_validar("Tipo Baixa", row[column].ToString(), rows, columns, dom_tipo_baixa, false);
+                            Campos_validar_gerenciar("Tipo lançamento", row[column].ToString(), rows, columns, "dominio", 20, false);
                             break;
 
                         case 15: // O - Número do documento de aquisição
@@ -952,7 +1006,7 @@ namespace ValidarCSV
 
                     if (columns > 30)
                     {
-                       Sobressalente_validar(rows, columns, row[column].ToString());
+                        Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
                     columns++;
@@ -963,14 +1017,11 @@ namespace ValidarCSV
                 rows++;
             }
 
-            Progresso_gerenciar(false);
+
         }
 
         public void Imobilizado_saldos(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -987,11 +1038,11 @@ namespace ValidarCSV
                             break;
 
                         case 2: // B - Código do Item*
-                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 9.2, true); 
+                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 9.2, true);
                             break;
 
                         case 3: // C - Valor Original*
-                            Campos_validar_gerenciar("Valor Original", row[column].ToString(), rows, columns, "numeric", 15.2, true);
+                            Campos_validar_gerenciar("Valor Original", row[column].ToString(), rows, columns, "numeric", 15.2, false); //a princípio era obrigatório, mas não tem validação na conversão e cliente reclamou de gerar erro quando informado '0'
                             break;
 
                         case 4: // D - Valor Original Corrigido
@@ -1032,14 +1083,11 @@ namespace ValidarCSV
                 rows++;
             }
 
-            Progresso_gerenciar(false);
+
         }
 
         public void Legado_financeiro(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -1076,13 +1124,11 @@ namespace ValidarCSV
                             break;
 
                         case 7: // G - Tipo de documento*
-                            List<String> dom_tipo_documento = new List<String> { "#", "C", "T", "A" };
-                            Dominio_validar("Tipo de documento", row[column].ToString(), rows, columns, dom_tipo_documento, true);
+                            Campos_validar_gerenciar("Tipo de documento", row[column].ToString(), rows, columns, "dominio", 21, true);
                             break;
 
                         case 8: // H - Pagamento ou recebimento*
-                            List<String> dom_pagar_receber = new List<String> { "P", "R" };
-                            Dominio_validar("Pagamento ou recebimento", row[column].ToString(), rows, columns, dom_pagar_receber, true);
+                            Campos_validar_gerenciar("Pagamento ou recebimento", row[column].ToString(), rows, columns, "dominio", 22, true);
                             break;
 
                         case 9: // I - Código empresa Solution*
@@ -1171,14 +1217,11 @@ namespace ValidarCSV
                 rows++;
             }
 
-            Progresso_gerenciar(false);
+
         }
 
         public void Legado_pagamentos(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -1203,8 +1246,7 @@ namespace ValidarCSV
                             break;
 
                         case 4: // D - Código documento Solution
-                            List<String> dom_codigo_documento = new List<String> { "", "null", "NULL" };
-                            Dominio_validar("Código documento Solution", row[column].ToString(), rows, columns, dom_codigo_documento, false);
+                            Campos_validar_gerenciar("Código documento Solution", row[column].ToString(), rows, columns, "dominio", 23, false);
                             break;
 
                         case 5: // E - Empresa*
@@ -1252,15 +1294,10 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-            Progresso_gerenciar(false);
         }
 
         public void Legado_pedidos(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -1293,13 +1330,11 @@ namespace ValidarCSV
                             break;
 
                         case 6: // F - Módulo*
-                            List<String> dom_modulo = new List<String> { "5", "17" };
-                            Dominio_validar("Módulo", row[column].ToString(), rows, columns, dom_modulo, true);
+                            Campos_validar_gerenciar("Módulo", row[column].ToString(), rows, columns, "dominio", 24, true);
                             break;
 
                         case 7: // G - Tipo*
-                            List<String> dom_tipo = new List<String> { "O", "P" };
-                            Dominio_validar("Tipo", row[column].ToString(), rows, columns, dom_tipo, true);
+                            Campos_validar_gerenciar("Tipo", row[column].ToString(), rows, columns, "dominio", 25, true);
                             break;
 
                         case 8: // H - Data hora abertura
@@ -1371,13 +1406,11 @@ namespace ValidarCSV
                             break;
 
                         case 25: // Y - Tipo pagamento*
-                            List<String> dom_pagamento = new List<String> { "V", "P" };
-                            Dominio_validar("Tipo pagamento", row[column].ToString(), rows, columns, dom_pagamento, true);
+                            Campos_validar_gerenciar("Tipo pagamento", row[column].ToString(), rows, columns, "dominio", 26, true);
                             break;
 
                         case 26: // Z - Forma pagamento*
-                            List<String> dom_forma_pagamento = new List<String> { "A", "2", "4", "5", "0", "1", "6", "3", "F", "9", "8" };
-                            Dominio_validar("Forma pagamento", row[column].ToString(), rows, columns, dom_forma_pagamento, true);
+                            Campos_validar_gerenciar("Forma pagamento", row[column].ToString(), rows, columns, "dominio", 27, true);
                             break;
 
                         case 27: // AA - Número parcelas
@@ -1501,15 +1534,10 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-            Progresso_gerenciar(false);
         }
 
         public void Legado_pedidos_itens(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -1542,8 +1570,7 @@ namespace ValidarCSV
                             break;
 
                         case 6: // F - Tipo item*
-                            List<String> dom_tipo_item = new List<String> { "SP", "P", "ST" };
-                            Dominio_validar("Tipo item", row[column].ToString(), rows, columns, dom_tipo_item, true);
+                            Campos_validar_gerenciar("Tipo item", row[column].ToString(), rows, columns, "dominio", 28, true);
                             break;
 
                         case 7: // G - Código produto Solution
@@ -1635,15 +1662,10 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-            Progresso_gerenciar(false);
         }
 
         public void Legado_movimentacao(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -1683,13 +1705,11 @@ namespace ValidarCSV
                             break;
 
                         case 8: // H - Tipo movimentação*
-                            List<String> dom_tipo_movimentacao = new List<String> { "S", "E" };
-                            Dominio_validar("Tipo movimentação", row[column].ToString(), rows, columns, dom_tipo_movimentacao, true);
+                            Campos_validar_gerenciar("Tipo movimentação", row[column].ToString(), rows, columns, "dominio", 29, true);
                             break;
 
                         case 9: // I - Movimenta estoque*
-                            List<String> dom_movimenta_estoque = new List<String> { "S", "N" };
-                            Dominio_validar("Movimenta estoque", row[column].ToString(), rows, columns, dom_movimenta_estoque, true);
+                            Campos_validar_gerenciar("Movimenta estoque", row[column].ToString(), rows, columns, "dominio", 3, true);
                             break;
 
                         case 10: // J - Número documento
@@ -1729,15 +1749,10 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-            Progresso_gerenciar(false);
         }
-        
+
         public void Grupos(DataTable dataTable, int rows)
         {
-
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -1761,13 +1776,11 @@ namespace ValidarCSV
                             break;
 
                         case 4: // D - Situação*
-                            List<String> dom_situacao = new List<String> { "A" };
-                            Dominio_validar("Situação", row[column].ToString(), rows, columns, dom_situacao, false);
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", 2, false);
                             break;
 
                         case 5: // E - Área*
-                            List<String> dom_area = new List<String> { "1" };
-                            Dominio_validar("Área", row[column].ToString(), rows, columns, dom_area, false);
+                            Campos_validar_gerenciar("Área", row[column].ToString(), rows, columns, "dominio", 30, false);
                             break;
 
                         case 6: // F - Coeficiente mínimo
@@ -1783,8 +1796,7 @@ namespace ValidarCSV
                             break;
 
                         case 9: // I - Tipo
-                            List<String> dom_tipo = new List<String> { "E" };
-                            Dominio_validar("Tipo", row[column].ToString(), rows, columns, dom_tipo, false);
+                            Campos_validar_gerenciar("Tipo", row[column].ToString(), rows, columns, "dominio", 31, false);
                             break;
 
                         case 10: // J - Inutilizado
@@ -1834,14 +1846,10 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-            Progresso_gerenciar(false);
         }
 
         public void Sub_grupos(DataTable dataTable, int rows)
         {
-            Progresso_gerenciar(true);
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -1865,18 +1873,17 @@ namespace ValidarCSV
                             break;
 
                         case 4: // D - Nível*
-                            List<String> dom_nivel = new List<String> { "1", "2", "3", "4" };
-                            Dominio_validar("Situação", row[column].ToString(), rows, columns, dom_nivel, true);
+                            Campos_validar_gerenciar("Nível", row[column].ToString(), rows, columns, "dominio", 1, true);
                             break;
 
                         case 5: // E - Situação*
-                            List<String> dom_situacao = new List<String> { "A" };
-                            Dominio_validar("Situação", row[column].ToString(), rows, columns, dom_situacao, true);
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", 2, true);
                             break;
                     }
 
                     if (columns > 5)
                     {
+                        Mensagem_exibir("Sobressalente");
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
@@ -1887,8 +1894,6 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-            Progresso_gerenciar(false);
         }
     }
 }
