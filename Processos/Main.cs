@@ -319,6 +319,7 @@ namespace ValidarCSV
             if (Iniciar)
             {
                 registros.Clear();
+                labellog.Text = "Registro:";
             }
             else
             {
