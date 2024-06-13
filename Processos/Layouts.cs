@@ -823,7 +823,7 @@ namespace ValidarCSV
                             break;
 
                         case 38: // AL - Peso bruto (KG)
-                            Campos_validar_gerenciar("Peso bruto (KG)", row[column].ToString(), rows, columns, "numeric", 10, false);
+                            Campos_validar_gerenciar("Peso bruto (KG)", row[column].ToString(), rows, columns, "numeric", 16.4, false);
                             break;
 
                         case 39: // AM - Tipo combustivel*
@@ -895,8 +895,6 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-
         }
 
         public void Imobilizado_itens(DataTable dataTable, int rows)
