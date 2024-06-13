@@ -30,6 +30,7 @@ namespace ValidarCSV
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.excel = new System.Windows.Forms.Button();
             this.labellog = new System.Windows.Forms.Label();
@@ -37,8 +38,8 @@ namespace ValidarCSV
             this.layouts = new System.Windows.Forms.ComboBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.txtFilePath = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.LayoutLabel = new System.Windows.Forms.Label();
+            this.ArquivoLabel = new System.Windows.Forms.Label();
             this.panelmid = new System.Windows.Forms.Panel();
             this.MensagemErro = new System.Windows.Forms.TextBox();
             this.NiveisCombo = new System.Windows.Forms.ComboBox();
@@ -55,9 +56,11 @@ namespace ValidarCSV
             this.depuracao = new System.Windows.Forms.Label();
             this.possuiCabecalho = new System.Windows.Forms.CheckBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.erroTela = new System.Windows.Forms.ErrorProvider(this.components);
             this.panelmid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.erroTela)).BeginInit();
             this.SuspendLayout();
             // 
             // excel
@@ -129,27 +132,27 @@ namespace ValidarCSV
             this.txtFilePath.Size = new System.Drawing.Size(231, 22);
             this.txtFilePath.TabIndex = 2;
             // 
-            // label2
+            // LayoutLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label2.Location = new System.Drawing.Point(8, 22);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 20);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Layout:";
+            this.LayoutLabel.AutoSize = true;
+            this.LayoutLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LayoutLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.LayoutLabel.Location = new System.Drawing.Point(8, 22);
+            this.LayoutLabel.Name = "LayoutLabel";
+            this.LayoutLabel.Size = new System.Drawing.Size(71, 20);
+            this.LayoutLabel.TabIndex = 0;
+            this.LayoutLabel.Text = "Layout:";
             // 
-            // label1
+            // ArquivoLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(9, 86);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Arquivo:";
+            this.ArquivoLabel.AutoSize = true;
+            this.ArquivoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ArquivoLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.ArquivoLabel.Location = new System.Drawing.Point(9, 86);
+            this.ArquivoLabel.Name = "ArquivoLabel";
+            this.ArquivoLabel.Size = new System.Drawing.Size(78, 20);
+            this.ArquivoLabel.TabIndex = 0;
+            this.ArquivoLabel.Text = "Arquivo:";
             // 
             // panelmid
             // 
@@ -170,11 +173,11 @@ namespace ValidarCSV
             this.panelmid.Controls.Add(this.possuiCabecalho);
             this.panelmid.Controls.Add(this.progressBar);
             this.panelmid.Controls.Add(this.excel);
-            this.panelmid.Controls.Add(this.label1);
+            this.panelmid.Controls.Add(this.ArquivoLabel);
             this.panelmid.Controls.Add(this.validar);
             this.panelmid.Controls.Add(this.layouts);
             this.panelmid.Controls.Add(this.txtFilePath);
-            this.panelmid.Controls.Add(this.label2);
+            this.panelmid.Controls.Add(this.LayoutLabel);
             this.panelmid.Controls.Add(this.btnSelectFile);
             this.panelmid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelmid.Location = new System.Drawing.Point(0, 0);
@@ -379,6 +382,11 @@ namespace ValidarCSV
             this.progressBar.TabIndex = 7;
             this.progressBar.Visible = false;
             // 
+            // erroTela
+            // 
+            this.erroTela.ContainerControl = this;
+            this.erroTela.Icon = ((System.Drawing.Icon)(resources.GetObject("erroTela.Icon")));
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -394,6 +402,7 @@ namespace ValidarCSV
             this.panelmid.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.erroTela)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -403,10 +412,10 @@ namespace ValidarCSV
         private System.Windows.Forms.Label labellog;
         private System.Windows.Forms.Button validar;
         private System.Windows.Forms.ComboBox layouts;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label LayoutLabel;
         private System.Windows.Forms.Button btnSelectFile;
         private System.Windows.Forms.TextBox txtFilePath;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label ArquivoLabel;
         private System.Windows.Forms.Panel panelmid;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.CheckBox possuiCabecalho;
@@ -423,6 +432,7 @@ namespace ValidarCSV
         private System.Windows.Forms.ComboBox NiveisCombo;
         private System.Windows.Forms.Label Niveis;
         private System.Windows.Forms.TextBox MensagemErro;
+        private ErrorProvider erroTela;
     }
 }
 

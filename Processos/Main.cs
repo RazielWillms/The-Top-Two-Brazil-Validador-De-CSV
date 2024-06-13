@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -73,23 +74,27 @@ namespace ValidarCSV
         {
             Grid_limpar();
 
-            Registro_gerenciar(true);
-            Progresso_gerenciar(true);
-
-            if (layouts.SelectedIndex >= 0)
+            if (layouts.SelectedIndex > 0)
             {
+                erroTela.SetError(LayoutLabel, null);
 
                 string filePath = txtFilePath.Text;
 
                 if (File.Exists(filePath))
                 {
+                    Registro_gerenciar(true);
+
+                    erroTela.SetError(ArquivoLabel, null);
                     try
                     {
+                        bool erro = false;
                         DataTable dataTable = Importar_csv(filePath);
-                        Validar_layouts_gerenciar(dataTable, layouts.Text);
+                        Validar_layouts_gerenciar(dataTable, layouts.Text, ref erro);
 
-                        Progresso_gerenciar(false);
-                        Registro_gerenciar(false);
+                        if (!erro)
+                        {
+                            Registro_gerenciar(false);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -98,17 +103,21 @@ namespace ValidarCSV
                 }
                 else
                 {
-                    MessageBox.Show("Nenhum arquivo selecionado ou o arquivo não existe!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ArquivoLabel.Focus();
+                    erroTela.SetError(ArquivoLabel, "Nenhum arquivo selecionado ou o arquivo não existe!");
                 }
             }
-            else
+            else 
             {
-                MessageBox.Show("Layout Inválido!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LayoutLabel.Focus();
+                erroTela.SetError(LayoutLabel, "Selecione um layout");
             }
         }
 
         public DataTable Importar_csv(string filePath)
         {
+            Progresso_gerenciar(true);
+
             DataTable dataTable = new DataTable();
             using (StreamReader sr = new StreamReader(filePath))
             {
@@ -192,6 +201,8 @@ namespace ValidarCSV
                     linha++;
                 }
             }
+
+            Progresso_gerenciar(false);
             return dataTable;
         }
 
@@ -346,7 +357,7 @@ namespace ValidarCSV
         private void Layout_selecionado(object sender, EventArgs e)
         {
             LayoutType layoutType = LayoutType.Indefinido;
-            Layout_string_retornar(layouts.Text, ref layoutType);
+            Layout_enum_retornar(layouts.Text, ref layoutType);
 
             switch (layoutType)
             {
@@ -381,7 +392,7 @@ namespace ValidarCSV
         private void NiveisCombo_selecionado(object sender, EventArgs e)
         {
             LayoutType layoutType = LayoutType.Indefinido;
-            Layout_string_retornar(layouts.Text, ref layoutType);
+            Layout_enum_retornar(layouts.Text, ref layoutType);
 
             NivelCombo.Items.Clear();
             NivelCombo.Items.Add("SubGrupo");

@@ -53,7 +53,7 @@ namespace ValidarCSV
             { "Subgrupos", LayoutType.SubGrupos }
         };
 
-        public static void Formato_layout_retornar(this LayoutType layoutType, ref string layout)
+        public static void Layout_string_retornar(this LayoutType layoutType, ref string layout)
         {
             var layouts = new Dictionary<LayoutType, string>
             {
@@ -78,7 +78,7 @@ namespace ValidarCSV
             layout = layouts.ContainsKey(layoutType) ? layouts[layoutType] : "NULL";
         }
 
-        public static void Layout_string_retornar(string layout, ref LayoutType layoutType)
+        public static void Layout_enum_retornar(string layout, ref LayoutType layoutType)
         {
             var layoutTypes = new Dictionary<string, LayoutType>
             {
