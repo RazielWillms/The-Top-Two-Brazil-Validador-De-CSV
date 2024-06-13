@@ -1,10 +1,46 @@
 ﻿
+using System;
 using System.Windows.Forms;
 
 namespace ValidarCSV
 {
     public partial class Main : Form
     {
+        private void Nivel_validar(string campo, ref string mensagem, ref bool valido)
+        {
+            mensagem = string.Empty;
+            valido = false;
+
+            if (campo.Contains('.') || campo.Contains(','))
+            {
+                mensagem = "Não deve conter pontuação";
+                return;
+            }
+
+            if (!Int32.TryParse(campo, out _) && !decimal.TryParse(campo, out _))
+            {
+                mensagem = "Formato inválido";
+                return;
+            }
+
+            int tamanho_nivel = int.Parse(NiveisCombo.Text.Substring(0, 1)) * 2;
+
+            if (tamanho_nivel != campo.Length)
+            {
+                mensagem = $"Campo possui {campo.Length} dígitos, o nível espera {tamanho_nivel}";
+                return;
+            }
+
+            if (layouts.Text == "Grupos")
+            {
+                valido = Validar_Grupo(campo, tamanho_nivel, ref mensagem);
+            }
+            else
+            {
+                valido = Validar_SubNivel(campo, tamanho_nivel, ref mensagem, NivelCombo.Text);
+            }
+        }
+
         private bool Validar_Grupo(string campo, int tamanho_nivel, ref string mensagem)
         {
             switch (tamanho_nivel)

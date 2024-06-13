@@ -1,6 +1,8 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Drawing;
+using System;
 using System.Data;
 using System.Windows.Forms;
+using static ValidarCSV.TypeExtensions;
 
 namespace ValidarCSV
 {
@@ -16,65 +18,69 @@ namespace ValidarCSV
                 rows = 1;
             }
 
-            switch (Tabela)
+            LayoutType layout = LayoutType.Indefinido;
+            
+            Layout_string_retornar(Tabela, ref layout);
+
+            switch (layout)
             {
-                case "Máquinas":
+                case LayoutType.Maquinas:
                     Maquinas(dataTable, rows);
                     break;
 
-                case "Saldos Máquinas":
+                case LayoutType.SaldosMaquinas:
                     Saldos_maquinas(dataTable, rows);
                     break;
 
-                case "Adiantamentos":
+                case LayoutType.Adiantamentos:
                     Adiantamentos(dataTable, rows);
                     break;
 
-                case "Orçamento Balcão":
+                case LayoutType.OrcamentoBalcao:
                     Orcamento_balcao(dataTable, rows);
                     break;
 
-                case "Orçamento Oficina":
+                case LayoutType.OrcamentoOficina:
                     Orcamento_oficina(dataTable, rows);
                     break;
 
-                case "Estatísticas":
+                case LayoutType.Estatisticas:
                     Estatisticas(dataTable, rows);
                     break;
 
-                case "Veículos Clientes":
+                case LayoutType.VeiculosClientes:
                     Veiculos_clientes(dataTable, rows);
                     break;
 
-                case "Imobilizado Itens":
+                case LayoutType.ImobilizadoItens:
                     Imobilizado_itens(dataTable, rows);
                     break;
 
-                case "Imobilizado Saldos":
+                case LayoutType.ImobilizadoSaldos:
                     Imobilizado_saldos(dataTable, rows);
                     break;
 
-                case "Legado Financeiro":
+                case LayoutType.LegadoFinanceiro:
                     Legado_financeiro(dataTable, rows);
                     break;
 
-                case "Legado Pagamentos":
+                case LayoutType.LegadoPagamentos:
                     Legado_pagamentos(dataTable, rows);
                     break;
 
-                case "Legado Pedidos":
+                case LayoutType.LegadoPedidos:
                     Legado_pedidos(dataTable, rows);
                     break;
 
-                case "Legado Pedidos Itens":
+                case LayoutType.LegadoPedidosItens:
                     Legado_pedidos_itens(dataTable, rows);
                     break;
 
-                case "Legado Movimentacao":
+                case LayoutType.LegadoMovimentacao:
                     Legado_movimentacao(dataTable, rows);
                     break;
 
-                case "Grupos":
+                case LayoutType.Grupos:
                     if (NiveisCombo.Text == string.Empty)
                     {
                         MessageBox.Show("O campo Níveis da Empresa deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -84,7 +90,7 @@ namespace ValidarCSV
                     Grupos(dataTable, rows);
                     break;
 
-                case "SubGrupos":
+                case LayoutType.SubGrupos:
                     if (NiveisCombo.Text == string.Empty)
                     {
                         MessageBox.Show("O campo Níveis da Empresa deve ser selecionado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -98,6 +104,10 @@ namespace ValidarCSV
                     }
 
                     Sub_grupos(dataTable, rows);
+                    break;
+
+                case LayoutType.Indefinido:
+                    MessageBox.Show("A validação deste layout ainda não foi implementada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
 
                 default:
@@ -116,6 +126,7 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
+
                     switch (columns)
                     {
                         case 1: //A - Código do Produto*
@@ -143,7 +154,7 @@ namespace ValidarCSV
                             break;
 
                         case 7: //G - Controla estoque
-                            Campos_validar_gerenciar("Controla estoque", row[column].ToString(), rows, columns, "dominio", 3, false);
+                            Campos_validar_gerenciar("Controla estoque", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Controla_estoque), false);
                             break;
 
                         case 8: //H - Código do grupo*
@@ -171,7 +182,7 @@ namespace ValidarCSV
                             break;
 
                         case 14: //N - Produto Importado ou Nacional
-                            Campos_validar_gerenciar("Importado ou Nacional", row[column].ToString(), rows, columns, "dominio", 4, false);
+                            Campos_validar_gerenciar("Importado ou Nacional", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Importado_nacional), false);
                             break;
 
                         case 15: //O - Preço de venda
@@ -187,11 +198,11 @@ namespace ValidarCSV
                             break;
 
                         case 18: //R - Situação
-                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", 5, false);
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Situacao), false);
                             break;
 
                         case 19: //S - Produto usado*
-                            Campos_validar_gerenciar("Produto usado", row[column].ToString(), rows, columns, "dominio", 6, true);
+                            Campos_validar_gerenciar("Produto usado", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Usado), true);
                             break;
 
                         case 20: //T - NCM*
@@ -203,7 +214,7 @@ namespace ValidarCSV
                             break;
 
                         case 22: //V - Classe produto*
-                            Campos_validar_gerenciar("Classe produto", row[column].ToString(), rows, columns, "dominio", 7, true);
+                            Campos_validar_gerenciar("Classe produto", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Classe), true);
                             break;
 
                         case 23: //W - Código base*
@@ -358,7 +369,7 @@ namespace ValidarCSV
                             break;
 
                         case 4: //D - Tipo do adiantamento*
-                            Campos_validar_gerenciar("Tipo do adiantamento", row[column].ToString(), rows, columns, "dominio", 9, true);
+                            Campos_validar_gerenciar("Tipo do adiantamento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_adiantamento), true);
                             break;
 
                         case 5: //E - Centro de Custo
@@ -423,7 +434,7 @@ namespace ValidarCSV
                             break;
 
                         case 6: //F - Tipo Operação
-                            Campos_validar_gerenciar("Tipo Operação", row[column].ToString(), rows, columns, "dominio", 10, false);
+                            Campos_validar_gerenciar("Tipo Operação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_operacao), false);
                             break;
 
                         case 7: //G - Vendedor
@@ -447,11 +458,11 @@ namespace ValidarCSV
                             break;
 
                         case 12: //L - Situação*
-                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", 11, false);
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Orcamento_situacao), false);
                             break;
 
                         case 13: //M - Status*
-                            Campos_validar_gerenciar("Status", row[column].ToString(), rows, columns, "dominio", 12, true);
+                            Campos_validar_gerenciar("Status", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Status), true);
                             break;
 
                         case 14: //N - Produto*
@@ -552,7 +563,7 @@ namespace ValidarCSV
                             break;
 
                         case 12: //L - ID da política de prazo
-                            Campos_validar_gerenciar("política de prazo", row[column].ToString(), rows, columns, "char", 3, true);
+                            Campos_validar_gerenciar("política de prazo", row[column].ToString(), rows, columns, "char", 3, false);
                             break;
 
                         case 13: //M - Código do produto*
@@ -564,7 +575,7 @@ namespace ValidarCSV
                             break;
 
                         case 15: //O - Preço unitário*
-                            Campos_validar_gerenciar("Preço unitário", row[column].ToString(), rows, columns, "numeric", 16.2, false);
+                            Campos_validar_gerenciar("Preço unitário", row[column].ToString(), rows, columns, "numeric", 16.2, true);
                             break;
                     }
 
@@ -670,7 +681,7 @@ namespace ValidarCSV
                             break;
 
                         case 7: // G - Novo Usado*
-                            Campos_validar_gerenciar("Novo Usado", row[column].ToString(), rows, columns, "dominio", 13, true);
+                            Campos_validar_gerenciar("Novo Usado", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Novo_usado), true);
                             break;
 
                         case 8: // H - Versão
@@ -766,7 +777,7 @@ namespace ValidarCSV
                             break;
 
                         case 31: // AE - Tipo equipamento*
-                            Campos_validar_gerenciar("Tipo equipamento", row[column].ToString(), rows, columns, "dominio", 14, false);
+                            Campos_validar_gerenciar("Tipo equipamento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_equipamento), true);
                             break;
 
                         case 32: // AF - Código do pedido da gestão de compra
@@ -822,11 +833,11 @@ namespace ValidarCSV
                             break;
 
                         case 45: // AS - Tipo de Veículo Renavam/Denatran
-                            Campos_validar_gerenciar("Tipo de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, "dominio", 15, false);
+                            Campos_validar_gerenciar("Tipo de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_renavam_denatram), false);
                             break;
 
                         case 46: // AT - Espécie de Veículo Renavam/Denatran
-                            Campos_validar_gerenciar("Espécie de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, "dominio", 16, false);
+                            Campos_validar_gerenciar("Espécie de Veículo Renavam/Denatran", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Especie_veiculo_renavam_denatram), false);
                             break;
 
                         case 47: // AU - Marca Modelo Renavam/Denatran
@@ -924,19 +935,19 @@ namespace ValidarCSV
                             break;
 
                         case 11: // K - Débito ou Crédito*
-                            Campos_validar_gerenciar("Débito ou Crédito", row[column].ToString(), rows, columns, "dominio", 17, true);
+                            Campos_validar_gerenciar("Débito ou Crédito", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Debito_credito), true);
                             break;
 
                         case 12: // L - Chave*
-                            Campos_validar_gerenciar("Chave", row[column].ToString(), rows, columns, "dominio", 18, true);
+                            Campos_validar_gerenciar("Chave", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Chave), true);
                             break;
 
                         case 13: // M - Tipo lançamento
-                            Campos_validar_gerenciar("Tipo lançamento", row[column].ToString(), rows, columns, "dominio", 19, false);
+                            Campos_validar_gerenciar("Tipo lançamento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_lancamento), false);
                             break;
 
                         case 14: // N - Tipo Baixa
-                            Campos_validar_gerenciar("Tipo lançamento", row[column].ToString(), rows, columns, "dominio", 20, false);
+                            Campos_validar_gerenciar("Tipo lançamento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_baixa), false);
                             break;
 
                         case 15: // O - Número do documento de aquisição
@@ -1124,11 +1135,11 @@ namespace ValidarCSV
                             break;
 
                         case 7: // G - Tipo de documento*
-                            Campos_validar_gerenciar("Tipo de documento", row[column].ToString(), rows, columns, "dominio", 21, true);
+                            Campos_validar_gerenciar("Tipo de documento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_documento), true);
                             break;
 
                         case 8: // H - Pagamento ou recebimento*
-                            Campos_validar_gerenciar("Pagamento ou recebimento", row[column].ToString(), rows, columns, "dominio", 22, true);
+                            Campos_validar_gerenciar("Pagamento ou recebimento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Pagar_receber), true);
                             break;
 
                         case 9: // I - Código empresa Solution*
@@ -1246,7 +1257,7 @@ namespace ValidarCSV
                             break;
 
                         case 4: // D - Código documento Solution
-                            Campos_validar_gerenciar("Código documento Solution", row[column].ToString(), rows, columns, "dominio", 23, false);
+                            Campos_validar_gerenciar("Código documento Solution", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Null), false);
                             break;
 
                         case 5: // E - Empresa*
@@ -1330,11 +1341,11 @@ namespace ValidarCSV
                             break;
 
                         case 6: // F - Módulo*
-                            Campos_validar_gerenciar("Módulo", row[column].ToString(), rows, columns, "dominio", 24, true);
+                            Campos_validar_gerenciar("Módulo", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Modulo), true);
                             break;
 
                         case 7: // G - Tipo*
-                            Campos_validar_gerenciar("Tipo", row[column].ToString(), rows, columns, "dominio", 25, true);
+                            Campos_validar_gerenciar("Tipo", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo), true);
                             break;
 
                         case 8: // H - Data hora abertura
@@ -1406,11 +1417,11 @@ namespace ValidarCSV
                             break;
 
                         case 25: // Y - Tipo pagamento*
-                            Campos_validar_gerenciar("Tipo pagamento", row[column].ToString(), rows, columns, "dominio", 26, true);
+                            Campos_validar_gerenciar("Tipo pagamento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Pagamento), true);
                             break;
 
                         case 26: // Z - Forma pagamento*
-                            Campos_validar_gerenciar("Forma pagamento", row[column].ToString(), rows, columns, "dominio", 27, true);
+                            Campos_validar_gerenciar("Forma pagamento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Forma_pagamento), true);
                             break;
 
                         case 27: // AA - Número parcelas
@@ -1570,7 +1581,7 @@ namespace ValidarCSV
                             break;
 
                         case 6: // F - Tipo item*
-                            Campos_validar_gerenciar("Tipo item", row[column].ToString(), rows, columns, "dominio", 28, true);
+                            Campos_validar_gerenciar("Tipo item", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_item), true);
                             break;
 
                         case 7: // G - Código produto Solution
@@ -1705,11 +1716,11 @@ namespace ValidarCSV
                             break;
 
                         case 8: // H - Tipo movimentação*
-                            Campos_validar_gerenciar("Tipo movimentação", row[column].ToString(), rows, columns, "dominio", 29, true);
+                            Campos_validar_gerenciar("Tipo movimentação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_movimentacao), true);
                             break;
 
                         case 9: // I - Movimenta estoque*
-                            Campos_validar_gerenciar("Movimenta estoque", row[column].ToString(), rows, columns, "dominio", 3, true);
+                            Campos_validar_gerenciar("Movimenta estoque", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Controla_estoque), true);
                             break;
 
                         case 10: // J - Número documento
@@ -1776,11 +1787,11 @@ namespace ValidarCSV
                             break;
 
                         case 4: // D - Situação*
-                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", 2, false);
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Situacao_grupos), false);
                             break;
 
                         case 5: // E - Área*
-                            Campos_validar_gerenciar("Área", row[column].ToString(), rows, columns, "dominio", 30, false);
+                            Campos_validar_gerenciar("Área", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Area), false);
                             break;
 
                         case 6: // F - Coeficiente mínimo
@@ -1796,7 +1807,7 @@ namespace ValidarCSV
                             break;
 
                         case 9: // I - Tipo
-                            Campos_validar_gerenciar("Tipo", row[column].ToString(), rows, columns, "dominio", 31, false);
+                            Campos_validar_gerenciar("Tipo", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_grupo), false);
                             break;
 
                         case 10: // J - Inutilizado
@@ -1873,17 +1884,16 @@ namespace ValidarCSV
                             break;
 
                         case 4: // D - Nível*
-                            Campos_validar_gerenciar("Nível", row[column].ToString(), rows, columns, "dominio", 1, true);
+                            Campos_validar_gerenciar("Nível", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Nivel), true);
                             break;
 
                         case 5: // E - Situação*
-                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", 2, true);
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Situacao_grupos), true);
                             break;
                     }
 
                     if (columns > 5)
                     {
-                        Mensagem_exibir("Sobressalente");
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 

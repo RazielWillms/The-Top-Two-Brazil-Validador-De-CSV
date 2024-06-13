@@ -1,4 +1,6 @@
-﻿namespace ValidarCSV
+﻿using System.Windows.Forms;
+
+namespace ValidarCSV
 {
     partial class Main
     {
@@ -98,23 +100,6 @@
             // 
             this.layouts.BackColor = System.Drawing.SystemColors.Control;
             this.layouts.FormattingEnabled = true;
-            this.layouts.Items.AddRange(new object[] {
-            "Máquinas",
-            "Saldos Máquinas",
-            "Adiantamentos",
-            "Orçamento Balcão",
-            "Orçamento Oficina",
-            "Estatísticas",
-            "Veículos Clientes",
-            "Imobilizado Itens",
-            "Imobilizado Saldos",
-            "Legado Financeiro",
-            "Legado Pagamentos",
-            "Legado Pedidos",
-            "Legado Pedidos Itens",
-            "Legado Movimentacao",
-            "Grupos",
-            "SubGrupos"});
             this.layouts.Location = new System.Drawing.Point(12, 48);
             this.layouts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.layouts.Name = "layouts";
@@ -371,6 +356,8 @@
             // possuiCabecalho
             // 
             this.possuiCabecalho.AutoSize = true;
+            this.possuiCabecalho.Checked = true;
+            this.possuiCabecalho.CheckState = System.Windows.Forms.CheckState.Checked;
             this.possuiCabecalho.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.possuiCabecalho.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.possuiCabecalho.Location = new System.Drawing.Point(13, 141);

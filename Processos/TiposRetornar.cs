@@ -5,9 +5,258 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static ValidarCSV.TypeExtensions;
 
 namespace ValidarCSV
 {
+    public static class TypeExtensions
+    {
+        public enum LayoutType
+        {
+            Indefinido,
+            Maquinas,
+            SaldosMaquinas,
+            Adiantamentos,
+            OrcamentoBalcao,
+            OrcamentoOficina,
+            Estatisticas,
+            VeiculosClientes,
+            ImobilizadoItens,
+            ImobilizadoSaldos,
+            LegadoFinanceiro,
+            LegadoPagamentos,
+            LegadoPedidos,
+            LegadoPedidosItens,
+            LegadoMovimentacao,
+            Grupos,
+            SubGrupos,
+        }
+
+        public static readonly Dictionary<string, LayoutType> Layout_stringToEnum = new Dictionary<string, LayoutType>
+        {
+            { "", LayoutType.Indefinido },
+            { "Máquinas", LayoutType.Maquinas },
+            { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
+            { "Adiantamentos", LayoutType.Adiantamentos },
+            { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
+            { "Orçamento Oficina", LayoutType.OrcamentoOficina },
+            { "Estatísticas", LayoutType.Estatisticas },
+            { "Veículos de Clientes", LayoutType.VeiculosClientes },
+            { "Itens Imobilizados", LayoutType.ImobilizadoItens },
+            { "Saldos Imobilizados", LayoutType.ImobilizadoSaldos },
+            { "Legado Financeiro", LayoutType.LegadoFinanceiro },
+            { "Legado Pagamentos", LayoutType.LegadoPagamentos },
+            { "Legado Pedidos", LayoutType.LegadoPedidos },
+            { "Itens de Pedidos Legados", LayoutType.LegadoPedidosItens },
+            { "Movimentação Legada", LayoutType.LegadoMovimentacao },
+            { "Grupos", LayoutType.Grupos },
+            { "Subgrupos", LayoutType.SubGrupos }
+        };
+
+        public static void Formato_layout_retornar(this LayoutType layoutType, ref string layout)
+        {
+            var layouts = new Dictionary<LayoutType, string>
+            {
+                { LayoutType.Maquinas, "Máquinas" },
+                { LayoutType.SaldosMaquinas, "Saldos de Máquinas" },
+                { LayoutType.Adiantamentos, "Adiantamentos" },
+                { LayoutType.OrcamentoBalcao, "Orçamento Balcão" },
+                { LayoutType.OrcamentoOficina, "Orçamento Oficina" },
+                { LayoutType.Estatisticas, "Estatísticas" },
+                { LayoutType.VeiculosClientes, "Veículos de Clientes" },
+                { LayoutType.ImobilizadoItens, "Itens Imobilizados" },
+                { LayoutType.ImobilizadoSaldos, "Saldos Imobilizados" },
+                { LayoutType.LegadoFinanceiro, "Legado Financeiro" },
+                { LayoutType.LegadoPagamentos, "Legado Pagamentos" },
+                { LayoutType.LegadoPedidos, "Legado Pedidos" },
+                { LayoutType.LegadoPedidosItens, "Itens de Pedidos Legados" },
+                { LayoutType.LegadoMovimentacao, "Movimentação Legada" },
+                { LayoutType.Grupos, "Grupos" },
+                { LayoutType.SubGrupos, "Subgrupos" }
+            };
+
+            layout = layouts.ContainsKey(layoutType) ? layouts[layoutType] : "NULL";
+        }
+
+        public static void Layout_string_retornar(string layout, ref LayoutType layoutType)
+        {
+            var layoutTypes = new Dictionary<string, LayoutType>
+            {
+                { "Máquinas", LayoutType.Maquinas },
+                { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
+                { "Adiantamentos", LayoutType.Adiantamentos },
+                { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
+                { "Orçamento Oficina", LayoutType.OrcamentoOficina },
+                { "Estatísticas", LayoutType.Estatisticas },
+                { "Veículos de Clientes", LayoutType.VeiculosClientes },
+                { "Itens Imobilizados", LayoutType.ImobilizadoItens },
+                { "Saldos Imobilizados", LayoutType.ImobilizadoSaldos },
+                { "Legado Financeiro", LayoutType.LegadoFinanceiro },
+                { "Legado Pagamentos", LayoutType.LegadoPagamentos },
+                { "Legado Pedidos", LayoutType.LegadoPedidos },
+                { "Itens de Pedidos Legados", LayoutType.LegadoPedidosItens },
+                { "Movimentação Legada", LayoutType.LegadoMovimentacao },
+                { "Grupos", LayoutType.Grupos },
+                { "Subgrupos", LayoutType.SubGrupos }
+            };
+
+            layoutType = layoutTypes.ContainsKey(layout) ? layoutTypes[layout] : LayoutType.Indefinido;
+        }
+
+        //ainda não utilizado, mas visa deixar mais visual a passagem de
+        //parâmetro quando o campo for do tipo domínio
+        public enum DominioType
+        {
+            Nivel,
+            Situacao,
+            Controla_estoque,
+            Importado_nacional,
+            Situacao_grupos,
+            Usado,
+            Classe,
+            Controle,
+            Tipo_adiantamento,
+            Tipo_operacao,
+            Orcamento_situacao,
+            Status,
+            Novo_usado,
+            Tipo_equipamento,
+            Tipo_renavam_denatram,
+            Especie_veiculo_renavam_denatram,
+            Debito_credito,
+            Chave,
+            Tipo_lancamento,
+            Tipo_baixa,
+            Tipo_documento,
+            Pagar_receber,
+            Null,
+            Modulo,
+            Tipo,
+            Pagamento,
+            Forma_pagamento,
+            Tipo_item,
+            Tipo_movimentacao,
+            Area,
+            Tipo_grupo,
+        }
+
+        public static readonly Dictionary<string, DominioType> Dominio_stringToEnum = new Dictionary<string, DominioType>
+        {
+            { "Nível", DominioType.Nivel },
+            { "Situação", DominioType.Situacao },
+            { "Controla Estoque", DominioType.Controla_estoque },
+            { "Importado/Nacional", DominioType.Importado_nacional },
+            { "Situação Grupos", DominioType.Situacao_grupos },
+            { "Usado", DominioType.Usado },
+            { "Classe", DominioType.Classe },
+            { "Controle", DominioType.Controle },
+            { "Tipo Adiantamento", DominioType.Tipo_adiantamento },
+            { "Tipo Operação", DominioType.Tipo_operacao },
+            { "Orçamento Situação", DominioType.Orcamento_situacao },
+            { "Status", DominioType.Status },
+            { "Novo/Usado", DominioType.Novo_usado },
+            { "Tipo Equipamento", DominioType.Tipo_equipamento },
+            { "Tipo Renavam/Denatram", DominioType.Tipo_renavam_denatram },
+            { "Espécie Veículo Renavam/Denatram", DominioType.Especie_veiculo_renavam_denatram },
+            { "Débito/Crédito", DominioType.Debito_credito },
+            { "Chave", DominioType.Chave },
+            { "Tipo Lançamento", DominioType.Tipo_lancamento },
+            { "Tipo Baixa", DominioType.Tipo_baixa },
+            { "Tipo Documento", DominioType.Tipo_documento },
+            { "Pagar/Receber", DominioType.Pagar_receber },
+            { "Nulo", DominioType.Null },
+            { "Módulo", DominioType.Modulo },
+            { "Tipo", DominioType.Tipo },
+            { "Pagamento", DominioType.Pagamento },
+            { "Forma Pagamento", DominioType.Forma_pagamento },
+            { "Tipo Item", DominioType.Tipo_item },
+            { "Tipo Movimentação", DominioType.Tipo_movimentacao },
+            { "Área", DominioType.Area },
+            { "Tipo Grupo", DominioType.Tipo_grupo }
+        };
+
+        public static void Formato_dominio_retornar(this DominioType dominioType, ref string dominio)
+        {
+            var dominios = new Dictionary<DominioType, string>
+            {
+                { DominioType.Nivel, "Nível" },
+                { DominioType.Situacao, "Situação" },
+                { DominioType.Controla_estoque, "Controla Estoque" },
+                { DominioType.Importado_nacional, "Importado/Nacional" },
+                { DominioType.Situacao_grupos, "Situação Grupos" },
+                { DominioType.Usado, "Usado" },
+                { DominioType.Classe, "Classe" },
+                { DominioType.Controle, "Controle" },
+                { DominioType.Tipo_adiantamento, "Tipo Adiantamento" },
+                { DominioType.Tipo_operacao, "Tipo Operação" },
+                { DominioType.Orcamento_situacao, "Orçamento Situação" },
+                { DominioType.Status, "Status" },
+                { DominioType.Novo_usado, "Novo/Usado" },
+                { DominioType.Tipo_equipamento, "Tipo Equipamento" },
+                { DominioType.Tipo_renavam_denatram, "Tipo Renavam/Denatram" },
+                { DominioType.Especie_veiculo_renavam_denatram, "Espécie Veículo Renavam/Denatram" },
+                { DominioType.Debito_credito, "Débito/Crédito" },
+                { DominioType.Chave, "Chave" },
+                { DominioType.Tipo_lancamento, "Tipo Lançamento" },
+                { DominioType.Tipo_baixa, "Tipo Baixa" },
+                { DominioType.Tipo_documento, "Tipo Documento" },
+                { DominioType.Pagar_receber, "Pagar/Receber" },
+                { DominioType.Null, "Nulo" },
+                { DominioType.Modulo, "Módulo" },
+                { DominioType.Tipo, "Tipo" },
+                { DominioType.Pagamento, "Pagamento" },
+                { DominioType.Forma_pagamento, "Forma Pagamento" },
+                { DominioType.Tipo_item, "Tipo Item" },
+                { DominioType.Tipo_movimentacao, "Tipo Movimentação" },
+                { DominioType.Area, "Área" },
+                { DominioType.Tipo_grupo, "Tipo Grupo" }
+            };
+
+            dominio = dominios.ContainsKey(dominioType) ? dominios[dominioType] : "NULL";
+        }
+
+        public static void Dominio_string_retornar(string dominio, ref DominioType dominioType)
+        {
+            var dominioTypes = new Dictionary<string, DominioType>
+            {
+                { "Nível", DominioType.Nivel },
+                { "Situação", DominioType.Situacao },
+                { "Controla Estoque", DominioType.Controla_estoque },
+                { "Importado/Nacional", DominioType.Importado_nacional },
+                { "Situação Grupos", DominioType.Situacao_grupos },
+                { "Usado", DominioType.Usado },
+                { "Classe", DominioType.Classe },
+                { "Controle", DominioType.Controle },
+                { "Tipo Adiantamento", DominioType.Tipo_adiantamento },
+                { "Tipo Operação", DominioType.Tipo_operacao },
+                { "Orçamento Situação", DominioType.Orcamento_situacao },
+                { "Status", DominioType.Status },
+                { "Novo/Usado", DominioType.Novo_usado },
+                { "Tipo Equipamento", DominioType.Tipo_equipamento },
+                { "Tipo Renavam/Denatram", DominioType.Tipo_renavam_denatram },
+                { "Espécie Veículo Renavam/Denatram", DominioType.Especie_veiculo_renavam_denatram },
+                { "Débito/Crédito", DominioType.Debito_credito },
+                { "Chave", DominioType.Chave },
+                { "Tipo Lançamento", DominioType.Tipo_lancamento },
+                { "Tipo Baixa", DominioType.Tipo_baixa },
+                { "Tipo Documento", DominioType.Tipo_documento },
+                { "Pagar/Receber", DominioType.Pagar_receber },
+                { "Nulo", DominioType.Null },
+                { "Módulo", DominioType.Modulo },
+                { "Tipo", DominioType.Tipo },
+                { "Pagamento", DominioType.Pagamento },
+                { "Forma Pagamento", DominioType.Forma_pagamento },
+                { "Tipo Item", DominioType.Tipo_item },
+                { "Tipo Movimentação", DominioType.Tipo_movimentacao },
+                { "Área", DominioType.Area },
+                { "Tipo Grupo", DominioType.Tipo_grupo }
+            };
+
+            dominioType = dominioTypes.ContainsKey(dominio) ? dominioTypes[dominio] : DominioType.Null;
+        }
+
+    }
+
     public partial class Main : Form
     {
         public class Registro
@@ -45,7 +294,7 @@ namespace ValidarCSV
             formato = formatos.ContainsKey(tipo) ? formatos[tipo] : "NULL";
         }
 
-        public List<string> Dominio_retornar(double tipo)
+        public List<string> Dominio_lista_retornar(double tipo)
         {
             var listas = new Dictionary<double, List<string>>
             {
@@ -84,6 +333,57 @@ namespace ValidarCSV
             };
 
             return listas.ContainsKey(tipo) ? listas[tipo] : new List<string>();
+        }
+
+        public double Dominio_retornar(DominioType dominioType)
+        {
+            double dominio = 0;
+
+            var dominioTypeToDouble = new Dictionary<DominioType, double>
+            {
+                { DominioType.Nivel, 1 },
+                { DominioType.Situacao_grupos, 2 },
+                { DominioType.Controla_estoque, 3 },
+                { DominioType.Importado_nacional, 4 },
+                { DominioType.Situacao, 5 },
+                { DominioType.Usado, 6 },
+                { DominioType.Classe, 7 },
+                { DominioType.Controle, 8 },
+                { DominioType.Tipo_adiantamento, 9 },
+                { DominioType.Tipo_operacao, 10 },
+                { DominioType.Orcamento_situacao, 11 },
+                { DominioType.Status, 12 },
+                { DominioType.Novo_usado, 13 },
+                { DominioType.Tipo_equipamento, 14 },
+                { DominioType.Tipo_renavam_denatram, 15 },
+                { DominioType.Especie_veiculo_renavam_denatram, 16 },
+                { DominioType.Debito_credito, 17 },
+                { DominioType.Chave, 18 },
+                { DominioType.Tipo_lancamento, 19 },
+                { DominioType.Tipo_baixa, 20 },
+                { DominioType.Tipo_documento, 21 },
+                { DominioType.Pagar_receber, 22 },
+                { DominioType.Null, 23 },
+                { DominioType.Modulo, 24 },
+                { DominioType.Tipo, 25 },
+                { DominioType.Pagamento, 26 },
+                { DominioType.Forma_pagamento, 27 },
+                { DominioType.Tipo_item, 28 },
+                { DominioType.Tipo_movimentacao, 29 },
+                { DominioType.Area, 30 },
+                { DominioType.Tipo_grupo, 31 }
+            };
+
+            if (dominioTypeToDouble.TryGetValue(dominioType, out double value))
+            {
+                dominio = value;
+            }
+            else
+            {
+                dominio = dominioTypeToDouble[DominioType.Null];
+            }
+
+            return dominio;
         }
     }
 }

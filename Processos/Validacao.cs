@@ -1,15 +1,61 @@
 ﻿using ClosedXML.Excel;
 using MathNet.Numerics;
 using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace ValidarCSV
 {
     public partial class Main : Form
     {
+        private static int LevenshteinDistance(string string1, string string2)
+        {
+            if (string.IsNullOrEmpty(string1))
+            {
+                return string.IsNullOrEmpty(string2) ? 0 : string2.Length;
+            }
+
+            if (string.IsNullOrEmpty(string2))
+            {
+                return string1.Length;
+            }
+
+            int[,] d = new int[string1.Length + 1, string2.Length + 1];
+
+            for (int i = 0; i <= string1.Length; i++)
+            {
+                d[i, 0] = i;
+            }
+
+            for (int j = 0; j <= string2.Length; j++)
+            {
+                d[0, j] = j;
+            }
+
+            for (int i = 1; i <= string1.Length; i++)
+            {
+                for (int j = 1; j <= string2.Length; j++)
+                {
+                    int cost = (string2[j - 1] == string1[i - 1]) ? 0 : 1;
+
+                    d[i, j] = Math.Min(
+                        Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
+                        d[i - 1, j - 1] + cost);
+                }
+            }
+
+            return d[string1.Length, string2.Length];
+        }
+
+        public static bool Similar_validar(string string1, string string2, int limite_diferenca)
+        {
+            int distance = LevenshteinDistance(string1, string2);
+            return distance <= limite_diferenca;
+        }
 
         public bool Obrigatorio_validar(string tabela, string campo, int linha, int coluna, string tipo)
         {
@@ -48,7 +94,8 @@ namespace ValidarCSV
         }
 
         public void Campos_validar_gerenciar(string tabela, string campo, int linha, int coluna, string tipo, double tamanho_formato, Boolean obrigatorio)
-        {
+        {            
+
             if (obrigatorio && Obrigatorio_validar(tabela, campo, linha, coluna, tipo))
             {
                 return;
@@ -69,7 +116,7 @@ namespace ValidarCSV
                 case "char":
                     if (campo.Length > tamanho_formato)
                     {
-                        Registro_adicionar(tabela, linha, coluna, campo, "Excede " + tamanho_formato.ToString() + " caracter");
+                        Registro_adicionar(tabela, linha, coluna, campo, "Excede " + tamanho_formato.ToString() + " caracteres");
                     }
                     break;
 
@@ -141,7 +188,7 @@ namespace ValidarCSV
                     break;
 
                 case "dominio":
-                    List<string> dominio = Dominio_retornar(tamanho_formato);
+                    List<string> dominio = Dominio_lista_retornar(tamanho_formato);
                     List<string> dominioExtendido = new List<string>(dominio) { "", "null", "NULL" };
 
                     if (!dominioExtendido.Contains(campo.Trim()))
@@ -233,41 +280,6 @@ namespace ValidarCSV
             if (!string.IsNullOrEmpty(campo) || !invalidos.Contains(campo.Trim()))
             {
                 Registro_adicionar("Erro genérico", rows, columns, campo, "Excedeu o número de colunas");
-            }
-        }
-        
-        private void Nivel_validar(string campo, ref string mensagem, ref bool valido)
-        {
-            mensagem = string.Empty;
-            valido = false;
-
-            if (campo.Contains('.') || campo.Contains(','))
-            {
-                mensagem = "Não deve conter pontuação";
-                return;
-            }
-
-            if (!Int32.TryParse(campo, out _) && !decimal.TryParse(campo, out _))
-            {
-                mensagem = "Formato inválido";
-                return;
-            }
-
-            int tamanho_nivel = int.Parse(NiveisCombo.Text.Substring(0, 1)) * 2;
-
-            if (tamanho_nivel != campo.Length)
-            {
-                mensagem = $"Campo possui {campo.Length} dígitos, o nível espera {tamanho_nivel}";
-                return;
-            }
-
-            if (layouts.Text == "Grupos")
-            {
-                valido = Validar_Grupo(campo, tamanho_nivel, ref mensagem);
-            }
-            else
-            {
-                valido = Validar_SubNivel(campo, tamanho_nivel, ref mensagem, NivelCombo.Text);
             }
         }
     }

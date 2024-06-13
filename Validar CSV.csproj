@@ -396,9 +396,7 @@
     <Compile Include="Processos\GruSubValidacao.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Processos\TiposRetornar.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Processos\TiposRetornar.cs" />
     <Compile Include="Processos\Validacao.cs">
       <SubType>Form</SubType>
     </Compile>

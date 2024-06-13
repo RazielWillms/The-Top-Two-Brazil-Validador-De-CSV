@@ -1,12 +1,15 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static ValidarCSV.TypeExtensions;
 
 namespace ValidarCSV
 {
@@ -18,17 +21,33 @@ namespace ValidarCSV
         public Main()
         {
             InitializeComponent();
+            this.layouts.DataSource = new BindingSource(TypeExtensions.Layout_stringToEnum.Keys, null);
             registros = new List<Registro>();
             versao.Text = "v0.10";
         }
 
+        private static string Numero_alfabeto_converter(int numero)
+        {
+            StringBuilder resultado = new StringBuilder();
+
+            while (numero > 0)
+            {
+                numero--;
+                resultado.Insert(0, (char)('A' + (numero % 26)));
+                numero /= 26;
+            }
+
+            return resultado.ToString();
+        }
+
         public void Registro_adicionar(string campo, int linha, int coluna, string valor, string obs)
         {
-            registros.Add(new Registro(campo, (linha + 1).ToString(), coluna.ToString(), valor, obs));
+            registros.Add(new Registro(campo, (linha + 1).ToString(), Numero_alfabeto_converter(coluna), valor, obs));
         }
 
         private void Escolher_click(object sender, EventArgs e)
         {
+
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 if (txtFilePath.Text == String.Empty)
@@ -158,7 +177,7 @@ namespace ValidarCSV
                     //verifica as linhas com colunas sobressalentes e gera registro
                     if (rows.Length > headers.Length)
                     {
-                        for (int i = (headers.Length - 1); i < (rows.Length - 1); i++)
+                        for (int i = (headers.Length - 1); i < rows.Length; i++)
                         {
                             Sobressalente_validar(linha, (i + 1), rows[i]);
                         }
@@ -173,7 +192,6 @@ namespace ValidarCSV
                     linha++;
                 }
             }
-
             return dataTable;
         }
 
@@ -327,16 +345,19 @@ namespace ValidarCSV
 
         private void Layout_selecionado(object sender, EventArgs e)
         {
-            switch (layouts.Text)
+            LayoutType layoutType = LayoutType.Indefinido;
+            Layout_string_retornar(layouts.Text, ref layoutType);
+
+            switch (layoutType)
             {
-                case "Grupos":
+                case LayoutType.Grupos:
                     Niveis.Visible = true;
                     NiveisCombo.Visible = true;
                     Nivel.Visible = false;
                     NivelCombo.Visible = false;
                     break;
 
-                case "SubGrupos":
+                case LayoutType.SubGrupos:
                     Niveis.Visible = true;
                     NiveisCombo.Visible = true;
 
@@ -359,12 +380,15 @@ namespace ValidarCSV
 
         private void NiveisCombo_selecionado(object sender, EventArgs e)
         {
+            LayoutType layoutType = LayoutType.Indefinido;
+            Layout_string_retornar(layouts.Text, ref layoutType);
+
             NivelCombo.Items.Clear();
             NivelCombo.Items.Add("SubGrupo");
             NivelCombo.Items.Add("Segmento");
             NivelCombo.Items.Add("SubSegmento");
 
-            if (layouts.Text == "SubGrupos")
+            if (layoutType == LayoutType.SubGrupos)
             {
                 Nivel.Visible = true;
                 NivelCombo.Visible = true;
