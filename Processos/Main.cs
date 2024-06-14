@@ -183,6 +183,7 @@ namespace ValidarCSV
                 if (Repete_coluna(headers) || !possuiCabecalho)
                 {
                     this.possuiCabecalho.Checked = false;
+                    possuiCabecalho = this.possuiCabecalho.Checked;
 
                     int colunas = headers.Length;
                     headers = Enumerable.Range(1, colunas).Select(i => "Coluna " + i).ToArray();

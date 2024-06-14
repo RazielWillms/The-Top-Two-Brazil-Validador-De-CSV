@@ -337,8 +337,6 @@ namespace ValidarCSV
 
         public double Dominio_retornar(DominioType dominioType)
         {
-            double dominio = 0;
-
             var dominioTypeToDouble = new Dictionary<DominioType, double>
             {
                 { DominioType.Nivel, 1 },
@@ -374,6 +372,7 @@ namespace ValidarCSV
                 { DominioType.Tipo_grupo, 31 }
             };
 
+            double dominio;
             if (dominioTypeToDouble.TryGetValue(dominioType, out double value))
             {
                 dominio = value;
