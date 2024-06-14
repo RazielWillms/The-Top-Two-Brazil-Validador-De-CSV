@@ -11,12 +11,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static ValidarCSV.TypeExtensions;
+using System.Threading;
 
 namespace ValidarCSV
 {
     public partial class Main : Form
     {
-
         private readonly List<Registro> registros;
 
         public Main()
@@ -64,60 +64,99 @@ namespace ValidarCSV
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
+                { 
                     txtFilePath.Text = openFileDialog.FileName;
+                }
+            }
+        }
+
+        private void Campos_validar(ref bool erro)
+        {
+            erro = false;
+
+            if (layouts.SelectedIndex <= 0)
+            {
+                LayoutLabel.Focus();
+                erroTela.SetError(LayoutLabel, "Selecione um layout");
+                erro = true;
+                return;
+            }
+            erroTela.SetError(LayoutLabel, null);
+
+            if (!File.Exists(txtFilePath.Text))
+            {
+                ArquivoLabel.Focus();
+                erroTela.SetError(ArquivoLabel, "Nenhum arquivo selecionado ou o arquivo não existe!");
+                erro = true;
+                return;
+            }
+            erroTela.SetError(ArquivoLabel, null);
+
+            LayoutType layoutType = LayoutType.Indefinido;
+            Layout_enum_retornar(layouts.Text, ref layoutType);
+
+            if (layoutType == LayoutType.Grupos || layoutType == LayoutType.SubGrupos)
+            {
+                if (NiveisCombo.Text == string.Empty)
+                {
+                    Niveis.Focus();
+                    erroTela.SetError(Niveis, "Selecione um nível");
+                    erro = true;
+                    return;
+                }
+                erroTela.SetError(Niveis, null);
+
+                if (layoutType == LayoutType.SubGrupos)
+                {
+                    if (NivelCombo.Text == string.Empty)
+                    {
+                        Nivel.Focus();
+                        erroTela.SetError(Nivel, "Selecione um nível");
+                        erro = true;
+                        return;
+                    }
+                    erroTela.SetError(Nivel, null);
                 }
             }
         }
 
         private void Validar_click(object sender, EventArgs e)
         {
+            validar.Enabled = false;
+
             Grid_limpar();
 
-            if (layouts.SelectedIndex > 0)
+            bool erro = false;
+            Campos_validar(ref erro);
+
+            if (!erro)
             {
-                erroTela.SetError(LayoutLabel, null);
+                Registro_gerenciar(true);
 
-                string filePath = txtFilePath.Text;
-
-                if (File.Exists(filePath))
+                try
                 {
-                    Registro_gerenciar(true);
+                    Progresso_gerenciar(true);
+                    DataTable dataTable = Importar_csv(txtFilePath.Text);
 
-                    erroTela.SetError(ArquivoLabel, null);
-                    try
-                    {
-                        bool erro = false;
-                        DataTable dataTable = Importar_csv(filePath);
-                        Validar_layouts_gerenciar(dataTable, layouts.Text, ref erro);
+                    Validar_layouts_gerenciar(dataTable, layouts.Text, ref erro);
 
-                        if (!erro)
-                        {
-                            Registro_gerenciar(false);
-                        }
-                    }
-                    catch (Exception ex)
+                    if (!erro)
                     {
-                        MessageBox.Show($"Erro ao processar o arquivo: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Registro_gerenciar(false);
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ArquivoLabel.Focus();
-                    erroTela.SetError(ArquivoLabel, "Nenhum arquivo selecionado ou o arquivo não existe!");
+                    MessageBox.Show($"Erro ao processar o arquivo: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else 
-            {
-                LayoutLabel.Focus();
-                erroTela.SetError(LayoutLabel, "Selecione um layout");
-            }
+
+            Progresso_gerenciar(false);
+            validar.Enabled = true;
         }
 
         public DataTable Importar_csv(string filePath)
         {
-            Progresso_gerenciar(true);
-
             DataTable dataTable = new DataTable();
             using (StreamReader sr = new StreamReader(filePath))
             {
@@ -201,8 +240,6 @@ namespace ValidarCSV
                     linha++;
                 }
             }
-
-            Progresso_gerenciar(false);
             return dataTable;
         }
 

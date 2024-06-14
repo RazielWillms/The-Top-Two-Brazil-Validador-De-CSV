@@ -10,7 +10,6 @@ namespace ValidarCSV
     {
         private void Validar_layouts_gerenciar(DataTable dataTable, String Tabela, ref bool erro)
         {
-            Progresso_gerenciar(true);
             int rows = 0;
 
             if (possuiCabecalho.Checked)
@@ -81,45 +80,11 @@ namespace ValidarCSV
                     break;
 
                 case LayoutType.Grupos:
-                    if (NiveisCombo.Text == string.Empty)
-                    {
-                        erro = true;
-                        Niveis.Focus();
-                        erroTela.SetError(Niveis, "Selecione um nível");
-                    }
-
-                    if (!erro)
-                    {
-                        erroTela.SetError(Niveis, null);
-                        Grupos(dataTable, rows);
-                    }
+                    Grupos(dataTable, rows);
                     break;
 
                 case LayoutType.SubGrupos:
-                    if (NiveisCombo.Text == string.Empty)
-                    {
-                        erro = true;
-                        Niveis.Focus();
-                        erroTela.SetError(Niveis, "Selecione um nível");
-                    }
-                    else 
-                    {
-                        erro = false;
-                        erroTela.SetError(Niveis, null);
-
-                        if (NivelCombo.Text == string.Empty)
-                        {
-                            erro = true;
-                            Nivel.Focus();
-                            erroTela.SetError(Nivel, "Selecione um nível");
-                        }
-
-                        if (!erro)
-                        {
-                            erroTela.SetError(Nivel, null);
-                            Sub_grupos(dataTable, rows);
-                        }
-                    }
+                    Sub_grupos(dataTable, rows);
                     break;
 
                 case LayoutType.Indefinido:
@@ -130,8 +95,6 @@ namespace ValidarCSV
                     MessageBox.Show("A validação deste layout ainda não foi implementada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
-
-            Progresso_gerenciar(false);
         }
 
         public void Maquinas(DataTable dataTable, int rows)
