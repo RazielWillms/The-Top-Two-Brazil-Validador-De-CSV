@@ -8,7 +8,7 @@ namespace ValidarCSV
 {
     public partial class Main : Form
     {
-        private void Validar_layouts_gerenciar(DataTable dataTable, String Tabela, ref bool erro)
+        private void Validar_layouts_gerenciar(DataTable dataTable, String Tabela)
         {
             int rows = 0;
 

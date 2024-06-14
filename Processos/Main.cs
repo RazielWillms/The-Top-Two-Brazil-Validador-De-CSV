@@ -136,9 +136,10 @@ namespace ValidarCSV
                 try
                 {
                     Progresso_gerenciar(true);
+
                     DataTable dataTable = Importar_csv(txtFilePath.Text);
 
-                    Validar_layouts_gerenciar(dataTable, layouts.Text, ref erro);
+                    Validar_layouts_gerenciar(dataTable, layouts.Text);
 
                     if (!erro)
                     {
@@ -152,6 +153,7 @@ namespace ValidarCSV
             }
 
             Progresso_gerenciar(false);
+
             validar.Enabled = true;
         }
 
