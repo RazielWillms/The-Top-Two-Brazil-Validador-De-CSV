@@ -277,7 +277,7 @@ namespace ValidarCSV
             }
         }
 
-        public void Formato_date_retornar(double tipo, ref string formato)
+        public string Formato_date_retornar(double tipo)
         {
             var formatos = new Dictionary<double, string>
             {
@@ -290,8 +290,7 @@ namespace ValidarCSV
                 { 7, "yyyy/MM/dd HH:mm:ss" },
                 { 8, "dd/MM/yyyy HH:mm:ss" }
             };
-
-            formato = formatos.ContainsKey(tipo) ? formatos[tipo] : "NULL";
+            return _ = formatos.ContainsKey(tipo) ? formatos[tipo] : "NULL";
         }
 
         public List<string> Dominio_lista_retornar(double tipo)

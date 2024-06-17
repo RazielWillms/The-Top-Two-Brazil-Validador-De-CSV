@@ -6,7 +6,7 @@ namespace ValidarCSV
 {
     public partial class Main : Form
     {
-        private void Nivel_validar(string campo, ref string mensagem, ref bool valido)
+        private void Nivel_validar(string campo, double tamanho_formato, ref string mensagem, ref bool valido)
         {
             mensagem = string.Empty;
             valido = false;
@@ -14,20 +14,25 @@ namespace ValidarCSV
             if (campo.Contains('.') || campo.Contains(','))
             {
                 mensagem = "Não deve conter pontuação";
-                return;
             }
 
-            if (!Int32.TryParse(campo, out _) && !decimal.TryParse(campo, out _))
+            if (!Int32.TryParse(campo, out _) && !decimal.TryParse(campo, out _) && mensagem == string.Empty)
             {
                 mensagem = "Formato inválido";
-                return;
             }
 
             int tamanho_nivel = int.Parse(NiveisCombo.Text.Substring(0, 1)) * 2;
 
-            if (tamanho_nivel != campo.Length)
+            if (tamanho_nivel != campo.Length && mensagem == string.Empty)
             {
                 mensagem = $"Campo possui {campo.Length} dígitos, o nível espera {tamanho_nivel}";
+            }
+
+            if (mensagem != string.Empty)
+            {
+                string mensagem_completa = string.Empty;
+                Nivel_mensagem_retornar(campo, tamanho_formato, mensagem, ref mensagem_completa, ref valido);
+                mensagem = mensagem_completa;
                 return;
             }
 
