@@ -6,61 +6,22 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Globalization;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace ValidarCSV
 {
     public partial class Main : Form
     {
-        public bool Obrigatorio_validar(string campo, string tipo, ref string mensagem)
-        {
-            if (tipo == "integer" || tipo == "numeric" || tipo == "nivel")
-            {
-                if (!Int32.TryParse(campo, out _) && !decimal.TryParse(campo, out _))
-                {
-                    mensagem = "Formato inválido";
-                }
-                else if ((Int32.TryParse(campo, out int valorInteiro) && valorInteiro <= 0) || (decimal.TryParse(campo, out decimal valorDecimal) && valorDecimal <= 0))
-                {
-                    mensagem = "Deve ser maior que zero";
-                }
-            }
-
-            string[] invalidos = { "#", "0", "", "null", "NULL" };
-            if (string.IsNullOrEmpty(mensagem) && (invalidos.Contains(campo.Trim())))
-            {
-                mensagem = "Campo obrigatório";
-            }
-
-            if (string.IsNullOrEmpty(mensagem) && string.IsNullOrEmpty(campo))
-            {
-                mensagem = "Campo está vazio";
-            }
-
-            if (!string.IsNullOrEmpty(mensagem))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         public void Campos_validar_gerenciar(string tabela, string campo, int linha, int coluna, string tipo, double tamanho_formato, Boolean obrigatorio)
         {
             string mensagem = string.Empty;
+            bool valido = true;
 
-            if (obrigatorio && Obrigatorio_validar(campo, tipo, ref mensagem))
+            if (!Obrigatorio_validar(campo, tipo, obrigatorio, ref mensagem))
             {
                 Registro_adicionar(tabela, linha, coluna, campo, mensagem);
                 return;
             }
-
-            List<string> domVazio = new List<string> { "", "#", "0", "null", "NULL" };
-            if (!obrigatorio && domVazio.Contains(campo))
-            {
-                return;
-            }
-
-            bool valido = true;
 
             switch (tipo.ToLower())
             {
@@ -81,6 +42,14 @@ namespace ValidarCSV
                     }
                     break;
 
+                case "integer":
+                    Integer_validar(campo, tamanho_formato, ref mensagem, ref valido);
+                    if (!valido)
+                    {
+                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
+                    }
+                    break;
+
                 case "date":
                     Date_validar(campo.Trim(), ref mensagem, ref valido);
                     if (!valido)
@@ -91,14 +60,6 @@ namespace ValidarCSV
 
                 case "date_format":
                     Date_formato_validar(campo.Trim(), Formato_date_retornar(tamanho_formato), ref mensagem, ref valido);
-                    if (!valido)
-                    {
-                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
-                    }
-                    break;
-
-                case "integer":
-                    Integer_validar(campo, tamanho_formato, ref mensagem, ref valido);
                     if (!valido)
                     {
                         Registro_adicionar(tabela, linha, coluna, campo, mensagem);
@@ -128,6 +89,47 @@ namespace ValidarCSV
             }
         }
 
+        public bool Obrigatorio_validar(string campo, string tipo, bool obrigatorio, ref string mensagem)
+        {
+            mensagem = string.Empty;
+
+            List<string> domVazio = new List<string> { "", "#", "0", "null", "NULL" };
+            if (!obrigatorio && domVazio.Contains(campo))
+            {
+                return true;
+            }
+
+            if (tipo == "integer" || tipo == "numeric" || tipo == "nivel")
+            {
+                if (!Int32.TryParse(campo, out _) && !decimal.TryParse(campo, out _))
+                {
+                    mensagem = "Formato inválido";
+                }
+                else if ((Int32.TryParse(campo, out int valorInteiro) && valorInteiro <= 0) || (decimal.TryParse(campo, out decimal valorDecimal) && valorDecimal <= 0))
+                {
+                    mensagem = "Deve ser maior que zero";
+                }
+            }
+
+            string[] invalidos = { "#", "0", "", "null", "NULL" };
+            if (string.IsNullOrEmpty(mensagem) && (invalidos.Contains(campo.Trim())))
+            {
+                mensagem = "Campo obrigatório";
+            }
+
+            if (string.IsNullOrEmpty(mensagem) && string.IsNullOrEmpty(campo))
+            {
+                mensagem = "Campo está vazio";
+            }
+
+            if (!string.IsNullOrEmpty(mensagem))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private void Char_validar(string campo, double tamanho_formato, ref string mensagem, ref bool valido)
         {
             if (campo.Length > tamanho_formato)
@@ -137,39 +139,23 @@ namespace ValidarCSV
             }
         }
 
-        private void Integer_validar(string campo, double tamanho_formato, ref string mensagem, ref bool valido)
-        {
-            campo = campo.Replace(".", "");
-            if (campo == "0" || campo.Trim() == "")
-            {
-                return;
-            }
-
-            if (campo.Length > tamanho_formato || !int.TryParse(campo, out _))
-            {
-                valido = false;
-                mensagem = "Deve ser um número inteiro e conter até " + tamanho_formato + " dígitos";
-            }
-        }
-
         private void Numeric_validar(string valor, double tamanho_formato, ref string mensagem_erro, ref bool valido)
         {
             valor = valor.Replace(".", "");
-            if (valor != "0" && valor.Trim() != "")
+            if (valor == "0" || valor.Trim() == "")
             {
                 return;
             }
 
             int precisao = (int)Math.Truncate(tamanho_formato);
             double parteDecimal = (tamanho_formato - precisao).Round(1);
-            //parteDecimal = parteDecimal.Round(1);
-            int escala = (int)(parteDecimal * 10);            
+            int escala = (int)(parteDecimal * 10);
 
             mensagem_erro = string.Empty;
 
             if (string.IsNullOrEmpty(valor) || valor.Equals("null", StringComparison.OrdinalIgnoreCase))
             {
-                return; 
+                return;
             }
 
             string[] partes = valor.Split(',');
@@ -201,6 +187,21 @@ namespace ValidarCSV
                 mensagem_erro = "Erro de formato: o valor não corresponde ao formato esperado. " + precisao.ToString() + "," + escala.ToString();
                 valido = false;
                 return;
+            }
+        }
+
+        private void Integer_validar(string campo, double tamanho_formato, ref string mensagem, ref bool valido)
+        {
+            campo = campo.Replace(".", "");
+            if (campo == "0" || campo.Trim() == "")
+            {
+                return;
+            }
+
+            if (campo.Length > tamanho_formato || !int.TryParse(campo, out _))
+            {
+                valido = false;
+                mensagem = "Deve ser um número inteiro e conter até " + tamanho_formato + " dígitos";
             }
         }
 
@@ -282,7 +283,7 @@ namespace ValidarCSV
             }
         }
 
-        private void Sobressalente_validar(int rows, int columns, string campo)
+        private void Sobressalente_validar(int rows, int columns, string campo) //Chamado diretamente no layout caso as colunas ultrapassem o cabeçalho
         {
             string[] invalidos = { "#", "0", "", "null", "NULL" };
             if (!string.IsNullOrEmpty(campo) || !invalidos.Contains(campo.Trim()))

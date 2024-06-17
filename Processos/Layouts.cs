@@ -106,7 +106,6 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
-
                     switch (columns)
                     {
                         case 1: //A - Código do Produto*
@@ -245,8 +244,6 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-
         }
 
         public void Saldos_maquinas(DataTable dataTable, int rows)
@@ -377,8 +374,6 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-
         }
 
         public void Orcamento_balcao(DataTable dataTable, int rows)
@@ -482,8 +477,6 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-
         }
 
         public void Orcamento_oficina(DataTable dataTable, int rows)
@@ -571,13 +564,10 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-
         }
 
         public void Estatisticas(DataTable dataTable, int rows)
         {
-
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -869,7 +859,6 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
-
                     switch (columns)
                     {
                         case 1: // A - Código da Empresa Solution*
@@ -881,7 +870,7 @@ namespace ValidarCSV
                             break;
 
                         case 3: // C - Código do Item*
-                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 8.2, true);
+                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 6.2, true);
                             break;
 
                         case 4: // D - Código da Conta (Plano de Contas)
@@ -901,7 +890,7 @@ namespace ValidarCSV
                             break;
 
                         case 8: // H - % de Depreciação do Item
-                            Campos_validar_gerenciar("% de Depreciação do Item", row[column].ToString(), rows, columns, "numeric", 5.2, false);
+                            Campos_validar_gerenciar("% de Depreciação do Item", row[column].ToString(), rows, columns, "numeric", 6.2, false);
                             break;
 
                         case 9: // I - % de Depreciação Gerencial
@@ -1005,8 +994,6 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-
         }
 
         public void Imobilizado_saldos(DataTable dataTable, int rows)
@@ -1019,7 +1006,6 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
-
                     switch (columns)
                     {
                         case 1: // A - Código da Empresa*
@@ -1027,7 +1013,7 @@ namespace ValidarCSV
                             break;
 
                         case 2: // B - Código do Item*
-                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 9.2, true);
+                            Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 6.2, true);
                             break;
 
                         case 3: // C - Valor Original*
@@ -1071,8 +1057,6 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-
         }
 
         public void Legado_financeiro(DataTable dataTable, int rows)
@@ -1085,7 +1069,6 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
-
                     switch (columns)
                     {
                         case 1: // A - Código legado documento*
@@ -1205,8 +1188,6 @@ namespace ValidarCSV
 
                 rows++;
             }
-
-
         }
 
         public void Legado_pagamentos(DataTable dataTable, int rows)
@@ -1219,7 +1200,6 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
-
                     switch (columns)
                     {
                         case 1: // A - Código legado pagamento*
@@ -1295,7 +1275,6 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
-
                     switch (columns)
                     {
                         case 1: // A - Código pedido*
@@ -1535,7 +1514,6 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
-
                     switch (columns)
                     {
                         case 1: // A - Código item*
