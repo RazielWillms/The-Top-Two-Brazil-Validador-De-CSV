@@ -1,13 +1,10 @@
 ﻿using ClosedXML.Excel;
 using MathNet.Numerics;
 using System;
-using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 using System.Globalization;
 
 namespace ValidarCSV
@@ -16,7 +13,7 @@ namespace ValidarCSV
     {
         public bool Obrigatorio_validar(string campo, string tipo, ref string mensagem)
         {
-            if (tipo == "integer" || tipo == "numeric")
+            if (tipo == "integer" || tipo == "numeric" || tipo == "nivel")
             {
                 if (!Int32.TryParse(campo, out _) && !decimal.TryParse(campo, out _))
                 {

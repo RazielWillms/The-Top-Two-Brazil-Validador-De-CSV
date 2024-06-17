@@ -1,17 +1,14 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static ValidarCSV.TypeExtensions;
-using System.Threading;
 
 namespace ValidarCSV
 {
@@ -24,7 +21,7 @@ namespace ValidarCSV
             InitializeComponent();
             this.layouts.DataSource = new BindingSource(TypeExtensions.Layout_stringToEnum.Keys, null);
             registros = new List<Registro>();
-            versao.Text = "v0.10";
+            versao.Text = "v0.11";
         }
 
         private static string Numero_alfabeto_converter(int numero)

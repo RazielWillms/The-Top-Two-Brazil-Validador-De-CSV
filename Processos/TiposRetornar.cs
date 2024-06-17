@@ -1,9 +1,5 @@
-﻿using ClosedXML.Excel;
-using MathNet.Numerics;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static ValidarCSV.TypeExtensions;
 
