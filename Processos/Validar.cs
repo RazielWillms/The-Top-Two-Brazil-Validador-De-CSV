@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Globalization;
 using DocumentFormat.OpenXml.Wordprocessing;
+using static ValidarCSV.TypeExtensions;
 
 namespace ValidarCSV
 {
@@ -17,7 +18,7 @@ namespace ValidarCSV
             string mensagem = string.Empty;
             bool valido = true;
 
-            if (!Obrigatorio_validar(campo, tipo, obrigatorio, ref mensagem))
+            if (Obrigatorio_validar(campo, tipo, obrigatorio, ref mensagem))
             {
                 Registro_adicionar(tabela, linha, coluna, campo, mensagem);
                 return;
@@ -91,13 +92,12 @@ namespace ValidarCSV
 
         public bool Obrigatorio_validar(string campo, string tipo, bool obrigatorio, ref string mensagem)
         {
-            mensagem = string.Empty;
-
-            List<string> domVazio = new List<string> { "", "#", "0", "null", "NULL" };
-            if (!obrigatorio && domVazio.Contains(campo))
+            if (!obrigatorio)
             {
-                return true;
+                return false;
             }
+
+            mensagem = string.Empty;
 
             if (tipo == "integer" || tipo == "numeric" || tipo == "nivel")
             {
@@ -111,7 +111,7 @@ namespace ValidarCSV
                 }
             }
 
-            string[] invalidos = { "#", "0", "", "null", "NULL" };
+            List<string> invalidos = Dominio_lista_retornar(Dominio_retornar(DominioType.Invalidos));
             if (string.IsNullOrEmpty(mensagem) && (invalidos.Contains(campo.Trim())))
             {
                 mensagem = "Campo obrigatório";
@@ -124,10 +124,10 @@ namespace ValidarCSV
 
             if (!string.IsNullOrEmpty(mensagem))
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         private void Char_validar(string campo, double tamanho_formato, ref string mensagem, ref bool valido)
@@ -169,6 +169,7 @@ namespace ValidarCSV
 
             if (partes[0].Length > precisao)
             {
+                Mensagem_exibir("precisão: " + partes[0].ToString());
                 mensagem_erro = $"Erro de precisão: a parte inteira tem mais de {precisao} dígitos.";
                 valido = false;
                 return;
@@ -285,7 +286,7 @@ namespace ValidarCSV
 
         private void Sobressalente_validar(int rows, int columns, string campo) //Chamado diretamente no layout caso as colunas ultrapassem o cabeçalho
         {
-            string[] invalidos = { "#", "0", "", "null", "NULL" };
+            List<string> invalidos = Dominio_lista_retornar(Dominio_retornar(DominioType.Invalidos));
             if (!string.IsNullOrEmpty(campo) || !invalidos.Contains(campo.Trim()))
             {
                 Registro_adicionar("Erro genérico", rows, columns, campo, "Excedeu o número de colunas");

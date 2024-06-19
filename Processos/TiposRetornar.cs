@@ -134,6 +134,7 @@ namespace ValidarCSV
             Tipo_movimentacao,
             Area,
             Tipo_grupo,
+            Invalidos,
         }
 
         public static readonly Dictionary<string, DominioType> Dominio_stringToEnum = new Dictionary<string, DominioType>
@@ -168,7 +169,8 @@ namespace ValidarCSV
             { "Tipo Item", DominioType.Tipo_item },
             { "Tipo Movimentação", DominioType.Tipo_movimentacao },
             { "Área", DominioType.Area },
-            { "Tipo Grupo", DominioType.Tipo_grupo }
+            { "Tipo Grupo", DominioType.Tipo_grupo },
+            { "Invalidos", DominioType.Invalidos }
         };
 
         public static void Formato_dominio_retornar(this DominioType dominioType, ref string dominio)
@@ -205,7 +207,8 @@ namespace ValidarCSV
                 { DominioType.Tipo_item, "Tipo Item" },
                 { DominioType.Tipo_movimentacao, "Tipo Movimentação" },
                 { DominioType.Area, "Área" },
-                { DominioType.Tipo_grupo, "Tipo Grupo" }
+                { DominioType.Tipo_grupo, "Tipo Grupo" },
+                { DominioType.Invalidos, "Invalidos" }
             };
 
             dominio = dominios.ContainsKey(dominioType) ? dominios[dominioType] : "NULL";
@@ -324,6 +327,7 @@ namespace ValidarCSV
                 { 29, new List<String> { "S", "E" } }, //dom_tipo_movimentacao
                 { 30, new List<String> { "1" } }, //dom_area
                 { 31, new List<string> { "E" } }, //dom_tipo
+                { 32, new List<string> { "#", "0", "", " ", "null", "NULL" } }, //dom_invalidos
                 
             };
 
@@ -364,7 +368,8 @@ namespace ValidarCSV
                 { DominioType.Tipo_item, 28 },
                 { DominioType.Tipo_movimentacao, 29 },
                 { DominioType.Area, 30 },
-                { DominioType.Tipo_grupo, 31 }
+                { DominioType.Tipo_grupo, 31 },
+                { DominioType.Invalidos, 32}
             };
 
             double dominio;

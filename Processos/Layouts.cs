@@ -457,7 +457,7 @@ namespace ValidarCSV
                             break;
 
                         case 18: //R - Valor Desconto
-                            Campos_validar_gerenciar("Valor Desconto", row[column].ToString(), rows, columns, "numeric", 16.2, true);
+                            Campos_validar_gerenciar("Valor Desconto", row[column].ToString(), rows, columns, "numeric", 16.2, false);
                             break;
 
                         case 19: //S - Vendedor Produto
