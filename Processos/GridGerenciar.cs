@@ -21,8 +21,17 @@ namespace ValidarCSV
 
             if (registros.Count == 0)
             {
+                int mateando = random.Next(0, 100);
+
                 labellog.Text = "Nenhum erro encontrado";
-                MessageBox.Show("Nenhum erro encontrado", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (mateando == 6 || mateando == 52 || mateando == 99 || mateando == 31 || mateando == 17)
+                {
+                    MessageBox.Show("Nenhum erro encontrado (EE?)", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else 
+                {
+                    MessageBox.Show("Nenhum erro encontrado", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             else
             {

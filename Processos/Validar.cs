@@ -2,11 +2,9 @@
 using MathNet.Numerics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Globalization;
-using DocumentFormat.OpenXml.Wordprocessing;
 using static ValidarCSV.TypeExtensions;
 
 namespace ValidarCSV
@@ -169,7 +167,6 @@ namespace ValidarCSV
 
             if (partes[0].Length > precisao)
             {
-                Mensagem_exibir("precisão: " + partes[0].ToString());
                 mensagem_erro = $"Erro de precisão: a parte inteira tem mais de {precisao} dígitos.";
                 valido = false;
                 return;

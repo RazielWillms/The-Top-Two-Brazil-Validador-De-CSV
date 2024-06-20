@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,13 +17,14 @@ namespace ValidarCSV
     {
         private readonly List<Registro> registros;
 
+        public readonly Random random = new Random();
         public Main()
         {
             InitializeComponent();
             this.layouts.DataSource = new BindingSource(TypeExtensions.Layout_stringToEnum.Keys, null);
             registros = new List<Registro>();
             versao.Text = "v0.11";
-        }
+    }
 
         private static string Numero_alfabeto_converter(int numero)
         {
@@ -161,6 +163,7 @@ namespace ValidarCSV
             {
                 string[] headers = null;
                 bool possuiCabecalho = this.possuiCabecalho.Checked;
+                bool corrigido_regex = false;
 
                 string primeiraLinha = sr.ReadLine() ?? throw new InvalidOperationException("O arquivo CSV está vazio.");
 
@@ -173,6 +176,8 @@ namespace ValidarCSV
                     primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
                     regex = " {2,}"; // 2 ou mais espaços seguidos
                     primeiraLinha = Regex.Replace(primeiraLinha, regex, "");
+
+                    corrigido_regex = true;
                 }
 
                 headers = primeiraLinha.Split(';');
@@ -225,9 +230,19 @@ namespace ValidarCSV
                     //verifica as linhas com colunas sobressalentes e gera registro
                     if (rows.Length > headers.Length)
                     {
-                        for (int i = (headers.Length - 1); i < rows.Length; i++)
+                        for (int i = (headers.Length - 1); i < rows.Length; i++) //já inicia na última linha do arquivo, para poupar processamento
                         {
-                            Sobressalente_validar(linha, (i + 1), rows[i]);
+                            string campo = rows[i].ToString();
+                            if (corrigido_regex)
+                            {
+                                regex = "; {3,}"; // ponto e vírgula seguido de 3 ou mais espaços                                
+                                campo = Regex.Replace(campo, regex, ";");
+                                regex = ";{3,}"; // 3 ou mais ponto e vírgula seguidos
+                                campo = Regex.Replace(campo, regex, ";");
+                                regex = " {2,}"; // 2 ou mais espaços seguidos
+                                campo = Regex.Replace(campo, regex, "");
+                            }
+                            Sobressalente_validar(linha, (i + 1), campo);
                         }
                     }
 
@@ -384,12 +399,19 @@ namespace ValidarCSV
             progressBar.Value = porcentagem;
         }
 
-        public void Mensagem_exibir(string mensagem)
+        public void Mensagem_exibir(string mensagem, bool incrementa)
         {
             depuracao.Visible = true;
             MensagemErro.Visible = true;
 
-            MensagemErro.Text += mensagem;
+            if (incrementa)
+            {
+                MensagemErro.Text += " " + mensagem;
+            }
+            else 
+            {
+                MensagemErro.Text = mensagem;
+            }
         }
 
         private void Layout_selecionado(object sender, EventArgs e)
