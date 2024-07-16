@@ -488,10 +488,11 @@ namespace ValidarCSV
             {
                 int columns = 1;
 
+                string serieVeiculo = null;
+                string veiculoId = null;
+
                 foreach (DataColumn column in dataTable.Columns)
                 {
-                    string serieVeiculo = null;
-                    string veiculoId = null;
 
                     switch (columns)
                     {
