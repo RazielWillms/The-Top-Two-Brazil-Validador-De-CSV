@@ -30,6 +30,11 @@ namespace ValidarCSV
         {
             StringBuilder resultado = new StringBuilder();
 
+            if (numero == 0)
+            {
+                resultado.Insert(0, '-');
+            }
+
             while (numero > 0)
             {
                 numero--;

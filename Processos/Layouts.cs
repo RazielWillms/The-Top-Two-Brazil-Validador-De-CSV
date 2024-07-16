@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Data;
 using System.Windows.Forms;
 using static ValidarCSV.TypeExtensions;
@@ -489,26 +490,38 @@ namespace ValidarCSV
 
                 foreach (DataColumn column in dataTable.Columns)
                 {
+                    string serieVeiculo = null;
+                    string veiculoId = null;
+
                     switch (columns)
                     {
                         case 1: //A - Número*
                             Campos_validar_gerenciar("Número", row[column].ToString(), rows, columns, "integer", 9, true);
                             break;
 
-                        case 2: //B - Código da Filial Solution*
+                        case 2: //B - Código da Filial Solution* (pode ser 0, por isto false no obrigatório)
                             Campos_validar_gerenciar("Código da Filial Solution", row[column].ToString(), rows, columns, "integer", 4, false);
                             break;
 
                         case 3: //C - ID do Veículo*
+                            veiculoId = row[column].ToString();
                             Campos_validar_gerenciar("ID do Veículo", row[column].ToString(), rows, columns, "integer", 6, false);
                             break;
 
                         case 4: //D - Série do veículo*
+                            serieVeiculo = row[column].ToString();
                             Campos_validar_gerenciar("Série do veículo", row[column].ToString(), rows, columns, "char", 40, false);
+
+                            //excessão de tratamento
+                            if (string.IsNullOrWhiteSpace(veiculoId) && string.IsNullOrWhiteSpace(serieVeiculo))
+                            {
+                                string mensagem = "Informar ID do Veículo ou sua Série";
+                                Registro_adicionar("Erro Genérico", rows, 0, null, mensagem);
+                            }
                             break;
 
                         case 5: //E - Conta do cliente legado - sistema antigo*
-                            Campos_validar_gerenciar("Conta do cliente legado", row[column].ToString(), rows, columns, "integer", 6, false);
+                            Campos_validar_gerenciar("Conta do cliente legado", row[column].ToString(), rows, columns, "integer", 6, true);
                             break;
 
                         case 6: //F - Tipo da OS
