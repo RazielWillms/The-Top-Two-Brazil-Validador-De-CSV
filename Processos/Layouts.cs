@@ -488,6 +488,7 @@ namespace ValidarCSV
             {
                 int columns = 1;
 
+                //variáveis para analisar excessão
                 string serieVeiculo = null;
                 string veiculoId = null;
 
