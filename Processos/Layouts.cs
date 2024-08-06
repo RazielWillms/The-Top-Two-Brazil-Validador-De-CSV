@@ -900,8 +900,8 @@ namespace ValidarCSV
                             Campos_validar_gerenciar("Data da aquisição", row[column].ToString(), rows, columns, "date", 10, true);
                             break;
 
-                        case 7: // G - Centro de Custo
-                            Campos_validar_gerenciar("Centro de Custo", row[column].ToString(), rows, columns, "char", 6, false);
+                        case 7: // G - Centro de Custo*
+                            Campos_validar_gerenciar("Centro de Custo", row[column].ToString(), rows, columns, "char", 6, true);
                             break;
 
                         case 8: // H - % de Depreciação do Item
@@ -1749,74 +1749,70 @@ namespace ValidarCSV
                             Campos_validar_gerenciar("Grupo ID", row[column].ToString(), rows, columns, "nivel", 8, true);
                             break;
 
-                        case 2: // B - Grupo Solution*
-                            Campos_validar_gerenciar("Grupo Solution", row[column].ToString(), rows, columns, "nivel", 8, true);
-                            break;
-
-                        case 3: // C - Descrição*
+                        case 2: // C - Descrição*
                             Campos_validar_gerenciar("Descrição", row[column].ToString(), rows, columns, "char", 60, true);
                             break;
 
-                        case 4: // D - Situação*
+                        case 3: // D - Situação*
                             Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Situacao_grupos), false);
                             break;
 
-                        case 5: // E - Área*
+                        case 4: // E - Área*
                             Campos_validar_gerenciar("Área", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Area), false);
                             break;
 
-                        case 6: // F - Coeficiente mínimo
+                        case 5: // F - Coeficiente mínimo
                             Campos_validar_gerenciar("Coeficiente mínimo", row[column].ToString(), rows, columns, "numeric", 7.4, false);
                             break;
 
-                        case 7: // G - ID do centro de custo
+                        case 6: // G - ID do centro de custo
                             Campos_validar_gerenciar("ID do centro de custo", row[column].ToString(), rows, columns, "integer", 6, false);
                             break;
 
-                        case 8: // H - Margem de lucro
+                        case 7: // H - Margem de lucro
                             Campos_validar_gerenciar("Margem de lucro", row[column].ToString(), rows, columns, "numeric", 8.4, false);
                             break;
 
-                        case 9: // I - Tipo
+                        case 8: // I - Tipo
                             Campos_validar_gerenciar("Tipo", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_grupo), false);
                             break;
 
-                        case 10: // J - Inutilizado
+                        case 9: // J - Inutilizado
                             break;
 
-                        case 11: // K - Tipo de Calculo do Preço de Venda
+                        case 10: // K - Tipo de Calculo do Preço de Venda
                             Campos_validar_gerenciar("Tipo de Calculo do Preço de Venda", row[column].ToString(), rows, columns, "numeric", 6.2, false);
                             break;
 
-                        case 12: // L - Tipo de Cálculo do Preço de Venda Sugerido
+                        case 11: // L - Tipo de Cálculo do Preço de Venda Sugerido
                             Campos_validar_gerenciar("Tipo de Cálculo do Preço de Venda Sugerido", row[column].ToString(), rows, columns, "char", 3, false);
                             break;
 
-                        case 13: // M - Cód. Tributação Padrão
+                        case 12: // M - Cód. Tributação Padrão
                             Campos_validar_gerenciar("Cód. Tributação Padrão", row[column].ToString(), rows, columns, "char", 3, false);
                             break;
 
-                        case 14: // N - Coeficiente Preço de venda
+                        case 13: // N - Coeficiente Preço de venda
                             Campos_validar_gerenciar("Coeficiente Preço de venda", row[column].ToString(), rows, columns, "numeric", 7.4, false);
                             break;
 
-                        case 15: // P - Tipo da base do preço de venda
+                        case 14: // P - Tipo da base do preço de venda
                             Campos_validar_gerenciar("Tipo da base do preço de venda", row[column].ToString(), rows, columns, "char", 2, false);
                             break;
 
-                        case 16: // Q - Inutilizado
+                        case 15: // Q - Inutilizado
                             break;
 
-                        case 17: // R - Preço Sugerido
+                        case 16: // R - Preço Sugerido
                             Campos_validar_gerenciar("Preço Sugerido", row[column].ToString(), rows, columns, "integer", 4, false);
                             break;
 
-                        case 18: // S - Coeficiente
+                        case 17: // S - Coeficiente
                             Campos_validar_gerenciar("Coeficiente", row[column].ToString(), rows, columns, "numeric", 7.4, false);
                             break;
                     }
 
-                    if (columns > 18)
+                    if (columns > 17)
                     {
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
@@ -1846,24 +1842,20 @@ namespace ValidarCSV
                             Campos_validar_gerenciar("Grupo ID", row[column].ToString(), rows, columns, "nivel", 8, true);
                             break;
 
-                        case 2: // B - Subgrupo*
-                            Campos_validar_gerenciar("Grupo Solution", row[column].ToString(), rows, columns, "nivel", 8, true);
-                            break;
-
-                        case 3: // C - Descrição*
+                        case 2: // C - Descrição*
                             Campos_validar_gerenciar("Descrição", row[column].ToString(), rows, columns, "char", 60, true);
                             break;
 
-                        case 4: // D - Nível*
+                        case 3: // D - Nível*
                             Campos_validar_gerenciar("Nível", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Nivel), true);
                             break;
 
-                        case 5: // E - Situação*
+                        case 4: // E - Situação*
                             Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Situacao_grupos), true);
                             break;
                     }
 
-                    if (columns > 5)
+                    if (columns > 4)
                     {
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }

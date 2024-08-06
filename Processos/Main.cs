@@ -23,7 +23,7 @@ namespace ValidarCSV
             InitializeComponent();
             this.layouts.DataSource = new BindingSource(TypeExtensions.Layout_stringToEnum.Keys, null);
             registros = new List<Registro>();
-            versao.Text = "v0.11";
+            versao.Text = "v0.13";
     }
 
         private static string Numero_alfabeto_converter(int numero)
