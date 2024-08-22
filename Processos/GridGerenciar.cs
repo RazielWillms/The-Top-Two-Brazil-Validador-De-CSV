@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ValidarCSV
@@ -21,22 +22,21 @@ namespace ValidarCSV
 
             if (registros.Count == 0)
             {
-                //int mateando = random.Next(0, 100);
+                int mateando = random.Next(0, 100);
+                int[] numerosAleatorios = new int[5];
+
+                for (int i = 0; i < numerosAleatorios.Length; i++)
+                {
+                    numerosAleatorios[i] = random.Next(0, 100);
+                }
+
+                if (numerosAleatorios.Contains(mateando))
+                {
+                    TiaoMateador.Visible = true;
+                }
 
                 labellog.Text = "Nenhum erro encontrado";
                 MessageBox.Show("Nenhum erro encontrado", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                /*
-                if (mateando == 6 || mateando == 52 || mateando == 99 || mateando == 31 || mateando == 17)
-                {
-                    //DialogResult result = RJMessageBox.Show("Nenhum erro encontrado");
-                    MessageBox.Show("Nenhum erro encontrado", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else 
-                {
-                    MessageBox.Show("Nenhum erro encontrado", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                */
             }
             else
             {

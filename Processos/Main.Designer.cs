@@ -41,6 +41,7 @@ namespace ValidarCSV
             this.LayoutLabel = new System.Windows.Forms.Label();
             this.ArquivoLabel = new System.Windows.Forms.Label();
             this.panelmid = new System.Windows.Forms.Panel();
+            this.TiaoMateador = new System.Windows.Forms.PictureBox();
             this.MensagemErro = new System.Windows.Forms.TextBox();
             this.NiveisCombo = new System.Windows.Forms.ComboBox();
             this.Niveis = new System.Windows.Forms.Label();
@@ -58,6 +59,7 @@ namespace ValidarCSV
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.erroTela = new System.Windows.Forms.ErrorProvider(this.components);
             this.panelmid.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TiaoMateador)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.erroTela)).BeginInit();
@@ -156,6 +158,7 @@ namespace ValidarCSV
             // 
             // panelmid
             // 
+            this.panelmid.Controls.Add(this.TiaoMateador);
             this.panelmid.Controls.Add(this.MensagemErro);
             this.panelmid.Controls.Add(this.NiveisCombo);
             this.panelmid.Controls.Add(this.Niveis);
@@ -185,6 +188,17 @@ namespace ValidarCSV
             this.panelmid.Name = "panelmid";
             this.panelmid.Size = new System.Drawing.Size(956, 509);
             this.panelmid.TabIndex = 6;
+            // 
+            // TiaoMateador
+            // 
+            this.TiaoMateador.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.TiaoMateador.Image = ((System.Drawing.Image)(resources.GetObject("TiaoMateador.Image")));
+            this.TiaoMateador.Location = new System.Drawing.Point(509, 127);
+            this.TiaoMateador.Name = "TiaoMateador";
+            this.TiaoMateador.Size = new System.Drawing.Size(238, 242);
+            this.TiaoMateador.TabIndex = 26;
+            this.TiaoMateador.TabStop = false;
+            this.TiaoMateador.Visible = false;
             // 
             // MensagemErro
             // 
@@ -270,7 +284,7 @@ namespace ValidarCSV
             // 
             // zoom
             // 
-            this.zoom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.zoom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.zoom.AutoSize = true;
             this.zoom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -285,7 +299,7 @@ namespace ValidarCSV
             // 
             // btnZoomOut
             // 
-            this.btnZoomOut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.btnZoomOut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnZoomOut.AutoSize = true;
             this.btnZoomOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -301,7 +315,7 @@ namespace ValidarCSV
             // 
             // btnZoomIn
             // 
-            this.btnZoomIn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.btnZoomIn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnZoomIn.AutoSize = true;
             this.btnZoomIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -330,8 +344,8 @@ namespace ValidarCSV
             // 
             // grid
             // 
-            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -373,7 +387,7 @@ namespace ValidarCSV
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(355, 467);
             this.progressBar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -400,6 +414,7 @@ namespace ValidarCSV
             this.Text = "Validar CSV";
             this.panelmid.ResumeLayout(false);
             this.panelmid.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TiaoMateador)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.erroTela)).EndInit();
@@ -433,6 +448,7 @@ namespace ValidarCSV
         private System.Windows.Forms.Label Niveis;
         private System.Windows.Forms.TextBox MensagemErro;
         private ErrorProvider erroTela;
+        private PictureBox TiaoMateador;
     }
 }
 
