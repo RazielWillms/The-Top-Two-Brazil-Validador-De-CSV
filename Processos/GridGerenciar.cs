@@ -22,15 +22,15 @@ namespace ValidarCSV
 
             if (registros.Count == 0)
             {
-                int mateando = random.Next(0, 100);
-                int[] numerosAleatorios = new int[5];
+                int aleatorio = random.Next(0, 100);
+                int[] chance = new int[5];
 
-                for (int i = 0; i < numerosAleatorios.Length; i++)
+                for (int i = 0; i < chance.Length; i++)
                 {
-                    numerosAleatorios[i] = random.Next(0, 100);
+                    chance[i] = random.Next(0, 100);
                 }
 
-                if (numerosAleatorios.Contains(mateando))
+                if (chance.Contains(aleatorio))
                 {
                     TiaoMateador.Visible = true;
                 }
