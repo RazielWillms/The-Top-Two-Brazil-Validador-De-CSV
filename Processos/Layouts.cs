@@ -889,7 +889,7 @@ namespace ValidarCSV
                             break;
 
                         case 4: // D - Código da Conta (Plano de Contas)
-                            Campos_validar_gerenciar("Código da Conta (Plano de Contas)", row[column].ToString(), rows, columns, "char", 11, false);
+                            Campos_validar_gerenciar("Código da Conta (Plano de Contas)", row[column].ToString(), rows, columns, "char", 11, true);
                             break;
 
                         case 5: // E - Data do lancto*
@@ -925,7 +925,7 @@ namespace ValidarCSV
                             break;
 
                         case 13: // M - Tipo lançamento
-                            Campos_validar_gerenciar("Tipo lançamento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_lancamento), false);
+                            Campos_validar_gerenciar("Tipo lançamento", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_lancamento), true);
                             break;
 
                         case 14: // N - Tipo Baixa
@@ -1031,8 +1031,8 @@ namespace ValidarCSV
                             Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, "numeric", 6.2, true);
                             break;
 
-                        case 3: // C - Valor Original*
-                            Campos_validar_gerenciar("Valor Original", row[column].ToString(), rows, columns, "numeric", 15.2, false); //a princípio era obrigatório, mas não tem validação na conversão e cliente reclamou de gerar erro quando informado '0'
+                        case 3: // C - Valor Original* //a princípio era obrigatório, mas não tem validação na conversão e cliente reclamou de gerar erro quando informado '0'
+                            Campos_validar_gerenciar("Valor Original", row[column].ToString(), rows, columns, "numeric", 15.2, false);
                             break;
 
                         case 4: // D - Valor Original Corrigido
