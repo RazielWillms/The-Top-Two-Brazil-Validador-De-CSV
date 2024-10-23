@@ -10,6 +10,7 @@ namespace ValidarCSV
         public enum LayoutType
         {
             Indefinido,
+            Produtos,
             Maquinas,
             SaldosMaquinas,
             Adiantamentos,
@@ -32,6 +33,7 @@ namespace ValidarCSV
         {
             { "", LayoutType.Indefinido },
             { "Máquinas", LayoutType.Maquinas },
+            { "Produtos", LayoutType.Produtos },
             { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
             { "Adiantamentos", LayoutType.Adiantamentos },
             { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
@@ -54,6 +56,7 @@ namespace ValidarCSV
             var layouts = new Dictionary<LayoutType, string>
             {
                 { LayoutType.Maquinas, "Máquinas" },
+                { LayoutType.Produtos, "Produtos" },
                 { LayoutType.SaldosMaquinas, "Saldos de Máquinas" },
                 { LayoutType.Adiantamentos, "Adiantamentos" },
                 { LayoutType.OrcamentoBalcao, "Orçamento Balcão" },
@@ -79,6 +82,7 @@ namespace ValidarCSV
             var layoutTypes = new Dictionary<string, LayoutType>
             {
                 { "Máquinas", LayoutType.Maquinas },
+                { "Produtos", LayoutType.Produtos },
                 { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
                 { "Adiantamentos", LayoutType.Adiantamentos },
                 { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
@@ -135,6 +139,10 @@ namespace ValidarCSV
             Area,
             Tipo_grupo,
             Invalidos,
+            Original_paralela,
+            Tipo_sped,
+            Curva_abc,
+            Controle_estoque
         }
 
         public static readonly Dictionary<string, DominioType> Dominio_stringToEnum = new Dictionary<string, DominioType>
@@ -170,7 +178,11 @@ namespace ValidarCSV
             { "Tipo Movimentação", DominioType.Tipo_movimentacao },
             { "Área", DominioType.Area },
             { "Tipo Grupo", DominioType.Tipo_grupo },
-            { "Invalidos", DominioType.Invalidos }
+            { "Invalidos", DominioType.Invalidos },
+            { "Original ou Paralela", DominioType.Original_paralela },
+            { "Tipo Sped", DominioType.Tipo_sped },
+            { "Curva ABC", DominioType.Curva_abc },
+            { "Controle Estoque", DominioType.Controle_estoque }
         };
 
         public static void Formato_dominio_retornar(this DominioType dominioType, ref string dominio)
@@ -208,7 +220,11 @@ namespace ValidarCSV
                 { DominioType.Tipo_movimentacao, "Tipo Movimentação" },
                 { DominioType.Area, "Área" },
                 { DominioType.Tipo_grupo, "Tipo Grupo" },
-                { DominioType.Invalidos, "Invalidos" }
+                { DominioType.Invalidos, "Invalidos" },
+                { DominioType.Original_paralela, "Original ou Paralela" },
+                { DominioType.Tipo_sped, "Tipo Sped" },
+                { DominioType.Curva_abc, "Curva ABC" },
+                { DominioType.Controle_estoque, "Controle Estoque" }
             };
 
             dominio = dominios.ContainsKey(dominioType) ? dominios[dominioType] : "NULL";
@@ -248,7 +264,12 @@ namespace ValidarCSV
                 { "Tipo Item", DominioType.Tipo_item },
                 { "Tipo Movimentação", DominioType.Tipo_movimentacao },
                 { "Área", DominioType.Area },
-                { "Tipo Grupo", DominioType.Tipo_grupo }
+                { "Tipo Grupo", DominioType.Tipo_grupo },
+                { "Inválidos", DominioType.Invalidos },
+                { "Original ou Paralela", DominioType.Original_paralela },
+                { "Tipo Sped", DominioType.Tipo_sped },
+                { "Curva ABC", DominioType.Curva_abc },
+                { "Controle Estoque", DominioType.Controle_estoque }
             };
 
             dominioType = dominioTypes.ContainsKey(dominio) ? dominioTypes[dominio] : DominioType.Null;
@@ -328,6 +349,10 @@ namespace ValidarCSV
                 { 30, new List<String> { "1" } }, //dom_area
                 { 31, new List<string> { "E" } }, //dom_tipo
                 { 32, new List<string> { "#", "0", "", " ", "null", "NULL" } }, //dom_invalidos
+                { 33, new List<string> { "O", "P"} }, //dom_original_paralela
+                { 34, new List<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "99" } }, //dom_tipo_sped
+                { 35, new List<string> { "A", "B", "C"} }, //dom_curva_abc
+                { 36, new List<string> { "N", "I"} }, //dom_controle_estoque
                 
             };
 
@@ -369,7 +394,11 @@ namespace ValidarCSV
                 { DominioType.Tipo_movimentacao, 29 },
                 { DominioType.Area, 30 },
                 { DominioType.Tipo_grupo, 31 },
-                { DominioType.Invalidos, 32}
+                { DominioType.Invalidos, 32},
+                { DominioType.Original_paralela, 33},
+                { DominioType.Tipo_sped, 34},
+                { DominioType.Curva_abc, 35},
+                { DominioType.Controle_estoque, 36}
             };
 
             double dominio;

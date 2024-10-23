@@ -27,6 +27,10 @@ namespace ValidarCSV
                     Maquinas(dataTable, rows);
                     break;
 
+                case LayoutType.Produtos:
+                    Produtos(dataTable, rows);
+                    break;
+
                 case LayoutType.SaldosMaquinas:
                     Saldos_maquinas(dataTable, rows);
                     break;
@@ -205,36 +209,331 @@ namespace ValidarCSV
                             Campos_validar_gerenciar("Número de serie", row[column].ToString(), rows, columns, "char", 40, false);
                             break;
 
-                        case 25: //Y - Código antigo produto*
-                            Campos_validar_gerenciar("Código antigo produto", row[column].ToString(), rows, columns, "char", 20, true);
-                            break;
-
-                        case 26: //Z - Código Fiscal
+                        case 25: //Y - Código Fiscal
                             Campos_validar_gerenciar("Código Fiscal", row[column].ToString(), rows, columns, "char", 60, false);
                             break;
 
-                        case 27: //AB - Observação
+                        case 26: //Z - Observação
                             Campos_validar_gerenciar("Observação", row[column].ToString(), rows, columns, "char", 1200, false);
                             break;
 
-                        case 28: //AC - Controle de estoque*
+                        case 27: //AA - Controle de estoque*
                             Campos_validar_gerenciar("Controle de estoque", row[column].ToString(), rows, columns, "domino", 8, true);
                             break;
 
-                        case 29: //AD - Campo Livre
+                        case 28: //AB - Campo Livre
                             Campos_validar_gerenciar("Campo Livre", row[column].ToString(), rows, columns, "char", 60, false);
                             break;
 
-                        case 30: //AE - Filial*
+                        case 29: //AC - Filial*
                             Campos_validar_gerenciar("Filial", row[column].ToString(), rows, columns, "integer", 4, true);
                             break;
 
-                        case 31: //AF - Código bandeira*
+                        case 30: //AD - Código bandeira*
                             Campos_validar_gerenciar("Código bandeira", row[column].ToString(), rows, columns, "integer", 9, true);
+                            break;
+
+                        case 31: //AE - FINAME
+                            Campos_validar_gerenciar("FINAME", row[column].ToString(), rows, columns, "integer", 60, false);
+                            break;
+
+                        case 32: //AG - Ano Fabricação
+                            Campos_validar_gerenciar("FINAME", row[column].ToString(), rows, columns, "integer", 4, false);
                             break;
                     }
 
                     if (columns > 31)
+                    {
+                        Sobressalente_validar(rows, columns, row[column].ToString());
+                    }
+
+                    columns++;
+                }
+                Progresso_atualizar(total, rows);
+
+                rows++;
+            }
+        }
+
+        public void Produtos(DataTable dataTable, int rows)
+        {
+            int total = dataTable.Rows.Count;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int columns = 1;
+
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    switch (columns)
+                    {
+                        case 1: //A - Código do Produto*
+                            Campos_validar_gerenciar("Código do Produto", row[column].ToString(), rows, columns, "char", 20, true);
+                            break;
+
+                        case 2: //B - Descrição*
+                            Campos_validar_gerenciar("Descrição", row[column].ToString(), rows, columns, "char", 60, true);
+                            break;
+
+                        case 3: //C - Descrição adicional do item
+                            Campos_validar_gerenciar("Descrição adicional do item", row[column].ToString(), rows, columns, "char", 1200, false);
+                            break;
+
+                        case 4: //D - Tipo de mercadoria(programa de excelência em gestão)
+                            Campos_validar_gerenciar("Tipo de mercadoria", row[column].ToString(), rows, columns, "char", 60, false);
+                            break;
+
+                        case 5: //E - Marca*
+                            Campos_validar_gerenciar("Marca", row[column].ToString(), rows, columns, "char", 12, true);
+                            break;
+
+                        case 6: //F - Departamento
+                            Campos_validar_gerenciar("Departamento", row[column].ToString(), rows, columns, "char", 12, false);
+                            break;
+
+                        case 7: //G - Controla estoque
+                            Campos_validar_gerenciar("Controla estoque", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Controla_estoque), false);
+                            break;
+
+                        case 8: //H - Base de cálculo para COFINS
+                            Campos_validar_gerenciar("Base de cálculo para COFINS", row[column].ToString(), rows, columns, "char", 1, false);
+                            break;
+
+                        case 9: //I - Base de cálculo para PIS
+                            Campos_validar_gerenciar("Base de cálculo para PIS", row[column].ToString(), rows, columns, "char", 1, false);
+                            break;
+
+                        case 10: //J - Situação tributária fiscal - ICMS = CST
+                            Campos_validar_gerenciar("Base de cálculo para PIS", row[column].ToString(), rows, columns, "char", 3, false);
+                            break;
+
+                        case 11: //K - Código do grupo*
+                            Campos_validar_gerenciar("Código do grupo", row[column].ToString(), rows, columns, "integer", 10, true);
+                            break;
+
+                        case 12: //L - % IPI na venda
+                            Campos_validar_gerenciar("% IPI na venda", row[column].ToString(), rows, columns, "numeric", 6.2, false);
+                            break;
+
+                        case 13: //M - % IPI na compra (caso se credite)
+                            Campos_validar_gerenciar("% IPI na compra", row[column].ToString(), rows, columns, "numeric", 6.2, false);
+                            break;
+
+                        case 14: //N - Produto Perkins
+                            Campos_validar_gerenciar("Produto Perkins", row[column].ToString(), rows, columns, "char", 1, false);
+                            break;
+
+                        case 15: //O - Peso liquido
+                            Campos_validar_gerenciar("Peso Liquido", row[column].ToString(), rows, columns, "numeric", 12.2, false);
+                            break;
+
+                        case 16: //P - Peso bruto
+                            Campos_validar_gerenciar("Peso bruto", row[column].ToString(), rows, columns, "numeric", 12.2, false);
+                            break;
+
+                        case 17: //Q - Margem ICMS substituição (MVA)
+                            Campos_validar_gerenciar("Margem ICMS substituição (MVA)", row[column].ToString(), rows, columns, "numeric", 6.2, false);
+                            break;
+
+                        case 18: //R - % ICMS substituição
+                            Campos_validar_gerenciar("% ICMS substituição", row[column].ToString(), rows, columns, "numeric", 6.2, false);
+                            break;
+
+                        case 19: //S - Sufixo
+                            Campos_validar_gerenciar("Sufixo", row[column].ToString(), rows, columns, "char", 3, false);
+                            break;
+
+                        case 20: //T - Unidade*
+                            Campos_validar_gerenciar("Unidade", row[column].ToString(), rows, columns, "char", 2, true);
+                            break;
+
+                        case 21: //U - Aplicação
+                            Campos_validar_gerenciar("Aplicação", row[column].ToString(), rows, columns, "char", 1200, false);
+                            break;
+
+                        case 22: //V - Apelido
+                            Campos_validar_gerenciar("Apelido", row[column].ToString(), rows, columns, "char", 20, false);
+                            break;
+                         
+                        case 23: //W - % do PIS - (somente os diferentes 1,65)
+                            Campos_validar_gerenciar("% do PIS", row[column].ToString(), rows, columns, "numeric", 6.2, false);
+                            break;
+
+                        case 24: //X - % do COFINS (somente os diferentes 7,60)
+                            Campos_validar_gerenciar("% do COFINS", row[column].ToString(), rows, columns, "numeric", 6.2, false);
+                            break;
+
+                        case 25: //Y - Produto Importado ou Nacional*
+                            Campos_validar_gerenciar("Importado ou Nacional", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Importado_nacional), true);
+                            break;
+
+                        case 26: //Z - Peça original ou paralela*
+                            Campos_validar_gerenciar("Peça original ou paralela", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Original_paralela), true);
+                            break;
+
+                        case 27: //AA - Classificação
+                            Campos_validar_gerenciar("Peça original ou paralela", row[column].ToString(), rows, columns, "char", 12, false);
+                            break;
+
+                        case 28: //AB - Preço de venda
+                            Campos_validar_gerenciar("Preço de venda", row[column].ToString(), rows, columns, "numeric", 12.2, false);
+                            break;
+
+                        case 29: //AC - Preço de reposição
+                            Campos_validar_gerenciar("Preço de reposição", row[column].ToString(), rows, columns, "numeric", 12.2, false);
+                            break;
+
+                        case 30: //AD - Código de referência
+                            Campos_validar_gerenciar("Código de referência", row[column].ToString(), rows, columns, "char", 20, false);
+                            break;
+
+                        case 31: //AE - CAMPO INUTILIZADO
+                            break;
+
+                        case 32: //AF - Item similar
+                            Campos_validar_gerenciar("Item similar", row[column].ToString(), rows, columns, "char", 20, false);
+                            break;
+
+                        case 33: //AG - Estoque mínimo
+                            Campos_validar_gerenciar("Estoque mínimo", row[column].ToString(), rows, columns, "numeric", 12.2, false);
+                            break;
+
+                        case 34: //AH - Situação*
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Situacao), true);
+                            break;
+
+                        case 35: //AI - Produto usado*
+                            Campos_validar_gerenciar("Produto usado", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Usado), true);
+                            break;
+
+                        case 36: //AJ - NCM*
+                            Campos_validar_gerenciar("NCM", row[column].ToString(), rows, columns, "char", 10, true);
+                            break;
+
+                        case 37: //AK - Modelo
+                            Campos_validar_gerenciar("Modelo", row[column].ToString(), rows, columns, "char", 12, false);
+                            break;
+
+                        case 38: //AL - Data de alteração do preço de venda
+                            Campos_validar_gerenciar("Data de alteração do preço de venda", row[column].ToString(), rows, columns, "date", 0, false);
+                            break;
+
+                        case 39: //AM - Quantidade da embalagem
+                            Campos_validar_gerenciar("Quantidade da embalagem", row[column].ToString(), rows, columns, "numeric", 9.2, false);
+                            break;
+
+                        case 40: //AN - Tipo da embalagem
+                            Campos_validar_gerenciar("NCM", row[column].ToString(), rows, columns, "char", 2, false);
+                            break;
+
+                        case 41: //AO - Código interno
+                            Campos_validar_gerenciar("Código interno", row[column].ToString(), rows, columns, "integer", 9, false);
+                            break;
+
+                        case 42: //AP - Tipo SPED*
+                            Campos_validar_gerenciar("Tipo SPED", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Tipo_sped), true);
+                            break;
+
+                        case 43: //AQ - Campo Inutilizado
+                            break;
+
+                        case 44: //AR - Valor da ultima compra
+                            Campos_validar_gerenciar("Valor da ultima compra", row[column].ToString(), rows, columns, "numeric", 12.2, false);
+                            break;
+
+                        case 45: //AS - Data da ultima compra
+                            Campos_validar_gerenciar("Data da ultima compra", row[column].ToString(), rows, columns, "date", 0, false);
+                            break;
+
+                        case 46: //AT - Classificação na curva ABC
+                            Campos_validar_gerenciar("Classificação na curva ABC", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Curva_abc), false);
+                            break;
+
+                        case 47: //AU - Fornecedor “PRINCIPAL” do item
+                            Campos_validar_gerenciar("Fornecedor “PRINCIPAL” do item", row[column].ToString(), rows, columns, "char", 6, false);
+                            break;
+
+                        case 48: //AV - Código Finame do item
+                            Campos_validar_gerenciar("Código Finame do item", row[column].ToString(), rows, columns, "char", 60, false);
+                            break;
+
+                        case 49: //AW - Código GTIN do item
+                            Campos_validar_gerenciar("Código GTIN do item", row[column].ToString(), rows, columns, "char", 14, false);
+                            break;
+
+                        case 50: //AX - Código ANP
+                            Campos_validar_gerenciar("Código ANP", row[column].ToString(), rows, columns, "char", 60, false);
+                            break;
+
+                        case 51: //AY - Classe produto
+                            Campos_validar_gerenciar("Classe produto", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Classe), false);
+                            break;
+
+                        case 52: //AZ - Código base
+                            Campos_validar_gerenciar("Código base", row[column].ToString(), rows, columns, "char", 20, false);
+                            break;
+
+                        case 53: //BA - Número de serie
+                            Campos_validar_gerenciar("Número de serie", row[column].ToString(), rows, columns, "char", 40, false);
+                            break;
+
+                        case 54: //BB - CAMPO INUTILIZADO
+                            break;
+
+                        case 55: //BC - % margem de lucro
+                            Campos_validar_gerenciar("% margem de lucro", row[column].ToString(), rows, columns, "numeric", 8.4, false);
+                            break;
+
+                        case 56: //BD - Código Tipo de cálculo de venda
+                            Campos_validar_gerenciar("Código Tipo de cálculo de venda", row[column].ToString(), rows, columns, "char", 4, false);
+                            break;
+
+                        case 57: //BE - Código produto único
+                            Campos_validar_gerenciar("Código produto único", row[column].ToString(), rows, columns, "char", 60, false);
+                            break;
+
+                        case 58: //BF - Preço garantia
+                            Campos_validar_gerenciar("Preço garantia", row[column].ToString(), rows, columns, "numeric", 16.3, false);
+                            break;
+
+                        case 59: //BG - Código bandeira
+                            Campos_validar_gerenciar("Código bandeira", row[column].ToString(), rows, columns, "integer", 4, false);
+                            break;
+
+                        case 60: //BH - Código antigo produto*
+                            Campos_validar_gerenciar("Código antigo produto", row[column].ToString(), rows, columns, "char", 20, false);
+                            break;
+
+                        case 61: //BI - Código produto substituto
+                            Campos_validar_gerenciar("Código bandeira", row[column].ToString(), rows, columns, "char", 20, false);
+                            break;
+
+                        case 62: //BJ - Preço de lista
+                            Campos_validar_gerenciar("Preço de lista", row[column].ToString(), rows, columns, "numeric", 16.2, false);
+                            break;
+
+                        case 63: //BK - Data de cadastro produto
+                            Campos_validar_gerenciar("Data de cadastro produto", row[column].ToString(), rows, columns, "date", 0, false);
+                            break;
+
+                        case 64: //BL - Código Fiscal
+                            Campos_validar_gerenciar("Código Fiscal", row[column].ToString(), rows, columns, "char", 60, false);
+                            break;
+
+                        case 65: //BM - Código de barras
+                            Campos_validar_gerenciar("Código de barras", row[column].ToString(), rows, columns, "char", 50, false);
+                            break;
+
+                        case 66: //BN - Observação
+                            Campos_validar_gerenciar("Observação", row[column].ToString(), rows, columns, "char", 1200, false);
+                            break;
+
+                        case 67: //BO - Controle de estoque
+                            Campos_validar_gerenciar("Controle de estoque", row[column].ToString(), rows, columns, "dominio", Dominio_retornar(DominioType.Controle_estoque), false);
+                            break;
+                    }
+
+                    if (columns > 67)
                     {
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
