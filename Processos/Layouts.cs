@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using static ValidarCSV.TypeExtensions;
@@ -874,6 +875,9 @@ namespace ValidarCSV
 
         public void Imobilizado_itens(DataTable dataTable, int rows)
         {
+            // Dicionário para armazenar o código do item e a linha onde ele apareceu pela primeira vez
+            Dictionary<string, int> listaCodItem = new Dictionary<string, int>();
+
             int total = dataTable.Rows.Count;
 
             foreach (DataRow row in dataTable.Rows)
@@ -893,6 +897,22 @@ namespace ValidarCSV
                             break;
 
                         case 3: // C - Código do Item*
+
+                            string codigoItem = row[column].ToString();
+
+                            // Verifica se o código do item já existe
+                            if (!listaCodItem.ContainsKey(codigoItem))
+                            {
+                                // Armazena o código do item e a linha atual
+                                listaCodItem[codigoItem] = rows;
+                            }
+                            else
+                            {
+                                // Recupera a linha original onde o código foi encontrado
+                                int linhaOriginal = listaCodItem[codigoItem];
+                                Registro_adicionar("Código do Item", rows, columns, codigoItem, $"Não é permitido repetir códigos entre itens, confira as linhas: {linhaOriginal} e {rows}");
+                            }
+
                             Campos_validar_gerenciar("Código do Item", row[column].ToString(), rows, columns, TipoCampoType.Numeric, 6.2, true);
                             break;
 
