@@ -11,21 +11,21 @@ namespace ValidarCSV
 {
     public partial class Main : Form
     {
-        public void Campos_validar_gerenciar(string tabela, string campo, int linha, int coluna, string tipo, double tamanho_formato, Boolean obrigatorio)
+        public void Campos_validar_gerenciar(string tabela, string campo, int linha, int coluna, TipoCampoType tipo, double tamanho_formato, Boolean obrigatorio)
         {
             string mensagem = string.Empty;
             bool valido = true;
 
-            if (Obrigatorio_validar(campo, tipo, obrigatorio, ref mensagem))
+            if (Obrigatorio_validar(campo, tipo, obrigatorio, ref mensagem) && tipo != TipoCampoType.Dominio)
             {
                 Registro_adicionar(tabela, linha, coluna, campo, mensagem);
                 return;
             }
 
-            switch (tipo.ToLower())
+            switch (tipo)
             {
                 //campos padrão
-                case "char":
+                case TipoCampoType.Character:
                     Char_validar(campo, tamanho_formato, ref mensagem, ref valido);
                     if (!valido)
                     {
@@ -33,7 +33,7 @@ namespace ValidarCSV
                     }
                     break;
 
-                case "numeric":
+                case TipoCampoType.Numeric:
                     Numeric_validar(campo.Trim(), tamanho_formato, ref mensagem, ref valido);
                     if (!valido)
                     {
@@ -41,7 +41,7 @@ namespace ValidarCSV
                     }
                     break;
 
-                case "integer":
+                case TipoCampoType.Integer:
                     Integer_validar(campo, tamanho_formato, ref mensagem, ref valido);
                     if (!valido)
                     {
@@ -49,7 +49,7 @@ namespace ValidarCSV
                     }
                     break;
 
-                case "date":
+                case TipoCampoType.Date:
                     Date_validar(campo.Trim(), ref mensagem, ref valido);
                     if (!valido)
                     {
@@ -57,7 +57,8 @@ namespace ValidarCSV
                     }
                     break;
 
-                case "date_format":
+                //Campos 'especiais'
+                case TipoCampoType.DateFormat:
                     Date_formato_validar(campo.Trim(), Formato_date_retornar(tamanho_formato), ref mensagem, ref valido);
                     if (!valido)
                     {
@@ -65,8 +66,7 @@ namespace ValidarCSV
                     }
                     break;
 
-                //Campos 'especiais'
-                case "nivel": //Grupos e Subgrupos
+                case TipoCampoType.Nivel: //Grupos e Subgrupos
                     Nivel_validar(campo.Trim(), tamanho_formato, ref mensagem, ref valido);
                     if (!valido)
                     {
@@ -74,7 +74,7 @@ namespace ValidarCSV
                     }
                     break;
 
-                case "dominio": //provindos de enum do genexus
+                case TipoCampoType.Dominio: //provindos de enum do genexus
                     Dominio_validar(campo, tamanho_formato, obrigatorio, ref mensagem, ref valido);
                     if (!valido)
                     {
@@ -88,7 +88,7 @@ namespace ValidarCSV
             }
         }
 
-        public bool Obrigatorio_validar(string campo, string tipo, bool obrigatorio, ref string mensagem)
+        public bool Obrigatorio_validar(string campo, TipoCampoType tipo, bool obrigatorio, ref string mensagem)
         {
             if (!obrigatorio)
             {
@@ -97,7 +97,7 @@ namespace ValidarCSV
 
             mensagem = string.Empty;
 
-            if (tipo == "integer" || tipo == "numeric" || tipo == "nivel")
+            if (tipo == TipoCampoType.Integer || tipo == TipoCampoType.Numeric || tipo == TipoCampoType.Nivel)
             {
                 if (!Int32.TryParse(campo, out _) && !decimal.TryParse(campo, out _))
                 {

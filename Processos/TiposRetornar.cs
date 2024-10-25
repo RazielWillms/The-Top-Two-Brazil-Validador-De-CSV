@@ -7,6 +7,66 @@ namespace ValidarCSV
 {
     public static class TypeExtensions
     {
+
+        public enum TipoCampoType
+        {
+            Indefinido,
+            Character,
+            Integer,
+            Numeric,
+            Date,
+            //campos especiais
+            DateFormat,
+            Dominio,
+            Nivel,
+        }
+
+        public static readonly Dictionary<string, TipoCampoType> TipoCampoType_stringToEnum = new Dictionary<string, TipoCampoType>
+        {
+            { "", TipoCampoType.Indefinido },
+            { "Character", TipoCampoType.Character },
+            { "Inteiro", TipoCampoType.Integer },
+            { "Numérico", TipoCampoType.Numeric },
+            { "Data", TipoCampoType.Date },
+            { "Data Específica", TipoCampoType.DateFormat },
+            { "Orçamento Oficina", TipoCampoType.Dominio },
+            { "Estatísticas", TipoCampoType.Nivel }
+        };
+
+        public static void TipoCampo_string_retornar(this TipoCampoType tipoCampoType, ref string tipoCampo)
+        {
+            var tipoCampos = new Dictionary<TipoCampoType, string>
+            {
+                { TipoCampoType.Indefinido, "" },
+                { TipoCampoType.Character, "Character" },
+                { TipoCampoType.Integer, "Inteiro" },
+                { TipoCampoType.Numeric, "Numérico" },
+                { TipoCampoType.Date, "Data" },
+                { TipoCampoType.DateFormat, "Data Específica" },
+                { TipoCampoType.Dominio, "Orçamento Oficina" },
+                { TipoCampoType.Nivel, "Estatísticas" }
+            };
+
+            tipoCampo = tipoCampos.ContainsKey(tipoCampoType) ? tipoCampos[tipoCampoType] : "NULL";
+        }
+
+        public static void TipoCampo_enum_retornar(string tipoCampoType, ref TipoCampoType tipoCampo)
+        {
+            var tipoCampos = new Dictionary<string, TipoCampoType>
+            {
+                { "", TipoCampoType.Indefinido },
+                { "Character", TipoCampoType.Character },
+                { "Inteiro", TipoCampoType.Integer },
+                { "Numérico", TipoCampoType.Numeric },
+                { "Data", TipoCampoType.Date },
+                { "Data Específica", TipoCampoType.DateFormat },
+                { "Orçamento Oficina", TipoCampoType.Dominio },
+                { "Estatísticas", TipoCampoType.Nivel }
+            };
+
+            tipoCampo = tipoCampos.ContainsKey(tipoCampoType) ? tipoCampos[tipoCampoType] : TipoCampoType.Indefinido;
+        }
+
         public enum LayoutType
         {
             Indefinido,
