@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Globalization;
 using static ValidarCSV.TypeExtensions;
+using System.Linq;
 
 namespace ValidarCSV
 {
@@ -16,7 +17,7 @@ namespace ValidarCSV
             string mensagem = string.Empty;
             bool valido = true;
 
-            if (Obrigatorio_validar(campo, tipo, obrigatorio, ref mensagem) && tipo != TipoCampoType.Dominio)
+            if (Obrigatorio_validar(campo, tipo, obrigatorio, tamanho_formato, ref mensagem))
             {
                 Registro_adicionar(tabela, linha, coluna, campo, mensagem);
                 return;
@@ -88,7 +89,7 @@ namespace ValidarCSV
             }
         }
 
-        public bool Obrigatorio_validar(string campo, TipoCampoType tipo, bool obrigatorio, ref string mensagem)
+        public bool Obrigatorio_validar(string campo, TipoCampoType tipo, bool obrigatorio, double tamanho_formato, ref string mensagem)
         {
             if (!obrigatorio)
             {
@@ -110,9 +111,23 @@ namespace ValidarCSV
             }
 
             List<string> invalidos = Dominio_lista_retornar(Dominio_retornar(DominioType.Invalidos));
-            if (string.IsNullOrEmpty(mensagem) && (invalidos.Contains(campo.Trim())))
+
+            if (tipo == TipoCampoType.Dominio)
             {
-                mensagem = "Campo obrigatório";
+                List<string> dominio = Dominio_lista_retornar(tamanho_formato);
+                List<string> dominioResultado = invalidos.Except(dominio).ToList();
+
+                if (dominioResultado.Contains(campo.Trim()))
+                {
+                    mensagem = "Campo obrigatório";
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(mensagem) && (invalidos.Contains(campo.Trim())))
+                {
+                    mensagem = "Campo obrigatório";
+                }
             }
 
             if (string.IsNullOrEmpty(mensagem) && string.IsNullOrEmpty(campo))
