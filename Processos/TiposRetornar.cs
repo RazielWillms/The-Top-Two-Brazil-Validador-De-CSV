@@ -67,6 +67,38 @@ namespace ValidarCSV
             tipoCampo = tipoCampos.ContainsKey(tipoCampoType) ? tipoCampos[tipoCampoType] : TipoCampoType.Indefinido;
         }
 
+        public enum CabecalhoType
+        { 
+            Indefinido,
+            Auto,
+            Sim,
+            Nao,
+        };
+
+        public static readonly Dictionary<string, CabecalhoType> Cabecalho_stringToEnum = new Dictionary<string, CabecalhoType>
+        {
+            { "", CabecalhoType.Indefinido},
+            { "Auto", CabecalhoType.Auto},
+            { "Sim", CabecalhoType.Sim},
+            { "Não", CabecalhoType.Nao},
+        };
+
+
+        public static int Indice_Cabecalho_Retornar(CabecalhoType cabecalho)
+        {
+            var indices = new Dictionary<CabecalhoType, int>
+
+            {
+                { CabecalhoType.Indefinido, 1 },
+                { CabecalhoType.Sim, 2 },
+                { CabecalhoType.Nao, 3 },
+                { CabecalhoType.Auto, 4 },
+            };
+
+            return indices.ContainsKey(cabecalho) ? indices[cabecalho] : 0;
+        }
+
+
         public enum LayoutType
         {
             Indefinido,
@@ -92,8 +124,8 @@ namespace ValidarCSV
         public static readonly Dictionary<string, LayoutType> Layout_stringToEnum = new Dictionary<string, LayoutType>
         {
             { "", LayoutType.Indefinido },
-            { "Máquinas", LayoutType.Maquinas },
             { "Produtos", LayoutType.Produtos },
+            { "Máquinas", LayoutType.Maquinas },
             { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
             { "Adiantamentos", LayoutType.Adiantamentos },
             { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
@@ -115,8 +147,8 @@ namespace ValidarCSV
         {
             var layouts = new Dictionary<LayoutType, string>
             {
-                { LayoutType.Maquinas, "Máquinas" },
                 { LayoutType.Produtos, "Produtos" },
+                { LayoutType.Maquinas, "Máquinas" },
                 { LayoutType.SaldosMaquinas, "Saldos de Máquinas" },
                 { LayoutType.Adiantamentos, "Adiantamentos" },
                 { LayoutType.OrcamentoBalcao, "Orçamento Balcão" },
@@ -141,8 +173,8 @@ namespace ValidarCSV
         {
             var layoutTypes = new Dictionary<string, LayoutType>
             {
-                { "Máquinas", LayoutType.Maquinas },
                 { "Produtos", LayoutType.Produtos },
+                { "Máquinas", LayoutType.Maquinas },
                 { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
                 { "Adiantamentos", LayoutType.Adiantamentos },
                 { "Orçamento Balcão", LayoutType.OrcamentoBalcao },

@@ -477,6 +477,7 @@ namespace ValidarCSV
 
                     if (columns > 19)
                     {
+                        Mensagem_exibir("Valor 2: " + row[column].ToString(), false);
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 

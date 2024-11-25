@@ -23,7 +23,7 @@ namespace ValidarCSV
             if (registros.Count == 0)
             {
                 int aleatorio = random.Next(0, 100);
-                int[] chance = new int[5];
+                int[] chance = new int[10];
 
                 for (int i = 0; i < chance.Length; i++)
                 {
@@ -81,7 +81,7 @@ namespace ValidarCSV
 
         private void Zoom_grid_criar()
         {
-            Zoom_grid_limpar();
+            //Zoom_grid_limpar();
 
             btnZoomIn.Visible = true;
             btnZoomOut.Visible = true;

@@ -28,64 +28,41 @@ namespace ValidarCSV
                 //campos padrão
                 case TipoCampoType.Character:
                     Char_validar(campo, tamanho_formato, ref mensagem, ref valido);
-                    if (!valido)
-                    {
-                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
-                    }
                     break;
 
                 case TipoCampoType.Numeric:
                     Numeric_validar(campo.Trim(), tamanho_formato, ref mensagem, ref valido);
-                    if (!valido)
-                    {
-                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
-                    }
                     break;
 
                 case TipoCampoType.Integer:
                     Integer_validar(campo, tamanho_formato, ref mensagem, ref valido);
-                    if (!valido)
-                    {
-                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
-                    }
                     break;
 
                 case TipoCampoType.Date:
                     Date_validar(campo.Trim(), ref mensagem, ref valido);
-                    if (!valido)
-                    {
-                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
-                    }
                     break;
 
                 //Campos 'especiais'
                 case TipoCampoType.DateFormat:
                     Date_formato_validar(campo.Trim(), Formato_date_retornar(tamanho_formato), ref mensagem, ref valido);
-                    if (!valido)
-                    {
-                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
-                    }
                     break;
 
                 case TipoCampoType.Nivel: //Grupos e Subgrupos
                     Nivel_validar(campo.Trim(), tamanho_formato, ref mensagem, ref valido);
-                    if (!valido)
-                    {
-                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
-                    }
                     break;
 
                 case TipoCampoType.Dominio: //provindos de enum do genexus
                     Dominio_validar(campo, tamanho_formato, obrigatorio, ref mensagem, ref valido);
-                    if (!valido)
-                    {
-                        Registro_adicionar(tabela, linha, coluna, campo, mensagem);
-                    }
                     break;
 
                 default:
                     Registro_adicionar(tabela, linha, coluna, campo, "Validação falhou, conferir manualmente");
                     break;
+            }
+
+            if (!valido)
+            {
+                Registro_adicionar(tabela, linha, coluna, campo, mensagem);
             }
         }
 
@@ -255,7 +232,7 @@ namespace ValidarCSV
 
             if (!valido)
             {
-                mensagem = "Deve estar em um formato de data válido, conforme layout: " + formato;
+                mensagem = "Deve estar em um formato de data válido, conforme layout: " + formato.ToUpper().Trim();
             }
         }
 
@@ -301,7 +278,7 @@ namespace ValidarCSV
             List<string> invalidos = Dominio_lista_retornar(Dominio_retornar(DominioType.Invalidos));
             if (!string.IsNullOrEmpty(campo) || !invalidos.Contains(campo.Trim()))
             {
-                Registro_adicionar("Erro genérico", rows, columns, campo, "Excedeu o número de colunas");
+                Registro_adicionar("Erro genérico", rows, columns, campo, "Excedeu o número de colunas do cabeçalho");
             }
         }
     }

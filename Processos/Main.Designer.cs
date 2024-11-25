@@ -41,6 +41,8 @@ namespace ValidarCSV
             this.LayoutLabel = new System.Windows.Forms.Label();
             this.ArquivoLabel = new System.Windows.Forms.Label();
             this.panelmid = new System.Windows.Forms.Panel();
+            this.CabecalhoLabel = new System.Windows.Forms.Label();
+            this.Cabecalho = new System.Windows.Forms.ComboBox();
             this.TiaoMateador = new System.Windows.Forms.PictureBox();
             this.MensagemErro = new System.Windows.Forms.TextBox();
             this.NiveisCombo = new System.Windows.Forms.ComboBox();
@@ -68,10 +70,10 @@ namespace ValidarCSV
             // excel
             // 
             this.excel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.excel.Location = new System.Drawing.Point(105, 311);
-            this.excel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.excel.Location = new System.Drawing.Point(79, 274);
+            this.excel.Margin = new System.Windows.Forms.Padding(2);
             this.excel.Name = "excel";
-            this.excel.Size = new System.Drawing.Size(85, 30);
+            this.excel.Size = new System.Drawing.Size(64, 24);
             this.excel.TabIndex = 1;
             this.excel.Text = "Exportar";
             this.excel.UseVisualStyleBackColor = true;
@@ -83,19 +85,20 @@ namespace ValidarCSV
             this.labellog.AutoSize = true;
             this.labellog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labellog.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.labellog.Location = new System.Drawing.Point(351, 22);
+            this.labellog.Location = new System.Drawing.Point(263, 18);
+            this.labellog.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labellog.Name = "labellog";
-            this.labellog.Size = new System.Drawing.Size(86, 20);
+            this.labellog.Size = new System.Drawing.Size(74, 17);
             this.labellog.TabIndex = 5;
             this.labellog.Text = "Registro:";
             // 
             // validar
             // 
             this.validar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.validar.Location = new System.Drawing.Point(12, 311);
-            this.validar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.validar.Location = new System.Drawing.Point(9, 274);
+            this.validar.Margin = new System.Windows.Forms.Padding(2);
             this.validar.Name = "validar";
-            this.validar.Size = new System.Drawing.Size(87, 30);
+            this.validar.Size = new System.Drawing.Size(65, 24);
             this.validar.TabIndex = 6;
             this.validar.Text = "Validar";
             this.validar.UseVisualStyleBackColor = true;
@@ -105,19 +108,19 @@ namespace ValidarCSV
             // 
             this.layouts.BackColor = System.Drawing.SystemColors.Control;
             this.layouts.FormattingEnabled = true;
-            this.layouts.Location = new System.Drawing.Point(12, 48);
-            this.layouts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.layouts.Location = new System.Drawing.Point(9, 39);
+            this.layouts.Margin = new System.Windows.Forms.Padding(2);
             this.layouts.Name = "layouts";
-            this.layouts.Size = new System.Drawing.Size(321, 24);
+            this.layouts.Size = new System.Drawing.Size(242, 21);
             this.layouts.TabIndex = 5;
             this.layouts.TextChanged += new System.EventHandler(this.Layout_selecionado);
             // 
             // btnSelectFile
             // 
-            this.btnSelectFile.Location = new System.Drawing.Point(12, 112);
-            this.btnSelectFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSelectFile.Location = new System.Drawing.Point(9, 91);
+            this.btnSelectFile.Margin = new System.Windows.Forms.Padding(2);
             this.btnSelectFile.Name = "btnSelectFile";
-            this.btnSelectFile.Size = new System.Drawing.Size(84, 23);
+            this.btnSelectFile.Size = new System.Drawing.Size(63, 19);
             this.btnSelectFile.TabIndex = 1;
             this.btnSelectFile.Text = "Escolher";
             this.btnSelectFile.UseVisualStyleBackColor = true;
@@ -127,11 +130,11 @@ namespace ValidarCSV
             // 
             this.txtFilePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFilePath.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.txtFilePath.Location = new System.Drawing.Point(102, 112);
-            this.txtFilePath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtFilePath.Location = new System.Drawing.Point(76, 91);
+            this.txtFilePath.Margin = new System.Windows.Forms.Padding(2);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.ReadOnly = true;
-            this.txtFilePath.Size = new System.Drawing.Size(231, 22);
+            this.txtFilePath.Size = new System.Drawing.Size(174, 19);
             this.txtFilePath.TabIndex = 2;
             // 
             // LayoutLabel
@@ -139,9 +142,10 @@ namespace ValidarCSV
             this.LayoutLabel.AutoSize = true;
             this.LayoutLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LayoutLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.LayoutLabel.Location = new System.Drawing.Point(8, 22);
+            this.LayoutLabel.Location = new System.Drawing.Point(6, 18);
+            this.LayoutLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LayoutLabel.Name = "LayoutLabel";
-            this.LayoutLabel.Size = new System.Drawing.Size(71, 20);
+            this.LayoutLabel.Size = new System.Drawing.Size(62, 17);
             this.LayoutLabel.TabIndex = 0;
             this.LayoutLabel.Text = "Layout:";
             // 
@@ -150,14 +154,17 @@ namespace ValidarCSV
             this.ArquivoLabel.AutoSize = true;
             this.ArquivoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ArquivoLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ArquivoLabel.Location = new System.Drawing.Point(9, 86);
+            this.ArquivoLabel.Location = new System.Drawing.Point(7, 70);
+            this.ArquivoLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ArquivoLabel.Name = "ArquivoLabel";
-            this.ArquivoLabel.Size = new System.Drawing.Size(78, 20);
+            this.ArquivoLabel.Size = new System.Drawing.Size(68, 17);
             this.ArquivoLabel.TabIndex = 0;
             this.ArquivoLabel.Text = "Arquivo:";
             // 
             // panelmid
             // 
+            this.panelmid.Controls.Add(this.CabecalhoLabel);
+            this.panelmid.Controls.Add(this.Cabecalho);
             this.panelmid.Controls.Add(this.TiaoMateador);
             this.panelmid.Controls.Add(this.MensagemErro);
             this.panelmid.Controls.Add(this.NiveisCombo);
@@ -184,27 +191,52 @@ namespace ValidarCSV
             this.panelmid.Controls.Add(this.btnSelectFile);
             this.panelmid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelmid.Location = new System.Drawing.Point(0, 0);
-            this.panelmid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panelmid.Margin = new System.Windows.Forms.Padding(2);
             this.panelmid.Name = "panelmid";
-            this.panelmid.Size = new System.Drawing.Size(956, 509);
+            this.panelmid.Size = new System.Drawing.Size(717, 414);
             this.panelmid.TabIndex = 6;
+            // 
+            // CabecalhoLabel
+            // 
+            this.CabecalhoLabel.AutoSize = true;
+            this.CabecalhoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CabecalhoLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.CabecalhoLabel.Location = new System.Drawing.Point(8, 119);
+            this.CabecalhoLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.CabecalhoLabel.Name = "CabecalhoLabel";
+            this.CabecalhoLabel.Size = new System.Drawing.Size(155, 17);
+            this.CabecalhoLabel.TabIndex = 28;
+            this.CabecalhoLabel.Text = "Contém cabeçalho?:";
+            // 
+            // Cabecalho
+            // 
+            this.Cabecalho.BackColor = System.Drawing.SystemColors.Control;
+            this.Cabecalho.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Cabecalho.FormattingEnabled = true;
+            this.Cabecalho.Location = new System.Drawing.Point(10, 140);
+            this.Cabecalho.Margin = new System.Windows.Forms.Padding(2);
+            this.Cabecalho.Name = "Cabecalho";
+            this.Cabecalho.Size = new System.Drawing.Size(242, 21);
+            this.Cabecalho.TabIndex = 27;
             // 
             // TiaoMateador
             // 
             this.TiaoMateador.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.TiaoMateador.Image = ((System.Drawing.Image)(resources.GetObject("TiaoMateador.Image")));
-            this.TiaoMateador.Location = new System.Drawing.Point(509, 127);
+            this.TiaoMateador.Location = new System.Drawing.Point(382, 103);
+            this.TiaoMateador.Margin = new System.Windows.Forms.Padding(2);
             this.TiaoMateador.Name = "TiaoMateador";
-            this.TiaoMateador.Size = new System.Drawing.Size(238, 242);
+            this.TiaoMateador.Size = new System.Drawing.Size(178, 197);
             this.TiaoMateador.TabIndex = 26;
             this.TiaoMateador.TabStop = false;
             this.TiaoMateador.Visible = false;
             // 
             // MensagemErro
             // 
-            this.MensagemErro.Location = new System.Drawing.Point(15, 390);
+            this.MensagemErro.Location = new System.Drawing.Point(11, 328);
+            this.MensagemErro.Margin = new System.Windows.Forms.Padding(2);
             this.MensagemErro.Name = "MensagemErro";
-            this.MensagemErro.Size = new System.Drawing.Size(318, 22);
+            this.MensagemErro.Size = new System.Drawing.Size(240, 20);
             this.MensagemErro.TabIndex = 25;
             this.MensagemErro.Visible = false;
             // 
@@ -215,9 +247,10 @@ namespace ValidarCSV
             "2 (Grupo/SubGrupo)",
             "3 (Grupo/Subgrupo/Segmento)",
             "4 (Grupo/Subgrupo/Segmento/SubSegmento)"});
-            this.NiveisCombo.Location = new System.Drawing.Point(12, 198);
+            this.NiveisCombo.Location = new System.Drawing.Point(9, 190);
+            this.NiveisCombo.Margin = new System.Windows.Forms.Padding(2);
             this.NiveisCombo.Name = "NiveisCombo";
-            this.NiveisCombo.Size = new System.Drawing.Size(321, 24);
+            this.NiveisCombo.Size = new System.Drawing.Size(242, 21);
             this.NiveisCombo.TabIndex = 24;
             this.NiveisCombo.Visible = false;
             this.NiveisCombo.TextChanged += new System.EventHandler(this.NiveisCombo_selecionado);
@@ -227,9 +260,10 @@ namespace ValidarCSV
             this.Niveis.AutoSize = true;
             this.Niveis.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Niveis.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Niveis.Location = new System.Drawing.Point(11, 172);
+            this.Niveis.Location = new System.Drawing.Point(7, 170);
+            this.Niveis.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Niveis.Name = "Niveis";
-            this.Niveis.Size = new System.Drawing.Size(173, 20);
+            this.Niveis.Size = new System.Drawing.Size(148, 17);
             this.Niveis.TabIndex = 23;
             this.Niveis.Text = "Níveis da Empresa:";
             this.Niveis.Visible = false;
@@ -241,9 +275,10 @@ namespace ValidarCSV
             "SubGrupo",
             "Segmento",
             "SubSegmento"});
-            this.NivelCombo.Location = new System.Drawing.Point(12, 259);
+            this.NivelCombo.Location = new System.Drawing.Point(9, 240);
+            this.NivelCombo.Margin = new System.Windows.Forms.Padding(2);
             this.NivelCombo.Name = "NivelCombo";
-            this.NivelCombo.Size = new System.Drawing.Size(321, 24);
+            this.NivelCombo.Size = new System.Drawing.Size(242, 21);
             this.NivelCombo.TabIndex = 22;
             this.NivelCombo.Visible = false;
             // 
@@ -252,9 +287,10 @@ namespace ValidarCSV
             this.Nivel.AutoSize = true;
             this.Nivel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Nivel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Nivel.Location = new System.Drawing.Point(11, 234);
+            this.Nivel.Location = new System.Drawing.Point(7, 219);
+            this.Nivel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Nivel.Name = "Nivel";
-            this.Nivel.Size = new System.Drawing.Size(152, 20);
+            this.Nivel.Size = new System.Drawing.Size(132, 17);
             this.Nivel.TabIndex = 21;
             this.Nivel.Text = "Nível do Arquivo:";
             this.Nivel.Visible = false;
@@ -263,10 +299,9 @@ namespace ValidarCSV
             // 
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(-13, 425);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox2.Location = new System.Drawing.Point(-10, 345);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(260, 59);
+            this.pictureBox2.Size = new System.Drawing.Size(195, 48);
             this.pictureBox2.TabIndex = 19;
             this.pictureBox2.TabStop = false;
             // 
@@ -275,10 +310,9 @@ namespace ValidarCSV
             this.versao.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.versao.AutoSize = true;
             this.versao.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.versao.Location = new System.Drawing.Point(12, 486);
-            this.versao.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.versao.Location = new System.Drawing.Point(9, 395);
             this.versao.Name = "versao";
-            this.versao.Size = new System.Drawing.Size(51, 16);
+            this.versao.Size = new System.Drawing.Size(40, 13);
             this.versao.TabIndex = 18;
             this.versao.Text = "Versão";
             // 
@@ -289,10 +323,9 @@ namespace ValidarCSV
             this.zoom.AutoSize = true;
             this.zoom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.zoom.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.zoom.Location = new System.Drawing.Point(835, 22);
-            this.zoom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.zoom.Location = new System.Drawing.Point(626, 18);
             this.zoom.Name = "zoom";
-            this.zoom.Size = new System.Drawing.Size(54, 20);
+            this.zoom.Size = new System.Drawing.Size(44, 16);
             this.zoom.TabIndex = 17;
             this.zoom.Text = "zoom";
             this.zoom.Visible = false;
@@ -304,10 +337,9 @@ namespace ValidarCSV
             this.btnZoomOut.AutoSize = true;
             this.btnZoomOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnZoomOut.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnZoomOut.Location = new System.Drawing.Point(797, 15);
-            this.btnZoomOut.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.btnZoomOut.Location = new System.Drawing.Point(598, 12);
             this.btnZoomOut.Name = "btnZoomOut";
-            this.btnZoomOut.Size = new System.Drawing.Size(22, 29);
+            this.btnZoomOut.Size = new System.Drawing.Size(17, 24);
             this.btnZoomOut.TabIndex = 16;
             this.btnZoomOut.Text = "-";
             this.btnZoomOut.Visible = false;
@@ -320,10 +352,9 @@ namespace ValidarCSV
             this.btnZoomIn.AutoSize = true;
             this.btnZoomIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnZoomIn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnZoomIn.Location = new System.Drawing.Point(906, 19);
-            this.btnZoomIn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.btnZoomIn.Location = new System.Drawing.Point(680, 15);
             this.btnZoomIn.Name = "btnZoomIn";
-            this.btnZoomIn.Size = new System.Drawing.Size(28, 29);
+            this.btnZoomIn.Size = new System.Drawing.Size(22, 24);
             this.btnZoomIn.TabIndex = 15;
             this.btnZoomIn.Text = "+";
             this.btnZoomIn.Visible = false;
@@ -335,9 +366,10 @@ namespace ValidarCSV
             this.LC.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.LC.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LC.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.LC.Location = new System.Drawing.Point(178, 138);
+            this.LC.Location = new System.Drawing.Point(134, 112);
+            this.LC.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LC.Name = "LC";
-            this.LC.Size = new System.Drawing.Size(35, 20);
+            this.LC.Size = new System.Drawing.Size(29, 17);
             this.LC.TabIndex = 12;
             this.LC.Text = "csv";
             this.LC.Visible = false;
@@ -349,12 +381,12 @@ namespace ValidarCSV
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grid.Location = new System.Drawing.Point(355, 48);
-            this.grid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grid.Location = new System.Drawing.Point(266, 39);
+            this.grid.Margin = new System.Windows.Forms.Padding(2);
             this.grid.Name = "grid";
             this.grid.RowHeadersWidth = 51;
             this.grid.RowTemplate.Height = 24;
-            this.grid.Size = new System.Drawing.Size(588, 413);
+            this.grid.Size = new System.Drawing.Size(441, 336);
             this.grid.TabIndex = 11;
             this.grid.DataSourceChanged += new System.EventHandler(this.Grid_datasource_alterado);
             // 
@@ -363,9 +395,10 @@ namespace ValidarCSV
             this.depuracao.AutoSize = true;
             this.depuracao.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.depuracao.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.depuracao.Location = new System.Drawing.Point(12, 367);
+            this.depuracao.Location = new System.Drawing.Point(9, 312);
+            this.depuracao.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.depuracao.Name = "depuracao";
-            this.depuracao.Size = new System.Drawing.Size(109, 16);
+            this.depuracao.Size = new System.Drawing.Size(91, 13);
             this.depuracao.TabIndex = 10;
             this.depuracao.Text = "DEPURAÇÃO: ";
             this.depuracao.Visible = false;
@@ -377,22 +410,23 @@ namespace ValidarCSV
             this.possuiCabecalho.CheckState = System.Windows.Forms.CheckState.Checked;
             this.possuiCabecalho.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.possuiCabecalho.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.possuiCabecalho.Location = new System.Drawing.Point(13, 141);
-            this.possuiCabecalho.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.possuiCabecalho.Location = new System.Drawing.Point(167, 117);
+            this.possuiCabecalho.Margin = new System.Windows.Forms.Padding(2);
             this.possuiCabecalho.Name = "possuiCabecalho";
-            this.possuiCabecalho.Size = new System.Drawing.Size(163, 22);
+            this.possuiCabecalho.Size = new System.Drawing.Size(136, 19);
             this.possuiCabecalho.TabIndex = 8;
             this.possuiCabecalho.Text = "Contém cabeçalho?";
             this.possuiCabecalho.UseVisualStyleBackColor = true;
+            this.possuiCabecalho.Visible = false;
             // 
             // progressBar
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(355, 467);
-            this.progressBar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar.Location = new System.Drawing.Point(266, 379);
+            this.progressBar.Margin = new System.Windows.Forms.Padding(2);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(590, 30);
+            this.progressBar.Size = new System.Drawing.Size(442, 24);
             this.progressBar.TabIndex = 7;
             this.progressBar.Visible = false;
             // 
@@ -403,13 +437,13 @@ namespace ValidarCSV
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.ClientSize = new System.Drawing.Size(956, 509);
+            this.ClientSize = new System.Drawing.Size(717, 414);
             this.Controls.Add(this.panelmid);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Main";
             this.Text = "Validar CSV";
             this.panelmid.ResumeLayout(false);
@@ -449,6 +483,8 @@ namespace ValidarCSV
         private System.Windows.Forms.TextBox MensagemErro;
         private ErrorProvider erroTela;
         private PictureBox TiaoMateador;
+        private Label CabecalhoLabel;
+        private ComboBox Cabecalho;
     }
 }
 

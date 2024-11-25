@@ -22,8 +22,10 @@ namespace ValidarCSV
         {
             InitializeComponent();
             this.layouts.DataSource = new BindingSource(TypeExtensions.Layout_stringToEnum.Keys, null);
+            this.Cabecalho.DataSource = new BindingSource(TypeExtensions.Cabecalho_stringToEnum.Keys, null);
+
             registros = new List<Registro>();
-            versao.Text = "v0.16.2";
+            versao.Text = "v0.17";
     }
 
         private static string Numero_alfabeto_converter(int numero)
@@ -95,6 +97,15 @@ namespace ValidarCSV
                 return;
             }
             erroTela.SetError(ArquivoLabel, null);
+
+            if (Cabecalho.SelectedIndex <= 0)
+            {
+                CabecalhoLabel.Focus();
+                erroTela.SetError(CabecalhoLabel, "Contém cabeçalho?");
+                erro = true;
+                return;
+            }
+            erroTela.SetError(CabecalhoLabel, null);
 
             LayoutType layoutType = LayoutType.Indefinido;
             Layout_enum_retornar(layouts.Text, ref layoutType);
@@ -168,30 +179,34 @@ namespace ValidarCSV
             using (StreamReader sr = new StreamReader(filePath))
             {
                 string[] headers = null;
-                bool possuiCabecalho = this.possuiCabecalho.Checked;
-                bool corrigido_regex = false;
+                /*bool possuiCabecalho = this.possuiCabecalho.Checked;
+
+                switch (this.Cabecalho.SelectedItem)
+                {
+                    case CabecalhoType.Sim:
+                        possuiCabecalho = true;
+                        break;
+                    case CabecalhoType.Nao:
+                        possuiCabecalho = false;
+                        break;
+                    case CabecalhoType.Auto:
+                        possuiCabecalho = this.possuiCabecalho.Checked;
+                        break;
+                }*/
 
                 string primeiraLinha = sr.ReadLine() ?? throw new InvalidOperationException("O arquivo CSV está vazio.");
 
-                // Elimina campos inúteis ao final do arquivo
-                string regex = "; {3,}"; // ponto e vírgula seguido de 3 ou mais espaços
-                if (Regex.IsMatch(primeiraLinha, regex))
-                {
-                    primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
-                    regex = ";{3,}"; // 3 ou mais ponto e vírgula seguidos
-                    primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
-                    regex = " {2,}"; // 2 ou mais espaços seguidos
-                    primeiraLinha = Regex.Replace(primeiraLinha, regex, "");
-
-                    corrigido_regex = true;
-                }
+                regex_espacos_remover(primeiraLinha);
 
                 headers = primeiraLinha.Split(';');
 
-                if (Repete_coluna(headers) || !possuiCabecalho)
+                if (Repete_coluna(headers) || Cabecalho.SelectedItem.ToString() == CabecalhoType.Nao.ToString() || Cabecalho.SelectedItem.ToString() == CabecalhoType.Auto.ToString())
                 {
-                    this.possuiCabecalho.Checked = false;
-                    possuiCabecalho = this.possuiCabecalho.Checked;
+                    if (Repete_coluna(headers) && Cabecalho.SelectedItem.ToString() == CabecalhoType.Sim.ToString())
+                    {
+                        MessageBox.Show($"Colunas duplicadas, será tratado como sem cabeçalho.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Cabecalho.SelectedIndex = Indice_Cabecalho_Retornar(CabecalhoType.Nao);
+                    }
 
                     int colunas = headers.Length;
                     headers = Enumerable.Range(1, colunas).Select(i => "Coluna " + i).ToArray();
@@ -202,7 +217,7 @@ namespace ValidarCSV
                     dataTable.Columns.Add(header);
                 }
 
-                if (!possuiCabecalho)
+                if (Cabecalho.Items.Contains(CabecalhoType.Nao) || Cabecalho.Items.Contains(CabecalhoType.Auto))
                 {
                     DataRow primeiraLinhaDataRow = dataTable.NewRow();
                     string[] primeiraLinhaDados = primeiraLinha.Split(';');
@@ -239,15 +254,7 @@ namespace ValidarCSV
                         for (int i = (headers.Length - 1); i < rows.Length; i++) //já inicia na última linha do arquivo, para poupar processamento
                         {
                             string campo = rows[i].ToString();
-                            if (corrigido_regex)
-                            {
-                                regex = "; {3,}"; // ponto e vírgula seguido de 3 ou mais espaços                                
-                                campo = Regex.Replace(campo, regex, ";");
-                                regex = ";{3,}"; // 3 ou mais ponto e vírgula seguidos
-                                campo = Regex.Replace(campo, regex, ";");
-                                regex = " {2,}"; // 2 ou mais espaços seguidos
-                                campo = Regex.Replace(campo, regex, "");
-                            }
+                            regex_espacos_remover(campo);
                             Sobressalente_validar(linha, (i + 1), campo);
                         }
                     }
@@ -262,6 +269,32 @@ namespace ValidarCSV
                 }
             }
             return dataTable;
+        }
+
+        private void regex_espacos_remover(string linha)
+        {
+            // Regex para remover espaços extras
+            string regex = @"(?<=;)\s{2,}"; // Dois ou mais espaços após um ponto e vírgula
+            if (Regex.IsMatch(linha, regex))
+            {
+                linha = Regex.Replace(linha, regex, ""); // Remove espaços extras após ponto e vírgula
+                regex = @" {2,}"; // Dois ou mais espaços em qualquer lugar da linha
+                linha = Regex.Replace(linha, regex, " "); // Substitui por um único espaço
+            }
+
+            /* //Antiga remoção de espaços ao final do arquivo
+            string regex = "; {3,}"; // ponto e vírgula seguido de 3 ou mais espaços
+            if (Regex.IsMatch(primeiraLinha, regex))
+            {
+                primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
+                regex = ";{3,}"; // 3 ou mais ponto e vírgula seguidos
+                primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
+                regex = " {2,}"; // 2 ou mais espaços seguidos
+                primeiraLinha = Regex.Replace(primeiraLinha, regex, "");
+
+                corrigido_regex = true;
+                Mensagem_exibir(primeiraLinha.ToString(), false);
+            }*/
         }
 
         static bool Repete_coluna(string[] array)
@@ -312,9 +345,8 @@ namespace ValidarCSV
 
                 // insere o cabeçalho
                 List<string[]> items = new List<string[]>
-        {
-            new string[] { "Campo", "Linha", "Coluna", "Valor", "Obs" }
-        };
+                
+                {new string[] { "Campo", "Linha", "Coluna", "Valor", "Obs" }};
 
                 // puxa da classe
                 foreach (var registro in registros)
