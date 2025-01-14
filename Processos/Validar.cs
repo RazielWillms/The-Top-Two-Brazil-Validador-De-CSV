@@ -55,6 +55,11 @@ namespace ValidarCSV
                     Dominio_validar(campo, tamanho_formato, obrigatorio, ref mensagem, ref valido);
                     break;
 
+                // Criar validação para estrutura de sintéticas
+                case TipoCampoType.Sintetica:
+                    Sintetica_validar(campo, tamanho_formato, obrigatorio, ref mensagem, ref valido);
+                    break;
+
                 default:
                     Registro_adicionar(tabela, linha, coluna, campo, "Validação falhou, conferir manualmente");
                     break;
@@ -270,6 +275,61 @@ namespace ValidarCSV
                 {
                     mensagem = $"Deve estar entre as opções: {opcoes} ou vazio.";
                 }
+            }
+        }
+
+        private void Sintetica_validar(string campo, double tamanho_formato, bool obrigatorio, ref string mensagem, ref bool valido)
+        {
+            if (campo.StartsWith(".") || campo.EndsWith("."))
+            {
+                mensagem = "Não pode haver ponto no início ou no final";
+            }
+
+            // Verificar dois pontos seguidos
+            if (campo.Contains(".."))
+            {
+                Adicionar_mensagem("Não pode haver dois pontos seguidos", ref mensagem);
+            }
+
+            // Dividir os níveis e validar individualmente
+            string[] levels = campo.Split('.');
+
+            if (levels.Length > 7)
+            {
+                Adicionar_mensagem("Mais de 7 níveis", ref mensagem);
+            }
+
+            for (int i = 0; i < levels.Length; i++)
+            {
+                // Validar o 1º, 6º e 7º nível (1 dígito apenas)
+                if ((i == 0 || i == 5 || i == 6) && !Regex.IsMatch(levels[i], @"^\d{1}$"))
+                {
+                    Adicionar_mensagem($"O nível {i + 1} deve conter exatamente 1 dígito", ref mensagem);
+                }
+
+                // Validar o 2º ao 5º nível (exatamente 2 dígitos)
+                if ((i >= 1 && i <= 4) && !Regex.IsMatch(levels[i], @"^\d{2}$"))
+                {
+                    Adicionar_mensagem($"O nível {i + 1} deve conter exatamente 2 dígitos", ref mensagem);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(mensagem))
+            {
+                valido = false;
+                return;
+            }
+        }
+
+        private void Adicionar_mensagem(string adicionar, ref string mensagem)
+        {
+            if (string.IsNullOrWhiteSpace(mensagem))
+            {
+                mensagem = adicionar;
+            }
+            else
+            {
+                mensagem += ". " + adicionar;
             }
         }
 

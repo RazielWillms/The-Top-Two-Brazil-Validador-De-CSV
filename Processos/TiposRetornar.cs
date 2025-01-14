@@ -19,6 +19,7 @@ namespace ValidarCSV
             DateFormat,
             Dominio,
             Nivel,
+            Sintetica,
         }
 
         public static readonly Dictionary<string, TipoCampoType> TipoCampoType_stringToEnum = new Dictionary<string, TipoCampoType>
@@ -30,7 +31,8 @@ namespace ValidarCSV
             { "Data", TipoCampoType.Date },
             { "Data Específica", TipoCampoType.DateFormat },
             { "Orçamento Oficina", TipoCampoType.Dominio },
-            { "Estatísticas", TipoCampoType.Nivel }
+            { "Estatísticas", TipoCampoType.Nivel },
+            { "Sintéticas", TipoCampoType.Sintetica }
         };
 
         public static void TipoCampo_string_retornar(this TipoCampoType tipoCampoType, ref string tipoCampo)
@@ -44,7 +46,8 @@ namespace ValidarCSV
                 { TipoCampoType.Date, "Data" },
                 { TipoCampoType.DateFormat, "Data Específica" },
                 { TipoCampoType.Dominio, "Orçamento Oficina" },
-                { TipoCampoType.Nivel, "Estatísticas" }
+                { TipoCampoType.Nivel, "Estatísticas" },
+                { TipoCampoType.Sintetica, "Estatísticas" }
             };
 
             tipoCampo = tipoCampos.ContainsKey(tipoCampoType) ? tipoCampos[tipoCampoType] : "NULL";
@@ -61,7 +64,8 @@ namespace ValidarCSV
                 { "Data", TipoCampoType.Date },
                 { "Data Específica", TipoCampoType.DateFormat },
                 { "Orçamento Oficina", TipoCampoType.Dominio },
-                { "Estatísticas", TipoCampoType.Nivel }
+                { "Estatísticas", TipoCampoType.Nivel },
+                { "Sintéticas", TipoCampoType.Sintetica }
             };
 
             tipoCampo = tipoCampos.ContainsKey(tipoCampoType) ? tipoCampos[tipoCampoType] : TipoCampoType.Indefinido;
@@ -104,6 +108,7 @@ namespace ValidarCSV
             Indefinido,
             Produtos,
             Maquinas,
+            MaquinasCompleto,
             SaldosMaquinas,
             Adiantamentos,
             OrcamentoBalcao,
@@ -119,6 +124,8 @@ namespace ValidarCSV
             LegadoMovimentacao,
             Grupos,
             SubGrupos,
+            Plano,
+            Contas,
         }
 
         public static readonly Dictionary<string, LayoutType> Layout_stringToEnum = new Dictionary<string, LayoutType>
@@ -126,6 +133,7 @@ namespace ValidarCSV
             { "", LayoutType.Indefinido },
             { "Produtos", LayoutType.Produtos },
             { "Máquinas", LayoutType.Maquinas },
+            { "Máquinas (Base + Individual)", LayoutType.MaquinasCompleto },
             { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
             { "Adiantamentos", LayoutType.Adiantamentos },
             { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
@@ -140,7 +148,9 @@ namespace ValidarCSV
             { "Itens de Pedidos Legados", LayoutType.LegadoPedidosItens },
             { "Movimentação Legada", LayoutType.LegadoMovimentacao },
             { "Grupos", LayoutType.Grupos },
-            { "Subgrupos", LayoutType.SubGrupos }
+            { "Subgrupos", LayoutType.SubGrupos },
+            { "Plano de Contas", LayoutType.Plano },
+            { "Contas", LayoutType.Contas },
         };
 
         public static void Layout_string_retornar(this LayoutType layoutType, ref string layout)
@@ -149,6 +159,7 @@ namespace ValidarCSV
             {
                 { LayoutType.Produtos, "Produtos" },
                 { LayoutType.Maquinas, "Máquinas" },
+                { LayoutType.MaquinasCompleto, "Máquinas (Base + Individual)" },
                 { LayoutType.SaldosMaquinas, "Saldos de Máquinas" },
                 { LayoutType.Adiantamentos, "Adiantamentos" },
                 { LayoutType.OrcamentoBalcao, "Orçamento Balcão" },
@@ -163,7 +174,9 @@ namespace ValidarCSV
                 { LayoutType.LegadoPedidosItens, "Itens de Pedidos Legados" },
                 { LayoutType.LegadoMovimentacao, "Movimentação Legada" },
                 { LayoutType.Grupos, "Grupos" },
-                { LayoutType.SubGrupos, "Subgrupos" }
+                { LayoutType.SubGrupos, "Subgrupos" },
+                { LayoutType.Plano, "Plano de Contas" },
+                { LayoutType.Contas, "Contas" }
             };
 
             layout = layouts.ContainsKey(layoutType) ? layouts[layoutType] : "NULL";
@@ -175,6 +188,7 @@ namespace ValidarCSV
             {
                 { "Produtos", LayoutType.Produtos },
                 { "Máquinas", LayoutType.Maquinas },
+                { "Máquinas (Base + Individual)", LayoutType.MaquinasCompleto },
                 { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
                 { "Adiantamentos", LayoutType.Adiantamentos },
                 { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
@@ -189,14 +203,15 @@ namespace ValidarCSV
                 { "Itens de Pedidos Legados", LayoutType.LegadoPedidosItens },
                 { "Movimentação Legada", LayoutType.LegadoMovimentacao },
                 { "Grupos", LayoutType.Grupos },
-                { "Subgrupos", LayoutType.SubGrupos }
+                { "Subgrupos", LayoutType.SubGrupos },
+                { "Plano de Contas", LayoutType.Plano },
+                { "Contas", LayoutType.Contas }
             };
 
             layoutType = layoutTypes.ContainsKey(layout) ? layoutTypes[layout] : LayoutType.Indefinido;
+
         }
 
-        //ainda não utilizado, mas visa deixar mais visual a passagem de
-        //parâmetro quando o campo for do tipo domínio
         public enum DominioType
         {
             Nivel,
@@ -207,7 +222,7 @@ namespace ValidarCSV
             Usado,
             Classe,
             Controle,
-            Tipo_adiantamento,
+            Cliente_fornecedor,
             Tipo_operacao,
             Orcamento_situacao,
             Status,
@@ -234,10 +249,20 @@ namespace ValidarCSV
             Original_paralela,
             Tipo_sped,
             Curva_abc,
-            Controle_estoque
+            Controle_estoque,
+            Sintetica_analitica,
+            Fisica_juridica,
+            Contas_situacao,
+            Tipo_contribuinte,
+            Regime_tributario,
+            Sim_nao,
+            Estado_civil,
+            Tipo_fornecedor,
+            Indicador_ie,
+            Cadite_situa
         }
 
-        public static readonly Dictionary<string, DominioType> Dominio_stringToEnum = new Dictionary<string, DominioType>
+        /*public static readonly Dictionary<string, DominioType> Dominio_stringToEnum = new Dictionary<string, DominioType>
         {
             { "Nível", DominioType.Nivel },
             { "Situação", DominioType.Situacao },
@@ -247,7 +272,7 @@ namespace ValidarCSV
             { "Usado", DominioType.Usado },
             { "Classe", DominioType.Classe },
             { "Controle", DominioType.Controle },
-            { "Tipo Adiantamento", DominioType.Tipo_adiantamento },
+            { "Tipo Adiantamento", DominioType.Cliente_fornecedor },
             { "Tipo Operação", DominioType.Tipo_operacao },
             { "Orçamento Situação", DominioType.Orcamento_situacao },
             { "Status", DominioType.Status },
@@ -274,8 +299,17 @@ namespace ValidarCSV
             { "Original ou Paralela", DominioType.Original_paralela },
             { "Tipo Sped", DominioType.Tipo_sped },
             { "Curva ABC", DominioType.Curva_abc },
-            { "Controle Estoque", DominioType.Controle_estoque }
-        };
+            { "Controle Estoque", DominioType.Controle_estoque },
+            { "Sintética ou Analítica", DominioType.Sintetica_analitica },
+            { "Física ou Jurídica", DominioType.Fisica_juridica },
+            { "Situação", DominioType.Contas_situacao },
+            { "Tipo de Contribuinte", DominioType.Tipo_contribuinte },
+            { "Regime Tributário Federal", DominioType.Regime_tributario },
+            { "Sim ou Não", DominioType.Sim_nao },
+            { "Estado Civil", DominioType.Estado_civil },
+            { "Tipo Fornecedor", DominioType.Tipo_fornecedor },
+            { "Indicador IE", DominioType.Indicador_ie }
+        };*/
 
         public static void Formato_dominio_retornar(this DominioType dominioType, ref string dominio)
         {
@@ -289,7 +323,7 @@ namespace ValidarCSV
                 { DominioType.Usado, "Usado" },
                 { DominioType.Classe, "Classe" },
                 { DominioType.Controle, "Controle" },
-                { DominioType.Tipo_adiantamento, "Tipo Adiantamento" },
+                { DominioType.Cliente_fornecedor, "Tipo Adiantamento" },
                 { DominioType.Tipo_operacao, "Tipo Operação" },
                 { DominioType.Orcamento_situacao, "Orçamento Situação" },
                 { DominioType.Status, "Status" },
@@ -316,7 +350,17 @@ namespace ValidarCSV
                 { DominioType.Original_paralela, "Original ou Paralela" },
                 { DominioType.Tipo_sped, "Tipo Sped" },
                 { DominioType.Curva_abc, "Curva ABC" },
-                { DominioType.Controle_estoque, "Controle Estoque" }
+                { DominioType.Controle_estoque, "Controle Estoque" },
+                { DominioType.Sintetica_analitica, "Sintética ou Analítica" },
+                { DominioType.Fisica_juridica, "Física ou Jurídica" },
+                { DominioType.Contas_situacao, "Situação" },
+                { DominioType.Tipo_contribuinte, "Tipo de Contribuinte" },
+                { DominioType.Regime_tributario, "Regime Tributário Federal" },
+                { DominioType.Sim_nao, "Sim ou Não" },
+                { DominioType.Estado_civil, "Estado Civil" },
+                { DominioType.Tipo_fornecedor, "Tipo Fornecedor" },
+                { DominioType.Indicador_ie, "Indicador IE" },
+                { DominioType.Cadite_situa, "Situação Cadite" }
             };
 
             dominio = dominios.ContainsKey(dominioType) ? dominios[dominioType] : "NULL";
@@ -334,7 +378,7 @@ namespace ValidarCSV
                 { "Usado", DominioType.Usado },
                 { "Classe", DominioType.Classe },
                 { "Controle", DominioType.Controle },
-                { "Tipo Adiantamento", DominioType.Tipo_adiantamento },
+                { "Tipo Adiantamento", DominioType.Cliente_fornecedor },
                 { "Tipo Operação", DominioType.Tipo_operacao },
                 { "Orçamento Situação", DominioType.Orcamento_situacao },
                 { "Status", DominioType.Status },
@@ -361,7 +405,17 @@ namespace ValidarCSV
                 { "Original ou Paralela", DominioType.Original_paralela },
                 { "Tipo Sped", DominioType.Tipo_sped },
                 { "Curva ABC", DominioType.Curva_abc },
-                { "Controle Estoque", DominioType.Controle_estoque }
+                { "Controle Estoque", DominioType.Controle_estoque },
+                { "Sintética ou Analítica", DominioType.Sintetica_analitica },
+                { "Física ou Jurídica", DominioType.Fisica_juridica },
+                { "Situação", DominioType.Contas_situacao },
+                { "Tipo de Contribuinte", DominioType.Tipo_contribuinte },
+                { "Regime Tributário Federal", DominioType.Regime_tributario },
+                { "Sim ou Não", DominioType.Sim_nao },
+                { "Estado Civil", DominioType.Estado_civil },
+                { "Tipo Fornecedor", DominioType.Tipo_fornecedor },
+                { "Indicador IE", DominioType.Indicador_ie },
+                { "Situação Cadite", DominioType.Cadite_situa }
             };
 
             dominioType = dominioTypes.ContainsKey(dominio) ? dominioTypes[dominio] : DominioType.Null;
@@ -445,6 +499,16 @@ namespace ValidarCSV
                 { 34, new List<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "99" } }, //dom_tipo_sped
                 { 35, new List<string> { "A", "B", "C"} }, //dom_curva_abc
                 { 36, new List<string> { "N", "I"} }, //dom_controle_estoque
+                { 37, new List<string> { "S", "A"} }, //dom_sintetica_analitica
+                { 38, new List<string> { "F", "J"} }, //dom_fisica_juridica
+                { 39, new List<string> { "A", "I", "B", "C", "L", "M", "R", "S"} }, //dom_contas_situacao
+                { 40, new List<string> { "N", "F", "E", "R", "I", "S", "P", "A"} }, //dom_tipo_contribuinte
+                { 41, new List<string> { "0", "1", "2"} }, //dom_regime_tributario
+                { 42, new List<string> { "S", "N"} }, //dom_sim_nao
+                { 43, new List<string> { "S", "C", "V", "J"} }, //dom_estado_civil
+                { 44, new List<string> { "C", "I", "T", "F", ""} }, //dom_tipo_fornecedor
+                { 45, new List<string> { "0", "1", "2", "9"} }, //dom_indicador_ie
+                { 46, new List<string> { "A", "I", "C" } }, //dom_cadite_situa
                 
             };
 
@@ -463,7 +527,7 @@ namespace ValidarCSV
                 { DominioType.Usado, 6 },
                 { DominioType.Classe, 7 },
                 { DominioType.Controle, 8 },
-                { DominioType.Tipo_adiantamento, 9 },
+                { DominioType.Cliente_fornecedor, 9 },
                 { DominioType.Tipo_operacao, 10 },
                 { DominioType.Orcamento_situacao, 11 },
                 { DominioType.Status, 12 },
@@ -486,11 +550,21 @@ namespace ValidarCSV
                 { DominioType.Tipo_movimentacao, 29 },
                 { DominioType.Area, 30 },
                 { DominioType.Tipo_grupo, 31 },
-                { DominioType.Invalidos, 32},
-                { DominioType.Original_paralela, 33},
-                { DominioType.Tipo_sped, 34},
-                { DominioType.Curva_abc, 35},
-                { DominioType.Controle_estoque, 36}
+                { DominioType.Invalidos, 32 },
+                { DominioType.Original_paralela, 33 },
+                { DominioType.Tipo_sped, 34 },
+                { DominioType.Curva_abc, 35 },
+                { DominioType.Controle_estoque, 36 },
+                { DominioType.Sintetica_analitica, 37 },
+                { DominioType.Fisica_juridica, 38 },
+                { DominioType.Contas_situacao, 39 },
+                { DominioType.Tipo_contribuinte, 40 },
+                { DominioType.Regime_tributario, 41 },
+                { DominioType.Sim_nao, 42 },
+                { DominioType.Estado_civil, 43 },
+                { DominioType.Tipo_fornecedor, 44 },
+                { DominioType.Indicador_ie, 45 },
+                { DominioType.Cadite_situa, 46 }
             };
 
             double dominio;

@@ -18,14 +18,16 @@ namespace ValidarCSV
         private readonly List<Registro> registros;
 
         public readonly Random random = new Random();
+
         public Main()
         {
             InitializeComponent();
-            this.layouts.DataSource = new BindingSource(TypeExtensions.Layout_stringToEnum.Keys, null);
-            this.Cabecalho.DataSource = new BindingSource(TypeExtensions.Cabecalho_stringToEnum.Keys, null);
+
+            this.layouts.DataSource = new BindingSource(Layout_stringToEnum.Keys, null);
+            this.Cabecalho.DataSource = new BindingSource(Cabecalho_stringToEnum.Keys, null);
 
             registros = new List<Registro>();
-            versao.Text = "v0.17";
+            versao.Text = "v0.21";
     }
 
         private static string Numero_alfabeto_converter(int numero)
@@ -200,11 +202,18 @@ namespace ValidarCSV
 
                 headers = primeiraLinha.Split(';');
 
+                if (Cabecalho.SelectedItem.ToString() == CabecalhoType.Nao.ToString())
+                {
+                    int colunas = headers.Length;
+                    headers = Enumerable.Range(1, colunas).Select(i => "Coluna " + i).ToArray();
+                }
+
                 if (Repete_coluna(headers) || Cabecalho.SelectedItem.ToString() == CabecalhoType.Nao.ToString() || Cabecalho.SelectedItem.ToString() == CabecalhoType.Auto.ToString())
                 {
                     if (Repete_coluna(headers) && Cabecalho.SelectedItem.ToString() == CabecalhoType.Sim.ToString())
                     {
                         MessageBox.Show($"Colunas duplicadas, será tratado como sem cabeçalho.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        
                         Cabecalho.SelectedIndex = Indice_Cabecalho_Retornar(CabecalhoType.Nao);
                     }
 
@@ -217,7 +226,9 @@ namespace ValidarCSV
                     dataTable.Columns.Add(header);
                 }
 
-                if (Cabecalho.Items.Contains(CabecalhoType.Nao) || Cabecalho.Items.Contains(CabecalhoType.Auto))
+                int linha = 0;
+
+                if (Cabecalho.SelectedIndex == Indice_Cabecalho_Retornar(CabecalhoType.Nao) || Cabecalho.SelectedIndex == Indice_Cabecalho_Retornar(CabecalhoType.Auto))
                 {
                     DataRow primeiraLinhaDataRow = dataTable.NewRow();
                     string[] primeiraLinhaDados = primeiraLinha.Split(';');
@@ -227,8 +238,10 @@ namespace ValidarCSV
                     }
                     dataTable.Rows.Add(primeiraLinhaDataRow);
                 }
-
-                int linha = 1;
+                else
+                {
+                    linha = 1;
+                }
 
                 while (!sr.EndOfStream)
                 {

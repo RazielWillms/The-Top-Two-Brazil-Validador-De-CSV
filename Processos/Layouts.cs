@@ -13,7 +13,7 @@ namespace ValidarCSV
         {
             int rows = 0;
 
-            if (possuiCabecalho.Checked)
+            if (Cabecalho.SelectedIndex == Indice_Cabecalho_Retornar(CabecalhoType.Sim))
             {
                 rows = 1;
             }
@@ -26,6 +26,10 @@ namespace ValidarCSV
             {
                 case LayoutType.Maquinas:
                     Maquinas(dataTable, rows);
+                    break;
+
+                case LayoutType.MaquinasCompleto:
+                    MaquinasCompleto(dataTable, rows);
                     break;
 
                 case LayoutType.Produtos:
@@ -92,6 +96,14 @@ namespace ValidarCSV
                     Sub_grupos(dataTable, rows);
                     break;
 
+                case LayoutType.Plano:
+                    Plano_de_Contas(dataTable, rows);
+                    break;
+
+                case LayoutType.Contas:
+                    Contas(dataTable, rows);
+                    break;
+
                 case LayoutType.Indefinido:
                     MessageBox.Show("A validação deste layout ainda não foi implementada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
@@ -126,8 +138,8 @@ namespace ValidarCSV
                             Campos_validar_gerenciar("Descrição adicional do item", row[column].ToString(), rows, columns, TipoCampoType.Character, 1200, true);
                             break;
 
-                        case 4: //D - Tipo de mercadoria(programa de excelência em gestão)
-                            Campos_validar_gerenciar("Tipo de mercadoria", row[column].ToString(), rows, columns, TipoCampoType.Character, 60, false);
+                        case 4: //D - Tipo de mercadoria*
+                            Campos_validar_gerenciar("Tipo de mercadoria", row[column].ToString(), rows, columns, TipoCampoType.Character, 12, true);
                             break;
 
                         case 5: //E - Marca
@@ -147,7 +159,7 @@ namespace ValidarCSV
                             break;
 
                         case 9: //I - Peso liquido
-                            Campos_validar_gerenciar("Pedo Liquido", row[column].ToString(), rows, columns, TipoCampoType.Numeric, 12.2, false);
+                            Campos_validar_gerenciar("Peso Liquido", row[column].ToString(), rows, columns, TipoCampoType.Numeric, 12.2, false);
                             break;
 
                         case 10: //J - Peso bruto
@@ -155,7 +167,7 @@ namespace ValidarCSV
                             break;
 
                         case 11: //K - Unidade*
-                            Campos_validar_gerenciar("Unidade", row[column].ToString(), rows, columns, TipoCampoType.Character, 2, true);
+                            Campos_validar_gerenciar("Unidade", row[column].ToString(), rows, columns, TipoCampoType.Character, 6, true);
                             break;
 
                         case 12: //L - Aplicação
@@ -219,7 +231,7 @@ namespace ValidarCSV
                             break;
 
                         case 27: //AA - Controle de estoque*
-                            Campos_validar_gerenciar("Controle de estoque", row[column].ToString(), rows, columns, TipoCampoType.Dominio, 8, true);
+                            Campos_validar_gerenciar("Controle de estoque", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Controle), true);
                             break;
 
                         case 28: //AB - Campo Livre
@@ -239,11 +251,183 @@ namespace ValidarCSV
                             break;
 
                         case 32: //AG - Ano Fabricação
-                            Campos_validar_gerenciar("FINAME", row[column].ToString(), rows, columns, TipoCampoType.Integer, 4, false);
+                            Campos_validar_gerenciar("Ano Fabricação", row[column].ToString(), rows, columns, TipoCampoType.Integer, 4, false);
                             break;
                     }
 
-                    if (columns > 31)
+                    if (columns > 32)
+                    {
+                        Sobressalente_validar(rows, columns, row[column].ToString());
+                    }
+
+                    columns++;
+                }
+                Progresso_atualizar(total, rows);
+
+                rows++;
+            }
+        }
+
+        public void MaquinasCompleto(DataTable dataTable, int rows)
+        {
+            // Dicionário para armazenar o código do item e a linha onde ele apareceu pela primeira vez
+            Dictionary<string, string> listaCodItem = new Dictionary<string, string>();
+            string codigoItem = string.Empty;
+            string classeItem = string.Empty;
+
+            int total = dataTable.Rows.Count;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int columns = 1;
+
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    switch (columns)
+                    {
+                        case 1: //A - Código do Produto*
+                            codigoItem = row[column].ToString();
+                            Campos_validar_gerenciar("Código do Produto", row[column].ToString(), rows, columns, TipoCampoType.Character, 20, true);
+                            break;
+
+                        case 2: //B - Descrição*
+                            Campos_validar_gerenciar("Descrição", row[column].ToString(), rows, columns, TipoCampoType.Character, 60, true);
+                            break;
+
+                        case 3: //C - Descrição adicional do item*
+                            Campos_validar_gerenciar("Descrição adicional do item", row[column].ToString(), rows, columns, TipoCampoType.Character, 1200, true);
+                            break;
+
+                        case 4: //D - Tipo de mercadoria*
+                            Campos_validar_gerenciar("Tipo de mercadoria", row[column].ToString(), rows, columns, TipoCampoType.Character, 12, true);
+                            break;
+
+                        case 5: //E - Marca
+                            Campos_validar_gerenciar("Marca", row[column].ToString(), rows, columns, TipoCampoType.Character, 12, false);
+                            break;
+
+                        case 6: //F - Departamento
+                            Campos_validar_gerenciar("Departamento", row[column].ToString(), rows, columns, TipoCampoType.Character, 12, false);
+                            break;
+
+                        case 7: //G - Controla estoque
+                            Campos_validar_gerenciar("Controla estoque", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Controla_estoque), false);
+                            break;
+
+                        case 8: //H - Código do grupo*
+                            Campos_validar_gerenciar("Código do grupo", row[column].ToString(), rows, columns, TipoCampoType.Integer, 10, true);
+                            break;
+
+                        case 9: //I - Peso liquido
+                            Campos_validar_gerenciar("Peso Liquido", row[column].ToString(), rows, columns, TipoCampoType.Numeric, 12.2, false);
+                            break;
+
+                        case 10: //J - Peso bruto
+                            Campos_validar_gerenciar("Peso bruto", row[column].ToString(), rows, columns, TipoCampoType.Numeric, 12.2, false);
+                            break;
+
+                        case 11: //K - Unidade*
+                            Campos_validar_gerenciar("Unidade", row[column].ToString(), rows, columns, TipoCampoType.Character, 6, true);
+                            break;
+
+                        case 12: //L - Aplicação
+                            Campos_validar_gerenciar("Aplicação", row[column].ToString(), rows, columns, TipoCampoType.Character, 1200, false);
+                            break;
+
+                        case 13: //M - Apelido
+                            Campos_validar_gerenciar("Apelido", row[column].ToString(), rows, columns, TipoCampoType.Character, 20, false);
+                            break;
+
+                        case 14: //N - Produto Importado ou Nacional
+                            Campos_validar_gerenciar("Importado ou Nacional", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Importado_nacional), false);
+                            break;
+
+                        case 15: //O - Preço de venda
+                            Campos_validar_gerenciar("Preço de venda", row[column].ToString(), rows, columns, TipoCampoType.Numeric, 12.2, false);
+                            break;
+
+                        case 16: //P - Preço de reposição
+                            Campos_validar_gerenciar("Preço de reposição", row[column].ToString(), rows, columns, TipoCampoType.Numeric, 12.2, false);
+                            break;
+
+                        case 17: //Q - Código de referência
+                            Campos_validar_gerenciar("Código de referência", row[column].ToString(), rows, columns, TipoCampoType.Character, 20, false);
+                            break;
+
+                        case 18: //R - Situação
+                            Campos_validar_gerenciar("Situação", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Situacao), false);
+                            break;
+
+                        case 19: //S - Produto usado*
+                            Campos_validar_gerenciar("Produto usado", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Usado), true);
+                            break;
+
+                        case 20: //T - NCM*
+                            Campos_validar_gerenciar("NCM", row[column].ToString(), rows, columns, TipoCampoType.Character, 10, true);
+                            break;
+
+                        case 21: //U - Modelo
+                            Campos_validar_gerenciar("Modelo", row[column].ToString(), rows, columns, TipoCampoType.Character, 12, false);
+                            break;
+
+                        case 22: //V - Classe produto*
+                            classeItem = row[column].ToString();
+
+                            // Verifica se o código base já existe, se não, adiciona
+                            if (!listaCodItem.ContainsKey(codigoItem))
+                            {
+                                listaCodItem[codigoItem] = classeItem;
+                            }
+                            Campos_validar_gerenciar("Classe produto", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Classe), true);
+                            break;
+
+                        case 23: //W - Código base*
+                            if (!listaCodItem.ContainsKey(row[column].ToString()) || listaCodItem[row[column].ToString()].ToUpper() != "B")
+                            {
+                                Registro_adicionar("Código base", rows, columns, row[column].ToString(), $"Cadastro base não existe ou deve ser inforamdo antes do individual");
+                            }
+
+                            Campos_validar_gerenciar("Código base", row[column].ToString(), rows, columns, TipoCampoType.Character, 20, true);
+                            break;
+
+                        case 24: //X - Número de serie
+                            Campos_validar_gerenciar("Número de serie", row[column].ToString(), rows, columns, TipoCampoType.Character, 40, false);
+                            break;
+
+                        case 25: //Y - Código Fiscal
+                            Campos_validar_gerenciar("Código Fiscal", row[column].ToString(), rows, columns, TipoCampoType.Character, 60, false);
+                            break;
+
+                        case 26: //Z - Observação
+                            Campos_validar_gerenciar("Observação", row[column].ToString(), rows, columns, TipoCampoType.Character, 1200, false);
+                            break;
+
+                        case 27: //AA - Controle de estoque*
+                            Campos_validar_gerenciar("Controle de estoque", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Controle), true);
+                            break;
+
+                        case 28: //AB - Campo Livre
+                            Campos_validar_gerenciar("Campo Livre", row[column].ToString(), rows, columns, TipoCampoType.Character, 60, false);
+                            break;
+
+                        case 29: //AC - Filial*
+                            Campos_validar_gerenciar("Filial", row[column].ToString(), rows, columns, TipoCampoType.Integer, 4, true);
+                            break;
+
+                        case 30: //AD - Código bandeira*
+                            Campos_validar_gerenciar("Código bandeira", row[column].ToString(), rows, columns, TipoCampoType.Integer, 9, true);
+                            break;
+
+                        case 31: //AE - FINAME
+                            Campos_validar_gerenciar("FINAME", row[column].ToString(), rows, columns, TipoCampoType.Integer, 60, false);
+                            break;
+
+                        case 32: //AG - Ano Fabricação
+                            Campos_validar_gerenciar("Ano Fabricação", row[column].ToString(), rows, columns, TipoCampoType.Integer, 4, false);
+                            break;
+                    }
+
+                    if (columns > 32)
                     {
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
@@ -305,7 +489,7 @@ namespace ValidarCSV
                             break;
 
                         case 10: //J - Código produto único
-                            Campos_validar_gerenciar("Código produto único", row[column].ToString(), rows, columns, TipoCampoType.Integer, 9, false);
+                            Campos_validar_gerenciar("Código produto único", row[column].ToString(), rows, columns, TipoCampoType.Character, 60, false);
                             break;
 
                         case 11: //K - Custo Reposição
@@ -356,7 +540,7 @@ namespace ValidarCSV
                             break;
 
                         case 4: //D - Tipo do adiantamento*
-                            Campos_validar_gerenciar("Tipo do adiantamento", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Tipo_adiantamento), true);
+                            Campos_validar_gerenciar("Tipo do adiantamento", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Cliente_fornecedor), true);
                             break;
 
                         case 5: //E - Centro de Custo
@@ -368,7 +552,7 @@ namespace ValidarCSV
                             break;
 
                         case 7: //G - Observação
-                            Campos_validar_gerenciar("Conta legado", row[column].ToString(), rows, columns, TipoCampoType.Character, 1200, false);
+                            Campos_validar_gerenciar("Observação", row[column].ToString(), rows, columns, TipoCampoType.Character, 1200, false);
                             break;
                     }
 
@@ -471,13 +655,12 @@ namespace ValidarCSV
                             break;
 
                         case 19: //S - Vendedor Produto
-                            Campos_validar_gerenciar("Vendedor", row[column].ToString(), rows, columns, TipoCampoType.Integer, 6, false);
+                            Campos_validar_gerenciar("Vendedor Produto", row[column].ToString(), rows, columns, TipoCampoType.Integer, 6, false);
                             break;
                     }
 
                     if (columns > 19)
                     {
-                        Mensagem_exibir("Valor 2: " + row[column].ToString(), false);
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }
 
@@ -1987,7 +2170,7 @@ namespace ValidarCSV
                             break;
 
                         case 20: //T - Unidade*
-                            Campos_validar_gerenciar("Unidade", row[column].ToString(), rows, columns, TipoCampoType.Character, 2, true);
+                            Campos_validar_gerenciar("Unidade", row[column].ToString(), rows, columns, TipoCampoType.Character, 6, true);
                             break;
 
                         case 21: //U - Aplicação
@@ -2183,6 +2366,159 @@ namespace ValidarCSV
 
                     columns++;
                 }
+                Progresso_atualizar(total, rows);
+
+                rows++;
+            }
+        }
+
+        public void Plano_de_Contas(DataTable dataTable, int rows) 
+        {
+            int total = dataTable.Rows.Count;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int columns = 1;
+
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    switch (columns)
+                    {
+                        case 1: // A - Conta*
+                            Campos_validar_gerenciar("Conta", row[column].ToString(), rows, columns, TipoCampoType.Integer, 6, true);
+                            break;
+
+                        case 2: // C - Nome*
+                            Campos_validar_gerenciar("Nome", row[column].ToString(), rows, columns, TipoCampoType.Character, 60, true);
+                            break;
+
+                        case 3: // D - Sintética ou Analítica*
+                            Campos_validar_gerenciar("Sintética ou Analítica", row[column].ToString(), rows, columns, TipoCampoType.Dominio, Dominio_retornar(DominioType.Sintetica_analitica), true);
+                            break;
+
+                        case 4: // E - Sintética*
+                            Campos_validar_gerenciar("Sintética", row[column].ToString(), rows, columns, TipoCampoType.Sintetica, 0, true);
+                            break;
+
+                        case 5: // E - Conta Referencial
+                            Campos_validar_gerenciar("Conta Referencial", row[column].ToString(), rows, columns, TipoCampoType.Character, 19, false);
+                            break;
+                    }
+
+                    if (columns > 5)
+                    {
+                        Sobressalente_validar(rows, columns, row[column].ToString());
+                    }
+
+                    columns++;
+                }
+
+                Progresso_atualizar(total, rows);
+
+                rows++;
+            }
+        }
+
+        public void Contas(DataTable dataTable, int rows)
+        {
+            int total = dataTable.Rows.Count;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int columns = 1;
+
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    var camposConfiguracao = new Dictionary<int, (string Nome, TipoCampoType Tipo, double Tamanho, bool Obrigatorio)>
+                    {
+                        {1, ("Código", TipoCampoType.Integer, 6, true)},
+                        {2, ("Nome", TipoCampoType.Character, 60, true)},
+                        {3, ("Endereço (rua/logradouro)", TipoCampoType.Character, 60, false)},
+                        {4, ("Número", TipoCampoType.Integer, 6, false)},
+                        {5, ("Cidade", TipoCampoType.Character, 50, false)},
+                        {6, ("Bairro", TipoCampoType.Character, 30, false)},
+                        {7, ("Complemento", TipoCampoType.Character, 60, false)},
+                        {8, ("UF", TipoCampoType.Character, 2, false)},
+                        {9, ("CEP", TipoCampoType.Character, 9, false)},
+                        {10, ("Código do município", TipoCampoType.Integer, 7, false)},
+                        {11, ("Vendedor", TipoCampoType.Integer, 3, false)},
+                        {12, ("Pessoa Física/Jurídica", TipoCampoType.Dominio, Dominio_retornar(DominioType.Fisica_juridica), true)},
+                        {13, ("CNPJ/CPF", TipoCampoType.Character, 18, true)},
+                        {14, ("Inscrição Estadual", TipoCampoType.Character, 20, false)},
+                        {15, ("Inscrição Municipal", TipoCampoType.Character, 20, false)},
+                        {16, ("Inscrição Suframa", TipoCampoType.Character, 20, false)},
+                        {17, ("Classificação", TipoCampoType.Character, 20, false)},
+                        {18, ("Segmento", TipoCampoType.Character, 20, false)},
+                        {19, ("Data nascimento/Data fundação", TipoCampoType.DateFormat, 4, false)},
+                        {20, ("Limite de Credito", TipoCampoType.Numeric, 14.2, false)},
+                        {21, ("Situação Ativa / Inativa", TipoCampoType.Dominio, Dominio_retornar(DominioType.Contas_situacao), false)},
+                        {22, ("Tipo - Cliente / Fornecedor", TipoCampoType.Dominio, Dominio_retornar(DominioType.Cliente_fornecedor), true)},
+                        {23, ("Site", TipoCampoType.Character,60, false)},
+                        {24, ("Política de preços", TipoCampoType.Character, 3, false)},
+                        {25, ("Sexo", TipoCampoType.Character, 1, false)},
+                        {26, ("E-mail", TipoCampoType.Character, 500, false)},
+                        {27, ("Contribuinte", TipoCampoType.Dominio, Dominio_retornar(DominioType.Tipo_contribuinte), false)},
+                        {28, ("Regime tributário federal", TipoCampoType.Dominio, Dominio_retornar(DominioType.Regime_tributario), false)},
+                        //{29, ("CAMPO INUTILIZADO 1", TipoCampoType.Character, 15, false)},
+                        {30, ("Produtor Rural", TipoCampoType.Dominio, Dominio_retornar(DominioType.Sim_nao), false)},
+                        {31, ("Número da Inscrição Rural", TipoCampoType.Character, 20, false)},
+                        //{32, ("CAMPO INUTILIZADO 2", TipoCampoType.Character, 50, false)},
+                        {33, ("Titulo de Eleitor", TipoCampoType.Character, 20, false)},
+                        {34, ("Nome fantasia", TipoCampoType.Character, 60, false)},
+                        {35, ("Nome do contato", TipoCampoType.Character, 60, false)},
+                        {36, ("Data de inclusão", TipoCampoType.DateFormat, 4, false)},
+                        {37, ("RG", TipoCampoType.Character, 20, false)},
+                        {38, ("Cód. do Representante", TipoCampoType.Integer, 3, false)},
+                        {39, ("Cód. conta no Escritório Contábil", TipoCampoType.Character, 20, false)},
+                        {40, ("Cód. Da Região", TipoCampoType.Integer, 2, false)},
+                        {41, ("Observação", TipoCampoType.Character, 1200, false)},
+                        {42, ("Telefone 1", TipoCampoType.Character, 14, false)},
+                        {43, ("Telefone 2", TipoCampoType.Character, 14, false)},
+                        {44, ("Celular", TipoCampoType.Character, 14, false)},
+                        {45, ("Fax", TipoCampoType.Character, 14, false)},
+                        {46, ("Código Febraban", TipoCampoType.Character, 3, false)},
+                        //{47, ("CAMPO INUTILIZADO 3", TipoCampoType.Integer, 6, false)},
+                        {48, ("Agência", TipoCampoType.Character, 10, false)},
+                        {49, ("Dígito da Agência", TipoCampoType.Character, 2, false)},
+                        {50, ("Conta Corrente", TipoCampoType.Character, 20, false)},
+                        {51, ("Dígito Conta Corrente", TipoCampoType.Character, 2, false)},
+                        {52, ("Observações Pagamento", TipoCampoType.Character, 1200, false)},
+                        {53, ("Filiação Mãe", TipoCampoType.Character, 60, false)},
+                        {54, ("Filiação Pai", TipoCampoType.Character, 60, false)},
+                        {55, ("RG Expedidor", TipoCampoType.Character, 20, false)},
+                        {56, ("RG Data de expedição", TipoCampoType.DateFormat, 4, false)},
+                        {57, ("RG UF de expedição", TipoCampoType.Character, 2, false)},
+                        {58, ("E-mail NF-e", TipoCampoType.Character, 500, false)},
+                        {59, ("Estado Civil", TipoCampoType.Dominio, Dominio_retornar(DominioType.Estado_civil), false)},
+                        {60, ("Código Externo HPRO", TipoCampoType.Character, 20, false)},
+                        {61, ("Nacionalidade", TipoCampoType.Character, 20, false)},
+                        {62, ("Naturalidade", TipoCampoType.Character, 40, false)},
+                        {63, ("Validade do Cadastro", TipoCampoType.DateFormat, 4, false)},
+                        {64, ("Tipo de Fornecedor", TipoCampoType.Dominio, Dominio_retornar(DominioType.Tipo_fornecedor), false)},
+                        {65, ("Jurídico", TipoCampoType.Dominio, Dominio_retornar(DominioType.Sim_nao), false)},
+                        {66, ("Filial do cooperado", TipoCampoType.Integer, 2, false)},
+                        {67, ("Celular 2", TipoCampoType.Character, 15, false)},
+                        {68, ("Telefone 1 ramal", TipoCampoType.Character, 4, false)},
+                        {69, ("Telefone 2 ramal", TipoCampoType.Character, 4, false)},
+                        {70, ("E-mail Boleto", TipoCampoType.Character, 500, true)},
+                        {71, ("Indicador IE", TipoCampoType.Dominio, Dominio_retornar(DominioType.Indicador_ie), false)},
+                        {72, ("Politica de Prazo", TipoCampoType.Integer, 4, false)},
+                        {73, ("Aviso", TipoCampoType.Character, 1200, false)}
+                    };
+
+                    if (camposConfiguracao.TryGetValue(columns, out var config))
+                    {
+                        Campos_validar_gerenciar(config.Nome, row[column].ToString(), rows, columns, config.Tipo, config.Tamanho, config.Obrigatorio);
+                    }
+
+                    if (columns > 73)
+                    {
+                        Sobressalente_validar(rows, columns, row[column].ToString());
+                    }
+
+                    columns++;
+                }
+
                 Progresso_atualizar(total, rows);
 
                 rows++;
