@@ -75,34 +75,40 @@ namespace ValidarCSV
         {
             var aleatorio = new Random();
 
-            var probabilidade = new Dictionary<string, double>
-            {
-                { "Normal", 91.19 },
-                { "Vermelho", 5 },
-                { "Verde", 2 },
-                { "Preto", 1 },
-                { "Prata", 0.5 },
-                { "Ouro", 0.3 },
-                { "Mateador", 0.01 }
-            };
+            // 20% de chance para exibir uma imagem
+            bool exibirImagem = aleatorio.NextDouble() <= 0.20;
 
-            double totalChance = probabilidade.Values.Sum();
-            double numeroAleatorio = aleatorio.NextDouble() * totalChance;
-
-            double cumulativo = 0;
             string imagem = "";
 
-            foreach (var item in probabilidade)
+            // Caso seja definido exibir uma imagem, aí sim verifica as porcentagens de cada tião
+            if (exibirImagem)
             {
-                cumulativo += item.Value;
-                if (numeroAleatorio < cumulativo)
+                var probabilidade = new Dictionary<string, double>
                 {
-                    imagem = item.Key;
-                    break;
+                    { "Normal", 91.19 },
+                    { "Vermelho", 5 },
+                    { "Verde", 2 },
+                    { "Preto", 1 },
+                    { "Prata", 0.5 },
+                    { "Ouro", 0.3 },
+                    { "Mateador", 0.01 }
+                };
+
+                double totalChance = probabilidade.Values.Sum();
+                double numeroAleatorio = aleatorio.NextDouble() * totalChance;
+
+                double cumulativo = 0;
+                foreach (var item in probabilidade)
+                {
+                    cumulativo += item.Value;
+                    if (numeroAleatorio < cumulativo)
+                    {
+                        imagem = item.Key;
+                        break;
+                    }
                 }
             }
 
-            // Definindo a visibilidade com base na imagem selecionada
             Normal.Visible = (imagem == "Normal");
             Vermelho.Visible = (imagem == "Vermelho");
             Verde.Visible = (imagem == "Verde");
