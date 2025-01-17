@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Drawing;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,6 +16,14 @@ namespace ValidarCSV
             grid.Columns.Clear();
 
             labellog.Text = "Registro:";
+
+            Normal.Visible = false;
+            Vermelho.Visible = false;
+            Verde.Visible = false;
+            Preto.Visible = false;
+            Prata.Visible = false;
+            Ouro.Visible = false;
+            Mateador.Visible = false;
         }
 
         public void Grid_criar()
@@ -22,18 +32,7 @@ namespace ValidarCSV
 
             if (registros.Count == 0)
             {
-                int aleatorio = random.Next(0, 100);
-                int[] chance = new int[10];
-
-                for (int i = 0; i < chance.Length; i++)
-                {
-                    chance[i] = random.Next(0, 100);
-                }
-
-                if (chance.Contains(aleatorio))
-                {
-                    TiaoMateador.Visible = true;
-                }
+                Tiao_definir();
 
                 labellog.Text = "Nenhum erro encontrado";
                 MessageBox.Show("Nenhum erro encontrado", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -70,6 +69,48 @@ namespace ValidarCSV
 
                 Zoom_grid_criar();
             }
+        }
+
+        private void Tiao_definir()
+        {
+            var aleatorio = new Random();
+
+            var probabilidade = new Dictionary<string, double>
+            {
+                { "Normal", 91.19 },
+                { "Vermelho", 5 },
+                { "Verde", 2 },
+                { "Preto", 1 },
+                { "Prata", 0.5 },
+                { "Ouro", 0.3 },
+                { "Mateador", 0.01 }
+            };
+
+            double totalChance = probabilidade.Values.Sum();
+            double numeroAleatorio = aleatorio.NextDouble() * totalChance;
+
+            double cumulativo = 0;
+            string imagem = "";
+
+            foreach (var item in probabilidade)
+            {
+                cumulativo += item.Value;
+                if (numeroAleatorio < cumulativo)
+                {
+                    imagem = item.Key;
+                    break;
+                }
+            }
+
+            // Definindo a visibilidade com base na imagem selecionada
+            Normal.Visible = (imagem == "Normal");
+            Vermelho.Visible = (imagem == "Vermelho");
+            Verde.Visible = (imagem == "Verde");
+            Preto.Visible = (imagem == "Preto");
+            Prata.Visible = (imagem == "Prata");
+            Ouro.Visible = (imagem == "Ouro");
+            Mateador.Visible = (imagem == "Mateador");
+
         }
 
         public void Zoom_grid_limpar()

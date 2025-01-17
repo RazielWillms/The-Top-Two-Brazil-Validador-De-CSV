@@ -139,7 +139,7 @@ namespace ValidarCSV
 
         private void Validar_click(object sender, EventArgs e)
         {
-            TiaoMateador.Visible = false;
+            Mateador.Visible = false;
             validar.Enabled = false;
 
             Grid_limpar();
@@ -181,20 +181,6 @@ namespace ValidarCSV
             using (StreamReader sr = new StreamReader(filePath))
             {
                 string[] headers = null;
-                /*bool possuiCabecalho = this.possuiCabecalho.Checked;
-
-                switch (this.Cabecalho.SelectedItem)
-                {
-                    case CabecalhoType.Sim:
-                        possuiCabecalho = true;
-                        break;
-                    case CabecalhoType.Nao:
-                        possuiCabecalho = false;
-                        break;
-                    case CabecalhoType.Auto:
-                        possuiCabecalho = this.possuiCabecalho.Checked;
-                        break;
-                }*/
 
                 string primeiraLinha = sr.ReadLine() ?? throw new InvalidOperationException("O arquivo CSV está vazio.");
 
@@ -264,7 +250,7 @@ namespace ValidarCSV
                     //verifica as linhas com colunas sobressalentes e gera registro
                     if (rows.Length > headers.Length)
                     {
-                        for (int i = (headers.Length - 1); i < rows.Length; i++) //já inicia na última linha do arquivo, para poupar processamento
+                        for (int i = (headers.Length - 1); i < rows.Length; i++)
                         {
                             string campo = rows[i].ToString();
                             regex_espacos_remover(campo);
@@ -294,20 +280,6 @@ namespace ValidarCSV
                 regex = @" {2,}"; // Dois ou mais espaços em qualquer lugar da linha
                 linha = Regex.Replace(linha, regex, " "); // Substitui por um único espaço
             }
-
-            /* //Antiga remoção de espaços ao final do arquivo
-            string regex = "; {3,}"; // ponto e vírgula seguido de 3 ou mais espaços
-            if (Regex.IsMatch(primeiraLinha, regex))
-            {
-                primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
-                regex = ";{3,}"; // 3 ou mais ponto e vírgula seguidos
-                primeiraLinha = Regex.Replace(primeiraLinha, regex, ";");
-                regex = " {2,}"; // 2 ou mais espaços seguidos
-                primeiraLinha = Regex.Replace(primeiraLinha, regex, "");
-
-                corrigido_regex = true;
-                Mensagem_exibir(primeiraLinha.ToString(), false);
-            }*/
         }
 
         static bool Repete_coluna(string[] array)

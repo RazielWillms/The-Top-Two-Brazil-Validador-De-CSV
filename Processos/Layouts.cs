@@ -109,7 +109,7 @@ namespace ValidarCSV
                     break;
 
                 default:
-                    MessageBox.Show("A validação deste layout ainda não foi implementada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Layout Inexistente", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
         }
@@ -2419,6 +2419,8 @@ namespace ValidarCSV
             }
         }
 
+        // Layout criado com novo modelo, utilizando dicionário para deixar mais curta e
+        // simples a implementação também facilita a leitura e manutenibilidade
         public void Contas(DataTable dataTable, int rows)
         {
             int total = dataTable.Rows.Count;

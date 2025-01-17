@@ -43,7 +43,7 @@ namespace ValidarCSV
             this.panelmid = new System.Windows.Forms.Panel();
             this.CabecalhoLabel = new System.Windows.Forms.Label();
             this.Cabecalho = new System.Windows.Forms.ComboBox();
-            this.TiaoMateador = new System.Windows.Forms.PictureBox();
+            this.Mateador = new System.Windows.Forms.PictureBox();
             this.MensagemErro = new System.Windows.Forms.TextBox();
             this.NiveisCombo = new System.Windows.Forms.ComboBox();
             this.Niveis = new System.Windows.Forms.Label();
@@ -60,11 +60,23 @@ namespace ValidarCSV
             this.possuiCabecalho = new System.Windows.Forms.CheckBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.erroTela = new System.Windows.Forms.ErrorProvider(this.components);
+            this.Vermelho = new System.Windows.Forms.PictureBox();
+            this.Verde = new System.Windows.Forms.PictureBox();
+            this.Prata = new System.Windows.Forms.PictureBox();
+            this.Ouro = new System.Windows.Forms.PictureBox();
+            this.Preto = new System.Windows.Forms.PictureBox();
+            this.Normal = new System.Windows.Forms.PictureBox();
             this.panelmid.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TiaoMateador)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Mateador)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.erroTela)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Vermelho)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Verde)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Prata)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Ouro)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Preto)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Normal)).BeginInit();
             this.SuspendLayout();
             // 
             // excel
@@ -163,9 +175,15 @@ namespace ValidarCSV
             // 
             // panelmid
             // 
+            this.panelmid.Controls.Add(this.Normal);
+            this.panelmid.Controls.Add(this.Preto);
+            this.panelmid.Controls.Add(this.Ouro);
+            this.panelmid.Controls.Add(this.Prata);
+            this.panelmid.Controls.Add(this.Verde);
+            this.panelmid.Controls.Add(this.Vermelho);
             this.panelmid.Controls.Add(this.CabecalhoLabel);
             this.panelmid.Controls.Add(this.Cabecalho);
-            this.panelmid.Controls.Add(this.TiaoMateador);
+            this.panelmid.Controls.Add(this.Mateador);
             this.panelmid.Controls.Add(this.MensagemErro);
             this.panelmid.Controls.Add(this.NiveisCombo);
             this.panelmid.Controls.Add(this.Niveis);
@@ -219,17 +237,17 @@ namespace ValidarCSV
             this.Cabecalho.Size = new System.Drawing.Size(242, 21);
             this.Cabecalho.TabIndex = 27;
             // 
-            // TiaoMateador
+            // Mateador
             // 
-            this.TiaoMateador.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.TiaoMateador.Image = ((System.Drawing.Image)(resources.GetObject("TiaoMateador.Image")));
-            this.TiaoMateador.Location = new System.Drawing.Point(382, 103);
-            this.TiaoMateador.Margin = new System.Windows.Forms.Padding(2);
-            this.TiaoMateador.Name = "TiaoMateador";
-            this.TiaoMateador.Size = new System.Drawing.Size(178, 197);
-            this.TiaoMateador.TabIndex = 26;
-            this.TiaoMateador.TabStop = false;
-            this.TiaoMateador.Visible = false;
+            this.Mateador.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.Mateador.Image = ((System.Drawing.Image)(resources.GetObject("Mateador.Image")));
+            this.Mateador.Location = new System.Drawing.Point(382, 103);
+            this.Mateador.Margin = new System.Windows.Forms.Padding(2);
+            this.Mateador.Name = "Mateador";
+            this.Mateador.Size = new System.Drawing.Size(178, 197);
+            this.Mateador.TabIndex = 26;
+            this.Mateador.TabStop = false;
+            this.Mateador.Visible = false;
             // 
             // MensagemErro
             // 
@@ -435,6 +453,78 @@ namespace ValidarCSV
             this.erroTela.ContainerControl = this;
             this.erroTela.Icon = ((System.Drawing.Icon)(resources.GetObject("erroTela.Icon")));
             // 
+            // Vermelho
+            // 
+            this.Vermelho.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.Vermelho.Image = ((System.Drawing.Image)(resources.GetObject("Vermelho.Image")));
+            this.Vermelho.Location = new System.Drawing.Point(382, 103);
+            this.Vermelho.Margin = new System.Windows.Forms.Padding(2);
+            this.Vermelho.Name = "Vermelho";
+            this.Vermelho.Size = new System.Drawing.Size(178, 197);
+            this.Vermelho.TabIndex = 29;
+            this.Vermelho.TabStop = false;
+            this.Vermelho.Visible = false;
+            // 
+            // Verde
+            // 
+            this.Verde.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.Verde.Image = ((System.Drawing.Image)(resources.GetObject("Verde.Image")));
+            this.Verde.Location = new System.Drawing.Point(382, 101);
+            this.Verde.Margin = new System.Windows.Forms.Padding(2);
+            this.Verde.Name = "Verde";
+            this.Verde.Size = new System.Drawing.Size(178, 197);
+            this.Verde.TabIndex = 30;
+            this.Verde.TabStop = false;
+            this.Verde.Visible = false;
+            // 
+            // Prata
+            // 
+            this.Prata.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.Prata.Image = ((System.Drawing.Image)(resources.GetObject("Prata.Image")));
+            this.Prata.Location = new System.Drawing.Point(382, 101);
+            this.Prata.Margin = new System.Windows.Forms.Padding(2);
+            this.Prata.Name = "Prata";
+            this.Prata.Size = new System.Drawing.Size(178, 197);
+            this.Prata.TabIndex = 31;
+            this.Prata.TabStop = false;
+            this.Prata.Visible = false;
+            // 
+            // Ouro
+            // 
+            this.Ouro.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.Ouro.Image = ((System.Drawing.Image)(resources.GetObject("Ouro.Image")));
+            this.Ouro.Location = new System.Drawing.Point(382, 101);
+            this.Ouro.Margin = new System.Windows.Forms.Padding(2);
+            this.Ouro.Name = "Ouro";
+            this.Ouro.Size = new System.Drawing.Size(178, 197);
+            this.Ouro.TabIndex = 32;
+            this.Ouro.TabStop = false;
+            this.Ouro.Visible = false;
+            // 
+            // Preto
+            // 
+            this.Preto.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.Preto.Image = ((System.Drawing.Image)(resources.GetObject("Preto.Image")));
+            this.Preto.Location = new System.Drawing.Point(382, 101);
+            this.Preto.Margin = new System.Windows.Forms.Padding(2);
+            this.Preto.Name = "Preto";
+            this.Preto.Size = new System.Drawing.Size(178, 197);
+            this.Preto.TabIndex = 33;
+            this.Preto.TabStop = false;
+            this.Preto.Visible = false;
+            // 
+            // Normal
+            // 
+            this.Normal.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.Normal.Image = ((System.Drawing.Image)(resources.GetObject("Normal.Image")));
+            this.Normal.Location = new System.Drawing.Point(382, 101);
+            this.Normal.Margin = new System.Windows.Forms.Padding(2);
+            this.Normal.Name = "Normal";
+            this.Normal.Size = new System.Drawing.Size(178, 197);
+            this.Normal.TabIndex = 34;
+            this.Normal.TabStop = false;
+            this.Normal.Visible = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -448,10 +538,16 @@ namespace ValidarCSV
             this.Text = "Validar CSV";
             this.panelmid.ResumeLayout(false);
             this.panelmid.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TiaoMateador)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Mateador)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.erroTela)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Vermelho)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Verde)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Prata)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Ouro)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Preto)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Normal)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -482,9 +578,15 @@ namespace ValidarCSV
         private System.Windows.Forms.Label Niveis;
         private System.Windows.Forms.TextBox MensagemErro;
         private ErrorProvider erroTela;
-        private PictureBox TiaoMateador;
+        private PictureBox Mateador;
         private Label CabecalhoLabel;
         private ComboBox Cabecalho;
+        private PictureBox Preto;
+        private PictureBox Ouro;
+        private PictureBox Prata;
+        private PictureBox Verde;
+        private PictureBox Vermelho;
+        private PictureBox Normal;
     }
 }
 
