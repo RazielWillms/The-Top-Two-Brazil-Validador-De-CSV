@@ -17,13 +17,13 @@ namespace ValidarCSV
 
             labellog.Text = "Registro:";
 
-            Normal.Visible = false;
-            Vermelho.Visible = false;
-            Verde.Visible = false;
-            Preto.Visible = false;
-            Prata.Visible = false;
-            Ouro.Visible = false;
-            Mateador.Visible = false;
+            Normal.Visible      = false;
+            Vermelho.Visible    = false;
+            Verde.Visible       = false;
+            Preto.Visible       = false;
+            Prata.Visible       = false;
+            Ouro.Visible        = false;
+            Mateador.Visible    = false;
         }
 
         public void Grid_criar()
@@ -56,12 +56,12 @@ namespace ValidarCSV
 
                 foreach (var registro in registros)
                 {
-                    DataRow row = TableGrid.NewRow();
-                    row["Campo"] = registro.Campo;
-                    row["Linha"] = registro.Linha;
-                    row["Coluna"] = registro.Coluna;
-                    row["Valor"] = registro.Valor;
-                    row["Observacao"] = registro.Obs;
+                    DataRow row         = TableGrid.NewRow();
+                    row["Campo"]        = registro.Campo;
+                    row["Linha"]        = registro.Linha;
+                    row["Coluna"]       = registro.Coluna;
+                    row["Valor"]        = registro.Valor;
+                    row["Observacao"]   = registro.Obs;
                     TableGrid.Rows.Add(row);
                 }
 
@@ -75,8 +75,8 @@ namespace ValidarCSV
         {
             var aleatorio = new Random();
 
-            // 20% de chance para exibir uma imagem
-            bool exibirImagem = aleatorio.NextDouble() <= 0.20;
+            // 35% de chance para exibir uma imagem
+            bool exibirImagem = aleatorio.NextDouble() <= 0.35;
 
             string imagem = "";
 
@@ -109,30 +109,30 @@ namespace ValidarCSV
                 }
             }
 
-            Normal.Visible = (imagem == "Normal");
-            Vermelho.Visible = (imagem == "Vermelho");
-            Verde.Visible = (imagem == "Verde");
-            Preto.Visible = (imagem == "Preto");
-            Prata.Visible = (imagem == "Prata");
-            Ouro.Visible = (imagem == "Ouro");
-            Mateador.Visible = (imagem == "Mateador");
+            Normal.Visible      = (imagem == "Normal");
+            Vermelho.Visible    = (imagem == "Vermelho");
+            Verde.Visible       = (imagem == "Verde");
+            Preto.Visible       = (imagem == "Preto");
+            Prata.Visible       = (imagem == "Prata");
+            Ouro.Visible        = (imagem == "Ouro");
+            Mateador.Visible    = (imagem == "Mateador");
 
         }
 
         public void Zoom_grid_limpar()
         {
-            btnZoomIn.Visible = false;
-            btnZoomOut.Visible = false;
-            zoom.Visible = false;
+            btnZoomIn.Visible   = false;
+            btnZoomOut.Visible  = false;
+            zoom.Visible        = false;
         }
 
         private void Zoom_grid_criar()
         {
             //Zoom_grid_limpar();
 
-            btnZoomIn.Visible = true;
-            btnZoomOut.Visible = true;
-            zoom.Visible = true;
+            btnZoomIn.Visible   = true;
+            btnZoomOut.Visible  = true;
+            zoom.Visible        = true;
 
             zoom.Text = "100%";
         }

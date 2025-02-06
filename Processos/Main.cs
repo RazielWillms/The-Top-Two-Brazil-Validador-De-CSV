@@ -27,7 +27,7 @@ namespace ValidarCSV
             this.Cabecalho.DataSource = new BindingSource(Cabecalho_stringToEnum.Keys, null);
 
             registros = new List<Registro>();
-            versao.Text = "v0.21";
+            versao.Text = "v0.22.1 Desenvolvimento";
     }
 
         private static string Numero_alfabeto_converter(int numero)
@@ -147,9 +147,10 @@ namespace ValidarCSV
             bool erro = false;
             Campos_validar(ref erro);
 
-            if (!erro)
+            if (erro == false)
             {
-                Registro_gerenciar(true);
+                registros.Clear();
+                labellog.Text = "Registro:";
 
                 try
                 {
@@ -157,12 +158,13 @@ namespace ValidarCSV
 
                     DataTable dataTable = Importar_csv(txtFilePath.Text);
 
-                    Validar_layouts_gerenciar(dataTable, layouts.Text);
+                    Validar_layouts_gerenciar(dataTable, layouts.Text, ref erro);
 
-                    if (!erro)
+                    if (erro == false)
                     {
-                        Registro_gerenciar(false);
+                        Grid_criar();
                     }
+
                 }
                 catch (Exception ex)
                 {
@@ -387,19 +389,6 @@ namespace ValidarCSV
 
             Progresso_gerenciar(false);
             Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
-        }
-
-        public void Registro_gerenciar(bool Iniciar)
-        {
-            if (Iniciar)
-            {
-                registros.Clear();
-                labellog.Text = "Registro:";
-            }
-            else
-            {
-                Grid_criar();
-            }
         }
 
         public void Progresso_gerenciar(bool Iniciar)

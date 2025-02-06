@@ -55,9 +55,12 @@ namespace ValidarCSV
                     Dominio_validar(campo, tamanho_formato, obrigatorio, ref mensagem, ref valido);
                     break;
 
-                // Criar validação para estrutura de sintéticas
                 case TipoCampoType.Sintetica:
                     Sintetica_validar(campo, tamanho_formato, obrigatorio, ref mensagem, ref valido);
+                    break;
+
+                case TipoCampoType.InscricaoEstadual:
+                    Insricao_estadual_validar(campo, tamanho_formato, obrigatorio, ref mensagem, ref valido);
                     break;
 
                 default:
@@ -259,6 +262,7 @@ namespace ValidarCSV
         private void Dominio_validar(string campo, double tamanho_formato, bool obrigatorio, ref string mensagem, ref bool valido)
         {
             mensagem = string.Empty;
+            campo = campo.ToUpper();
             List<string> dominio = Dominio_lista_retornar(tamanho_formato);
             List<string> dominioExtendido = new List<string>(dominio) { "", "null", "NULL" };
 
@@ -319,6 +323,41 @@ namespace ValidarCSV
                 valido = false;
                 return;
             }
+        }
+
+        private void Insricao_estadual_validar(string campo, double tamanho_formato, bool obrigatorio, ref string mensagem, ref bool valido)
+        {
+            if (campo == "0" || campo.Trim() == "" /*|| campo.Trim().ToUpper().Equals("ISENTO") || campo.Trim().ToUpper().Equals("ISENTA")*/ )
+            {
+                return;
+            }
+
+            int Tamanho1 = (int)Math.Truncate(tamanho_formato);
+            double parteDecimal = (tamanho_formato - Tamanho1).Round(1);
+            int Tamanho2 = (int)(parteDecimal * 10);
+
+            bool isInteiro = !long.TryParse(campo.Trim(), out _);
+
+            if (
+               isInteiro                                                               ||
+               (Tamanho2 > 0 && campo.Length != Tamanho1 && campo.Length != Tamanho2)  ||
+               (Tamanho1 < 20 && Tamanho2 == 0 && campo.Length != Tamanho1)            ||
+               (Tamanho1 == 20 && Tamanho2 == 0 && campo.Length > Tamanho1)
+               )
+            {
+                valido = false;
+
+                string mensagem_inteiro = isInteiro ? " ser um número inteiro e" : "";
+                if (Tamanho2 == 0)
+                {
+                    mensagem = "Deve" + mensagem_inteiro + " conter até " + Tamanho1 + " dígitos";
+                }
+                else
+                {
+                    mensagem = "Deve" + mensagem_inteiro + " conter " + Tamanho1 + " ou " + Tamanho2 + " dígitos";
+                }
+            }
+
         }
 
         private void Adicionar_mensagem(string adicionar, ref string mensagem)

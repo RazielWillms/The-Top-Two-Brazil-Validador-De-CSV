@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
+using ExtendedNumerics.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,8 +10,9 @@ namespace ValidarCSV
 {
     public partial class Main : Form
     {
-        private void Validar_layouts_gerenciar(DataTable dataTable, String Tabela)
+        private void Validar_layouts_gerenciar(DataTable dataTable, String Tabela, ref bool erro)
         {
+            erro = false;
             int rows = 0;
 
             if (Cabecalho.SelectedIndex == Indice_Cabecalho_Retornar(CabecalhoType.Sim))
@@ -36,7 +38,7 @@ namespace ValidarCSV
                     Produtos(dataTable, rows);
                     break;
 
-                case LayoutType.SaldosMaquinas:
+                case LayoutType.SaldosProdutosMaquinas:
                     Saldos_maquinas(dataTable, rows);
                     break;
 
@@ -104,12 +106,22 @@ namespace ValidarCSV
                     Contas(dataTable, rows);
                     break;
 
+                case LayoutType.Titulos:
+                    Titulos(dataTable, rows);
+                    break;
+
+                case LayoutType.Enderecos:
+                    Enderecos(dataTable, rows);
+                    break;
+
                 case LayoutType.Indefinido:
+                    erro = true;
                     MessageBox.Show("A validação deste layout ainda não foi implementada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
 
                 default:
-                    MessageBox.Show("Layout Inexistente", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    erro = true;
+                    MessageBox.Show("Layout Inexistente ou validação deste layout ainda não foi implementada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
         }
@@ -2429,6 +2441,19 @@ namespace ValidarCSV
             {
                 int columns = 1;
 
+                double TamanhoIE = 20.00;
+
+                bool IndicadorIE = row[70].ToString().Trim().ToUpper().Equals("1");
+
+                string UF = row[7].ToString().Trim().ToUpper();
+
+                if (IndicadorIE == true && Enum.TryParse(UF, out Estados estadoValido)  && Enum.IsDefined(typeof(Estados), UF))
+                {
+                    var (TamanhoIE1, TamanhoIE2) = Estado_config_retornar(UF);
+
+                    double.TryParse(TamanhoIE1.ToString() + "," + TamanhoIE2.ToString(), out TamanhoIE);
+                }
+
                 foreach (DataColumn column in dataTable.Columns)
                 {
                     var camposConfiguracao = new Dictionary<int, (string Nome, TipoCampoType Tipo, double Tamanho, bool Obrigatorio)>
@@ -2446,7 +2471,7 @@ namespace ValidarCSV
                         {11, ("Vendedor", TipoCampoType.Integer, 3, false)},
                         {12, ("Pessoa Física/Jurídica", TipoCampoType.Dominio, Dominio_retornar(DominioType.Fisica_juridica), true)},
                         {13, ("CNPJ/CPF", TipoCampoType.Character, 18, true)},
-                        {14, ("Inscrição Estadual", TipoCampoType.Character, 20, false)},
+                        {14, ("Inscrição Estadual", TipoCampoType.InscricaoEstadual, TamanhoIE, false)},
                         {15, ("Inscrição Municipal", TipoCampoType.Character, 20, false)},
                         {16, ("Inscrição Suframa", TipoCampoType.Character, 20, false)},
                         {17, ("Classificação", TipoCampoType.Character, 20, false)},
@@ -2514,6 +2539,172 @@ namespace ValidarCSV
                     }
 
                     if (columns > 73)
+                    {
+                        Sobressalente_validar(rows, columns, row[column].ToString());
+                    }
+
+                    columns++;
+                }
+
+                Progresso_atualizar(total, rows);
+
+                rows++;
+            }
+        }
+
+        public void Titulos(DataTable dataTable, int rows)
+        {
+            int total = dataTable.Rows.Count;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int columns = 1;
+                bool tipoc = row[14].ToString().Trim().ToUpper().Equals("R");
+
+                foreach (DataColumn column in dataTable.Columns)
+                {
+
+                    var camposConfiguracao = new Dictionary<int, (string Nome, TipoCampoType Tipo, double Tamanho, bool Obrigatorio)>
+                    {
+                        {1, ("Número do titulo", TipoCampoType.Character, 20, true)},
+                        {2, ("Código do cliente/fornecedor", TipoCampoType.Integer, 6, true)},
+                        {3, ("Data de Vencimento", TipoCampoType.DateFormat, 4, true)}, //dd/MM/yyyy
+                        {4, ("Data de emissão", TipoCampoType.DateFormat, 4, true)}, //dd/MM/yyyy
+                        {5, ("Valor – saldo em aberto", TipoCampoType.Numeric, 16.2, true)},
+                        {6, ("Portador 1", TipoCampoType.Dominio, 47, false)},
+                        {7, ("Filial", TipoCampoType.Integer, 2, true)},
+                        //{8, ("CAMPO INUTILIZADO", TipoCampoType.Character, 2, false)},
+                        {9, ("Banco", TipoCampoType.Character, 3, tipoc)},
+                        {10, ("Agência", TipoCampoType.Integer, 5, false)},
+                        {11, ("Vendedor", TipoCampoType.Integer, 3, false)},
+                        {12, ("Representante", TipoCampoType.Integer, 3, false)},
+                        {13, ("Nota fiscal", TipoCampoType.Character, 12, false)},
+                        {14, ("Tipo título", TipoCampoType.Dominio, 48, false)},
+                        {15, ("Pagar ou receber", TipoCampoType.Character, 1, true)},
+                        {16, ("Portador 2", TipoCampoType.Numeric, 6.2, false)},
+                        {17, ("Tabela de juros", TipoCampoType.Integer, 4, false)},
+                        {18, ("Número lançamento contábil", TipoCampoType.Integer, 9, false)},
+                        {19, ("Chave lançamento", TipoCampoType.Character, 512, false)},
+                        {20, ("Nosso número", TipoCampoType.Character, 512, tipoc)},
+                        {21, ("Observação", TipoCampoType.Character, 1200, false)},
+                        {22, ("Centro de Custo", TipoCampoType.Integer, 6, false)},
+                        {23, ("Parcela", TipoCampoType.Integer, 4, false)},
+                        {24, ("Comissão Título Avulso Base", TipoCampoType.Numeric, 16.2, false)},
+                        {25, ("Comissão Título Avulso Percentual", TipoCampoType.Numeric, 10.4, false)},
+                        {26, ("Tipo Documento", TipoCampoType.Integer, 3, false)},
+                    };
+
+                    if (camposConfiguracao.TryGetValue(columns, out var config))
+                    {
+                        Campos_validar_gerenciar(config.Nome, row[column].ToString(), rows, columns, config.Tipo, config.Tamanho, config.Obrigatorio);
+                    }
+
+                    if (columns > 26)
+                    {
+                        Sobressalente_validar(rows, columns, row[column].ToString());
+                    }
+
+                    columns++;
+                }
+
+                Progresso_atualizar(total, rows);
+
+                rows++;
+            }
+        }
+
+        public void Enderecos(DataTable dataTable, int rows)
+        {
+            int total = dataTable.Rows.Count;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int columns = 1;
+
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    var camposConfiguracao = new Dictionary<int, (string Nome, TipoCampoType Tipo, double Tamanho, bool Obrigatorio)>
+                    {
+                        {1, ("Código", TipoCampoType.Integer, 6, true)},
+                        {2, ("Tipo - Cliente / Fornecedor", TipoCampoType.Dominio, Dominio_retornar(DominioType.Cliente_fornecedor), true)},
+                        //{3, ("CAMPO INUTILIZADO 1", TipoCampoType.Character, 60, false)},
+                        {4, ("Identificador Endereço", TipoCampoType.Character, 20, false)},
+                        {5, ("Tipo Endereço", TipoCampoType.Character, 1, true)},
+                        {6, ("Endereço (rua/logradouro)", TipoCampoType.Character, 60, true)},
+                        {7, ("Número", TipoCampoType.Integer, 6, false)},
+                        {8, ("Complemento", TipoCampoType.Character, 60, false)},
+                        {9, ("Bairro", TipoCampoType.Character, 30, false)},
+                        {10, ("CEP", TipoCampoType.Character, 9, true)},
+                        {11, ("Cidade", TipoCampoType.Character, 50, true)},
+                        {12, ("UF", TipoCampoType.Character, 2, true)},
+                        {13, ("Código do município", TipoCampoType.Integer, 7, false)},
+                        {14, ("Código do país", TipoCampoType.Integer, 7, false)},
+                        //{15, ("CAMPO INUTILIZADO 2", TipoCampoType.Character, 60, false)},
+                        {16, ("CNPJ/CPF", TipoCampoType.Character, 18, true)},
+                        {17, ("Inscrição Estadual", TipoCampoType.Character, 20, false)},
+                        {18, ("Endereco Padrão Cobrança", TipoCampoType.Dominio, Dominio_retornar(DominioType.Sim_nao), false)},
+                        {19, ("Observação", TipoCampoType.Character, 1200, false)},
+                        {20, ("Filial", TipoCampoType.Integer, 2, false)},
+                        {21, ("Telefone 1", TipoCampoType.Character, 14, false)},
+                        {22, ("Telefone 2", TipoCampoType.Character, 14, false)},
+                        {23, ("Fax", TipoCampoType.Character, 14, false)},
+                        //{24, ("CAMPO INUTILIZADO 3", TipoCampoType.Character, 60, false)},
+                        {25, ("Pessoa Física/Jurídica", TipoCampoType.Dominio, Dominio_retornar(DominioType.Fisica_juridica), false)},
+                        {26, ("Celular", TipoCampoType.Character, 14, false)},
+                        {27, ("Inscrição Municipal", TipoCampoType.Character, 20, false)},
+                        {28, ("E-mail", TipoCampoType.Character, 500, false)},
+                        {29, ("Contribuinte", TipoCampoType.Dominio, Dominio_retornar(DominioType.Tipo_contribuinte), false)},
+                        {30, ("Código Legado", TipoCampoType.Integer, 6, false)}
+                    };
+
+                    if (camposConfiguracao.TryGetValue(columns, out var config))
+                    {
+                        Campos_validar_gerenciar(config.Nome, row[column].ToString(), rows, columns, config.Tipo, config.Tamanho, config.Obrigatorio);
+                    }
+
+                    if (columns > 30)
+                    {
+                        Sobressalente_validar(rows, columns, row[column].ToString());
+                    }
+
+                    columns++;
+                }
+
+                Progresso_atualizar(total, rows);
+
+                rows++;
+            }
+        }
+
+        public void Prateleiras(DataTable dataTable, int rows)
+        {
+            int total = dataTable.Rows.Count;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int columns = 1;
+
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    var camposConfiguracao = new Dictionary<int, (string Nome, TipoCampoType Tipo, double Tamanho, bool Obrigatorio)>
+                    {
+                        {1, ("Filial", TipoCampoType.Integer, 2, true)},
+                        {2, ("Produto", TipoCampoType.Character, 20, true)},
+                        {3, ("Prateleira 1", TipoCampoType.Character, 14, true)},
+                        {4, ("Prateleira 2", TipoCampoType.Character, 14, false)},
+                        {5, ("Descrição", TipoCampoType.Character, 60, false)},
+                        {6, ("Prateleira 3", TipoCampoType.Character, 14, false)},
+                        {7, ("Prateleira 4", TipoCampoType.Integer, 14, false)},
+                        {8, ("Prateleira 5", TipoCampoType.Character, 14, false)},
+                        {9, ("Código produto único", TipoCampoType.Character, 60, false)}
+                    };
+
+                    if (camposConfiguracao.TryGetValue(columns, out var config))
+                    {
+                        Campos_validar_gerenciar(config.Nome, row[column].ToString(), rows, columns, config.Tipo, config.Tamanho, config.Obrigatorio);
+                    }
+
+                    if (columns > 9)
                     {
                         Sobressalente_validar(rows, columns, row[column].ToString());
                     }

@@ -20,34 +20,136 @@ namespace ValidarCSV
             Dominio,
             Nivel,
             Sintetica,
+            InscricaoEstadual,
         }
+
+        public enum Estados
+        { 
+            AC,
+            AL,
+            AP,
+            AM,
+            BA,
+            CE,
+            DF,
+            ES,
+            GO,
+            MA,
+            MT,
+            MS,
+            MG,
+            PA,
+            PB,
+            PR,
+            PE,
+            PI,
+            RJ,
+            RN,
+            RS,
+            RO,
+            RR,
+            SC,
+            SP,
+            SE,
+            TO
+        }
+
+        public static readonly Dictionary<string, (double, double)> estadosConfiguracaoIE = new Dictionary<string, (double, double)>
+        {
+            {"AC", (13,  0)},
+            {"AL", (9,   0)},
+            {"AP", ( 9,  0)},
+            {"AM", ( 9,  0)},
+            {"BA", ( 8,  9)},
+            {"CE", ( 9,  0)},
+            {"DF", (13,  0)},
+            {"ES", ( 9,  0)},
+            {"GO", ( 9,  0)},
+            {"MA", ( 9,  0)},
+            {"MT", (11,  0)},
+            {"MS", ( 9,  0)},
+            {"MG", (13,  0)},
+            {"PA", ( 9,  0)},
+            {"PB", ( 9,  0)},
+            {"PR", (10,  0)},
+            {"PE", ( 9,  0)},
+            {"PI", ( 9,  0)},
+            {"RJ", ( 9,  0)},
+            {"RN", ( 9, 10)},
+            {"RS", (10,  0)},
+            {"RO", ( 9, 14)},
+            {"RR", ( 9,  0)},
+            {"SC", ( 9,  0)},
+            {"SP", (12,  0)},
+            {"SE", ( 9,  0)},
+            {"TO", ( 9, 11)}
+        };
+
+        public static (double tam1, double tam2) Estado_config_retornar(string uf)
+        {
+            var estadoUFToDouble = new Dictionary<string, (double, double)>
+            {
+                {"AC", (13,  0)},
+                {"AL", (9,   0)},
+                {"AP", (9,   0)},
+                {"AM", (9,   0)},
+                {"BA", (8,   9)},
+                {"CE", (9,   0)},
+                {"DF", (13,  0)},
+                {"ES", (9,   0)},
+                {"GO", (9,   0)},
+                {"MA", (9,   0)},
+                {"MT", (11,  0)},
+                {"MS", (9,   0)},
+                {"MG", (13,  0)},
+                {"PA", (9,   0)},
+                {"PB", (9,   0)},
+                {"PR", (10,  0)},
+                {"PE", (9,   0)},
+                {"PI", (9,   0)},
+                {"RJ", (9,   0)},
+                {"RN", (9,  10)},
+                {"RS", (10,  0)},
+                {"RO", (9,  14)},
+                {"RR", (9,   0)},
+                {"SC", (9,   0)},
+                {"SP", (12,  0)},
+                {"SE", (9,   0)},
+                {"TO", (9,  11)}
+            };
+
+            return estadoUFToDouble.TryGetValue(uf, out var valores) ? valores : (0, 0);
+        }
+
 
         public static readonly Dictionary<string, TipoCampoType> TipoCampoType_stringToEnum = new Dictionary<string, TipoCampoType>
         {
-            { "", TipoCampoType.Indefinido },
-            { "Character", TipoCampoType.Character },
-            { "Inteiro", TipoCampoType.Integer },
-            { "Numérico", TipoCampoType.Numeric },
-            { "Data", TipoCampoType.Date },
-            { "Data Específica", TipoCampoType.DateFormat },
-            { "Orçamento Oficina", TipoCampoType.Dominio },
-            { "Estatísticas", TipoCampoType.Nivel },
-            { "Sintéticas", TipoCampoType.Sintetica }
+            { "",                   TipoCampoType.Indefinido },
+            { "Character",          TipoCampoType.Character },
+            { "Inteiro",            TipoCampoType.Integer },
+            { "Numérico",           TipoCampoType.Numeric },
+            { "Data",               TipoCampoType.Date },
+            { "Data Específica",    TipoCampoType.DateFormat },
+            { "Domínio",            TipoCampoType.Dominio },
+            { "Nível",              TipoCampoType.Nivel },
+            { "Sintética",          TipoCampoType.Sintetica },
+            { "Inscrição Estadual", TipoCampoType.InscricaoEstadual }
         };
 
         public static void TipoCampo_string_retornar(this TipoCampoType tipoCampoType, ref string tipoCampo)
         {
             var tipoCampos = new Dictionary<TipoCampoType, string>
             {
-                { TipoCampoType.Indefinido, "" },
-                { TipoCampoType.Character, "Character" },
-                { TipoCampoType.Integer, "Inteiro" },
-                { TipoCampoType.Numeric, "Numérico" },
-                { TipoCampoType.Date, "Data" },
-                { TipoCampoType.DateFormat, "Data Específica" },
-                { TipoCampoType.Dominio, "Orçamento Oficina" },
-                { TipoCampoType.Nivel, "Estatísticas" },
-                { TipoCampoType.Sintetica, "Estatísticas" }
+                { TipoCampoType.Indefinido,         "" },
+                { TipoCampoType.Character,          "Character" },
+                { TipoCampoType.Integer,            "Inteiro" },
+                { TipoCampoType.Numeric,            "Numérico" },
+                { TipoCampoType.Date,               "Data" },
+                { TipoCampoType.DateFormat,         "Data Específica" },
+                { TipoCampoType.Dominio,            "Domínio" },
+                { TipoCampoType.Nivel,              "Nível" },
+                { TipoCampoType.Sintetica,          "Sintética" },
+                { TipoCampoType.InscricaoEstadual,  "Inscrição Estadual" }
             };
 
             tipoCampo = tipoCampos.ContainsKey(tipoCampoType) ? tipoCampos[tipoCampoType] : "NULL";
@@ -57,15 +159,16 @@ namespace ValidarCSV
         {
             var tipoCampos = new Dictionary<string, TipoCampoType>
             {
-                { "", TipoCampoType.Indefinido },
-                { "Character", TipoCampoType.Character },
-                { "Inteiro", TipoCampoType.Integer },
-                { "Numérico", TipoCampoType.Numeric },
-                { "Data", TipoCampoType.Date },
-                { "Data Específica", TipoCampoType.DateFormat },
-                { "Orçamento Oficina", TipoCampoType.Dominio },
-                { "Estatísticas", TipoCampoType.Nivel },
-                { "Sintéticas", TipoCampoType.Sintetica }
+                { "",                   TipoCampoType.Indefinido },
+                { "Character",          TipoCampoType.Character },
+                { "Inteiro",            TipoCampoType.Integer },
+                { "Numérico",           TipoCampoType.Numeric },
+                { "Data",               TipoCampoType.Date },
+                { "Data Específica",    TipoCampoType.DateFormat },
+                { "Domínio",            TipoCampoType.Dominio },
+                { "Nível",              TipoCampoType.Nivel },
+                { "Sintética",          TipoCampoType.Sintetica },
+                { "Inscrição Estadual", TipoCampoType.InscricaoEstadual }
             };
 
             tipoCampo = tipoCampos.ContainsKey(tipoCampoType) ? tipoCampos[tipoCampoType] : TipoCampoType.Indefinido;
@@ -81,10 +184,10 @@ namespace ValidarCSV
 
         public static readonly Dictionary<string, CabecalhoType> Cabecalho_stringToEnum = new Dictionary<string, CabecalhoType>
         {
-            { "", CabecalhoType.Indefinido},
-            { "Auto", CabecalhoType.Auto},
-            { "Sim", CabecalhoType.Sim},
-            { "Não", CabecalhoType.Nao},
+            { "",       CabecalhoType.Indefinido},
+            { "Auto",   CabecalhoType.Auto},
+            { "Sim",    CabecalhoType.Sim},
+            { "Não",    CabecalhoType.Nao},
         };
 
 
@@ -94,9 +197,9 @@ namespace ValidarCSV
 
             {
                 { CabecalhoType.Indefinido, 1 },
-                { CabecalhoType.Sim, 2 },
-                { CabecalhoType.Nao, 3 },
-                { CabecalhoType.Auto, 4 },
+                { CabecalhoType.Sim,        2 },
+                { CabecalhoType.Nao,        3 },
+                { CabecalhoType.Auto,       4 },
             };
 
             return indices.ContainsKey(cabecalho) ? indices[cabecalho] : 0;
@@ -109,7 +212,7 @@ namespace ValidarCSV
             Produtos,
             Maquinas,
             MaquinasCompleto,
-            SaldosMaquinas,
+            SaldosProdutosMaquinas,
             Adiantamentos,
             OrcamentoBalcao,
             OrcamentoOficina,
@@ -126,57 +229,66 @@ namespace ValidarCSV
             SubGrupos,
             Plano,
             Contas,
+            Titulos,
+            Enderecos,
+            Prateleiras,
         }
 
         public static readonly Dictionary<string, LayoutType> Layout_stringToEnum = new Dictionary<string, LayoutType>
         {
-            { "", LayoutType.Indefinido },
-            { "Produtos", LayoutType.Produtos },
-            { "Máquinas", LayoutType.Maquinas },
-            { "Máquinas (Base + Individual)", LayoutType.MaquinasCompleto },
-            { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
-            { "Adiantamentos", LayoutType.Adiantamentos },
-            { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
-            { "Orçamento Oficina", LayoutType.OrcamentoOficina },
-            { "Estatísticas", LayoutType.Estatisticas },
-            { "Veículos de Clientes", LayoutType.VeiculosClientes },
-            { "Itens Imobilizados", LayoutType.ImobilizadoItens },
-            { "Saldos Imobilizados", LayoutType.ImobilizadoSaldos },
-            { "Legado Financeiro", LayoutType.LegadoFinanceiro },
-            { "Legado Pagamentos", LayoutType.LegadoPagamentos },
-            { "Legado Pedidos", LayoutType.LegadoPedidos },
-            { "Itens de Pedidos Legados", LayoutType.LegadoPedidosItens },
-            { "Movimentação Legada", LayoutType.LegadoMovimentacao },
-            { "Grupos", LayoutType.Grupos },
-            { "Subgrupos", LayoutType.SubGrupos },
-            { "Plano de Contas", LayoutType.Plano },
-            { "Contas", LayoutType.Contas },
+            { "",                               LayoutType.Indefinido },
+            { "Produtos",                       LayoutType.Produtos },
+            { "Máquinas",                       LayoutType.Maquinas },
+            { "Máquinas (Base + Individual)",   LayoutType.MaquinasCompleto },
+            { "Saldos (Produtos ou Máquinas)",  LayoutType.SaldosProdutosMaquinas },
+            { "Adiantamentos",                  LayoutType.Adiantamentos },
+            { "Orçamento Balcão",               LayoutType.OrcamentoBalcao },
+            { "Orçamento Oficina",              LayoutType.OrcamentoOficina },
+            { "Estatísticas",                   LayoutType.Estatisticas },
+            { "Veículos de Clientes",           LayoutType.VeiculosClientes },
+            { "Itens Imobilizados",             LayoutType.ImobilizadoItens },
+            { "Saldos Imobilizados",            LayoutType.ImobilizadoSaldos },
+            { "Legado Financeiro",              LayoutType.LegadoFinanceiro },
+            { "Legado Pagamentos",              LayoutType.LegadoPagamentos },
+            { "Legado Pedidos",                 LayoutType.LegadoPedidos },
+            { "Itens de Pedidos Legados",       LayoutType.LegadoPedidosItens },
+            { "Movimentação Legada",            LayoutType.LegadoMovimentacao },
+            { "Grupos",                         LayoutType.Grupos },
+            { "Subgrupos",                      LayoutType.SubGrupos },
+            { "Plano de Contas",                LayoutType.Plano },
+            { "Contas",                         LayoutType.Contas },
+            { "Títulos",                        LayoutType.Titulos },
+            { "Endereços Complementares",       LayoutType.Enderecos },
+            { "Prateleiras",                    LayoutType.Prateleiras },
         };
 
         public static void Layout_string_retornar(this LayoutType layoutType, ref string layout)
         {
             var layouts = new Dictionary<LayoutType, string>
             {
-                { LayoutType.Produtos, "Produtos" },
-                { LayoutType.Maquinas, "Máquinas" },
-                { LayoutType.MaquinasCompleto, "Máquinas (Base + Individual)" },
-                { LayoutType.SaldosMaquinas, "Saldos de Máquinas" },
-                { LayoutType.Adiantamentos, "Adiantamentos" },
-                { LayoutType.OrcamentoBalcao, "Orçamento Balcão" },
-                { LayoutType.OrcamentoOficina, "Orçamento Oficina" },
-                { LayoutType.Estatisticas, "Estatísticas" },
-                { LayoutType.VeiculosClientes, "Veículos de Clientes" },
-                { LayoutType.ImobilizadoItens, "Itens Imobilizados" },
-                { LayoutType.ImobilizadoSaldos, "Saldos Imobilizados" },
-                { LayoutType.LegadoFinanceiro, "Legado Financeiro" },
-                { LayoutType.LegadoPagamentos, "Legado Pagamentos" },
-                { LayoutType.LegadoPedidos, "Legado Pedidos" },
-                { LayoutType.LegadoPedidosItens, "Itens de Pedidos Legados" },
-                { LayoutType.LegadoMovimentacao, "Movimentação Legada" },
-                { LayoutType.Grupos, "Grupos" },
-                { LayoutType.SubGrupos, "Subgrupos" },
-                { LayoutType.Plano, "Plano de Contas" },
-                { LayoutType.Contas, "Contas" }
+                { LayoutType.Produtos,                  "Produtos" },
+                { LayoutType.Maquinas,                  "Máquinas" },
+                { LayoutType.MaquinasCompleto,          "Máquinas (Base + Individual)" },
+                { LayoutType.SaldosProdutosMaquinas,    "Saldos (Produtos ou Máquinas)" },
+                { LayoutType.Adiantamentos,             "Adiantamentos" },
+                { LayoutType.OrcamentoBalcao,           "Orçamento Balcão" },
+                { LayoutType.OrcamentoOficina,          "Orçamento Oficina" },
+                { LayoutType.Estatisticas,              "Estatísticas" },
+                { LayoutType.VeiculosClientes,          "Veículos de Clientes" },
+                { LayoutType.ImobilizadoItens,          "Itens Imobilizados" },
+                { LayoutType.ImobilizadoSaldos,         "Saldos Imobilizados" },
+                { LayoutType.LegadoFinanceiro,          "Legado Financeiro" },
+                { LayoutType.LegadoPagamentos,          "Legado Pagamentos" },
+                { LayoutType.LegadoPedidos,             "Legado Pedidos" },
+                { LayoutType.LegadoPedidosItens,        "Itens de Pedidos Legados" },
+                { LayoutType.LegadoMovimentacao,        "Movimentação Legada" },
+                { LayoutType.Grupos,                    "Grupos" },
+                { LayoutType.SubGrupos,                 "Subgrupos" },
+                { LayoutType.Plano,                     "Plano de Contas" },
+                { LayoutType.Contas,                    "Contas" },
+                { LayoutType.Titulos,                   "Títulos" },
+                { LayoutType.Enderecos,                 "Endereços Complementares" },
+                { LayoutType.Prateleiras,               "Prateleiras" }
             };
 
             layout = layouts.ContainsKey(layoutType) ? layouts[layoutType] : "NULL";
@@ -186,26 +298,29 @@ namespace ValidarCSV
         {
             var layoutTypes = new Dictionary<string, LayoutType>
             {
-                { "Produtos", LayoutType.Produtos },
-                { "Máquinas", LayoutType.Maquinas },
-                { "Máquinas (Base + Individual)", LayoutType.MaquinasCompleto },
-                { "Saldos de Máquinas", LayoutType.SaldosMaquinas },
-                { "Adiantamentos", LayoutType.Adiantamentos },
-                { "Orçamento Balcão", LayoutType.OrcamentoBalcao },
-                { "Orçamento Oficina", LayoutType.OrcamentoOficina },
-                { "Estatísticas", LayoutType.Estatisticas },
-                { "Veículos de Clientes", LayoutType.VeiculosClientes },
-                { "Itens Imobilizados", LayoutType.ImobilizadoItens },
-                { "Saldos Imobilizados", LayoutType.ImobilizadoSaldos },
-                { "Legado Financeiro", LayoutType.LegadoFinanceiro },
-                { "Legado Pagamentos", LayoutType.LegadoPagamentos },
-                { "Legado Pedidos", LayoutType.LegadoPedidos },
-                { "Itens de Pedidos Legados", LayoutType.LegadoPedidosItens },
-                { "Movimentação Legada", LayoutType.LegadoMovimentacao },
-                { "Grupos", LayoutType.Grupos },
-                { "Subgrupos", LayoutType.SubGrupos },
-                { "Plano de Contas", LayoutType.Plano },
-                { "Contas", LayoutType.Contas }
+                { "Produtos",                       LayoutType.Produtos },
+                { "Máquinas",                       LayoutType.Maquinas },
+                { "Máquinas (Base + Individual)",   LayoutType.MaquinasCompleto },
+                { "Saldos (Produtos ou Máquinas)",  LayoutType.SaldosProdutosMaquinas },
+                { "Adiantamentos",                  LayoutType.Adiantamentos },
+                { "Orçamento Balcão",               LayoutType.OrcamentoBalcao },
+                { "Orçamento Oficina",              LayoutType.OrcamentoOficina },
+                { "Estatísticas",                   LayoutType.Estatisticas },
+                { "Veículos de Clientes",           LayoutType.VeiculosClientes },
+                { "Itens Imobilizados",             LayoutType.ImobilizadoItens },
+                { "Saldos Imobilizados",            LayoutType.ImobilizadoSaldos },
+                { "Legado Financeiro",              LayoutType.LegadoFinanceiro },
+                { "Legado Pagamentos",              LayoutType.LegadoPagamentos },
+                { "Legado Pedidos",                 LayoutType.LegadoPedidos },
+                { "Itens de Pedidos Legados",       LayoutType.LegadoPedidosItens },
+                { "Movimentação Legada",            LayoutType.LegadoMovimentacao },
+                { "Grupos",                         LayoutType.Grupos },
+                { "Subgrupos",                      LayoutType.SubGrupos },
+                { "Plano de Contas",                LayoutType.Plano },
+                { "Contas",                         LayoutType.Contas },
+                { "Títulos",                        LayoutType.Titulos },
+                { "Endereços Complementares",       LayoutType.Enderecos },
+                { "Prateleiras",                    LayoutType.Prateleiras }
             };
 
             layoutType = layoutTypes.ContainsKey(layout) ? layoutTypes[layout] : LayoutType.Indefinido;
@@ -259,7 +374,9 @@ namespace ValidarCSV
             Estado_civil,
             Tipo_fornecedor,
             Indicador_ie,
-            Cadite_situa
+            Cadite_situa,
+            Portador,
+            Xave
         }
 
         /*public static readonly Dictionary<string, DominioType> Dominio_stringToEnum = new Dictionary<string, DominioType>
@@ -360,7 +477,9 @@ namespace ValidarCSV
                 { DominioType.Estado_civil, "Estado Civil" },
                 { DominioType.Tipo_fornecedor, "Tipo Fornecedor" },
                 { DominioType.Indicador_ie, "Indicador IE" },
-                { DominioType.Cadite_situa, "Situação Cadite" }
+                { DominioType.Cadite_situa, "Situação Cadite" },
+                { DominioType.Portador, "Portador Título" },
+                { DominioType.Xave, "Chave" }
             };
 
             dominio = dominios.ContainsKey(dominioType) ? dominios[dominioType] : "NULL";
@@ -415,7 +534,9 @@ namespace ValidarCSV
                 { "Estado Civil", DominioType.Estado_civil },
                 { "Tipo Fornecedor", DominioType.Tipo_fornecedor },
                 { "Indicador IE", DominioType.Indicador_ie },
-                { "Situação Cadite", DominioType.Cadite_situa }
+                { "Situação Cadite", DominioType.Cadite_situa },
+                { "Portador Título", DominioType.Portador },
+                { "Chave", DominioType.Xave }
             };
 
             dominioType = dominioTypes.ContainsKey(dominio) ? dominioTypes[dominio] : DominioType.Null;
@@ -509,6 +630,8 @@ namespace ValidarCSV
                 { 44, new List<string> { "C", "I", "T", "F", ""} }, //dom_tipo_fornecedor
                 { 45, new List<string> { "0", "1", "2", "9"} }, //dom_indicador_ie
                 { 46, new List<string> { "A", "I", "C" } }, //dom_cadite_situa
+                { 47, new List<string> { "0", "1", "2", "4", "P" } }, //dom_portador
+                { 48, new List<string> { "0", "1" } }, //dom_xave
                 
             };
 
@@ -564,7 +687,9 @@ namespace ValidarCSV
                 { DominioType.Estado_civil, 43 },
                 { DominioType.Tipo_fornecedor, 44 },
                 { DominioType.Indicador_ie, 45 },
-                { DominioType.Cadite_situa, 46 }
+                { DominioType.Cadite_situa, 46 },
+                { DominioType.Portador, 47 },
+                { DominioType.Xave, 48 }
             };
 
             double dominio;
